@@ -1,16 +1,15 @@
-package org.usfirst.frc.team2374.robot.commands;
-
-import org.usfirst.frc.team2374.robot.Robot;
+package org.usfirst.frc.team2374.robot.commands.grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveToInch extends Command {
+public class GrabberWIthJoystick extends Command {
 
-    public DriveToInch(double inches) {
-        requires(Robot.drivetrain);
+    public GrabberWIthJoystick() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time

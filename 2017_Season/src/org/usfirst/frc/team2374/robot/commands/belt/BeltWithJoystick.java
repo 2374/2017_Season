@@ -1,13 +1,13 @@
-package org.usfirst.frc.team2374.robot.commands;
+package org.usfirst.frc.team2374.robot.commands.belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class TurnToDegree extends Command {
+public class BeltWithJoystick extends Command {
 
-    public TurnToDegree() {
+    public BeltWithJoystick() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

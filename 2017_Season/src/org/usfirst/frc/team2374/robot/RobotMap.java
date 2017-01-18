@@ -16,4 +16,16 @@ public class RobotMap {
 	public static final int talonDriveFrontRight = 3;
 	public static final int talonDriveBackLeft = 4;
 	public static final int talonDriveBackRight = 5;
+	
+	//PWM
+	public static final int speedControllerBelt = 0;
+	public static final int speedControllerGrabber = 1;
+	
+	//DIO
+	public static final int encoderBeltA = 0;
+	public static final int encoderBeltB = 1;
+	public static final int limitSwitchBeltLeft = 2;
+	public static final int limitSwitchBeltRight = 3;
+	public static final int limitSwitchGrabber = 4;
+	
 }

@@ -1,14 +1,16 @@
 
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.subsystems.Belt;
+import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team2374.robot.subsystems.Grabber;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,6 +22,8 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 public class Robot extends IterativeRobot {
 
 	public static Drivetrain drivetrain = new Drivetrain();
+	public static Belt belt = new Belt();
+	public static Grabber grabber = new Grabber();
 	public static OI oi;
 
 	Command autonomousCommand;

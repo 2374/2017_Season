@@ -5,49 +5,46 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
-public class BeltWithJoystick extends Command {
+public class MoveBeltToPoint extends Command {
 
-	Belt belt = Robot.belt;
+	private Belt belt = Robot.belt;
+	private double wantedPosition;
+	private double speed;
 
-	public BeltWithJoystick() {
+	public MoveBeltToPoint(double position, double speed) {
 		requires(belt);
+		wantedPosition = position;
+		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		belt.setPIDSetpoint(wantedPosition);
+		belt.setPIDSpeed(speed);
+		belt.enablePID(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double left = Robot.oi.getLeftTrigger();
-		double right = Robot.oi.getRightTrigger();
-		if (left != 0 && right == 0)
-			belt.setBelt(-left);
-		else if (left == 0 && right != 0)
-			belt.setBelt(right);
-		else
-			belt.setBelt(0);
-
-		if (belt.isAtLimit())
-			Robot.oi.setRumble(true);
-		else
-			Robot.oi.setRumble(false);
+		belt.setBelt(belt.getPIDOutput());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		if (belt.isAtLimit())
+			return true;
+		if (wantedPosition < 0)
+			return belt.getPosition() <= wantedPosition;
+		return belt.getPosition() >= wantedPosition;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		belt.enablePID(false);
 		belt.setBelt(0);
 	}
 

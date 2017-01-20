@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.climber.ClimberWithButton;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 
@@ -16,11 +17,13 @@ public class OI {
 	Joystick driver;
 	JoystickButton leftBumper;
 	JoystickButton rightBumper;
+	JoystickButton buttonX;
 
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
 		leftBumper = new JoystickButton(driver, RobotMap.rsLeftBumper);
 		rightBumper = new JoystickButton(driver, RobotMap.rsRightBumper);
+		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 
 		leftBumper.whenPressed(new OpenGrabber());
 		rightBumper.whenPressed(new CloseGrabber());
@@ -40,6 +43,10 @@ public class OI {
 
 	public double getRightTrigger() {
 		return quadraticScale(driver.getRawAxis(RobotMap.rsRightTrigger));
+	}
+	
+	public boolean getButtonX() {
+		return driver.getRawButton(RobotMap.rsButtonX);
 	}
 
 	public void setRumble(boolean enable) {

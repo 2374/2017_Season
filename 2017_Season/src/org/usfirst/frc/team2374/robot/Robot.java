@@ -2,6 +2,7 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
+import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 	public static Drivetrain drivetrain = new Drivetrain();
 	public static Belt belt = new Belt();
 	public static Grabber grabber = new Grabber();
+	public static Climber climber = new Climber();
 	public static OI oi;
 
 	Command autonomousCommand;

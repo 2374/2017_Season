@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.climber.ClimberWithButton;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 
@@ -44,7 +43,7 @@ public class OI {
 	public double getRightTrigger() {
 		return quadraticScale(driver.getRawAxis(RobotMap.rsRightTrigger));
 	}
-	
+
 	public boolean getButtonX() {
 		return driver.getRawButton(RobotMap.rsButtonX);
 	}

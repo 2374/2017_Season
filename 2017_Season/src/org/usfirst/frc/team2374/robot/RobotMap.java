@@ -36,10 +36,5 @@ public class RobotMap {
 	public static final int limitSwitchBeltRight = 3;
 	public static final int limitSwitchGrabberOpen = 4;
 	public static final int limitSwitchGrabberClose = 5;
-	
-	public static final int rightSol1 = 7;
-	public static final int rightSol2 = 8;
-	public static final int leftSol1 = 9;
-	public static final int leftSol2 = 10;
 
 }

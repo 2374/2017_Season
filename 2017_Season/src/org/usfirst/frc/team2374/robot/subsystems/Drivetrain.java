@@ -24,8 +24,6 @@ public class Drivetrain extends Subsystem {
 	private RobotDrive robotDrive;
 	private AHRS navX;
 	
-	private DoubleSolenoid leftSol, rightSol;
-	
 	private PIDController gyroPID;
 	private SimplePIDOutput gyroOut;
 	private static final double gyroP = 0;
@@ -43,8 +41,6 @@ public class Drivetrain extends Subsystem {
 	private static final double WHEEL_DIAMETER = 6; //inches
 
 	public Drivetrain() {
-		leftSol = new DoubleSolenoid(RobotMap.leftSol1, RobotMap.leftSol2);
-		rightSol = new DoubleSolenoid(RobotMap.rightSol1, RobotMap.rightSol2);
 		
 		masterLeft = new CANTalon(RobotMap.talonDriveMasterLeft);
 		masterRight = new CANTalon(RobotMap.talonDriveMasterRight);
@@ -87,16 +83,6 @@ public class Drivetrain extends Subsystem {
 	
 	public void tankDrive(double left, double right) {
 		robotDrive.tankDrive(left, right);
-	}
-	
-	public void reverseSol(){
-		leftSol.set(DoubleSolenoid.Value.kReverse);
-		rightSol.set(DoubleSolenoid.Value.kReverse);
-	}
-	
-	public void forwardSol(){
-		leftSol.set(DoubleSolenoid.Value.kForward);
-		rightSol.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void arcadeDrive(double move, double rotate) {

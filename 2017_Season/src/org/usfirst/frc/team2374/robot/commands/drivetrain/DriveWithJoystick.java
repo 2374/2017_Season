@@ -19,8 +19,6 @@ public class DriveWithJoystick extends Command {
     	double left = Robot.oi.getDriverLeftY();
     	double right = Robot.oi.getDriverRightY();
     	Robot.drivetrain.tankDrive(left, right);
-    	if(Robot.oi.getButtonA()) Robot.drivetrain.reverseSol();
-    	else Robot.drivetrain.forwardSol();
     }
 
     // Make this return true when this Command no longer needs to run execute()

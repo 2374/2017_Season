@@ -17,12 +17,17 @@ public class OI {
 	JoystickButton leftBumper;
 	JoystickButton rightBumper;
 	JoystickButton buttonX;
+	JoystickButton buttonA;
+	JoystickButton buttonB;
+
 
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
 		leftBumper = new JoystickButton(driver, RobotMap.rsLeftBumper);
 		rightBumper = new JoystickButton(driver, RobotMap.rsRightBumper);
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
+		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
+		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
 
 		leftBumper.whenPressed(new OpenGrabber());
 		rightBumper.whenPressed(new CloseGrabber());
@@ -46,6 +51,14 @@ public class OI {
 
 	public boolean getButtonX() {
 		return driver.getRawButton(RobotMap.rsButtonX);
+	}
+	
+	public boolean getButtonA() {
+		return driver.getRawButton(RobotMap.rsButtonA);
+	}
+	
+	public boolean getButtonB() {
+		return driver.getRawButton(RobotMap.rsButtonB);
 	}
 
 	public void setRumble(boolean enable) {

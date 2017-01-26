@@ -24,7 +24,7 @@ public class Belt extends Subsystem {
 	private static final double beltI = 0;
 	private static final double beltD = 0;
 
-	private static final double MAX_BELT_SPEED = 0.5;
+	public static final double MAX_BELT_SPEED = 0.5;
 
 	// direction reference:
 	// front

@@ -5,6 +5,7 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
+import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot {
 	public static Grabber grabber = new Grabber();
 	public static Climber climber = new Climber();
 	public static OI oi;
+	public static Vision camera = new Vision();
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();

@@ -16,7 +16,7 @@ public class Vision extends Subsystem {
 	private static final int resolutionX = 640;
 
 	private static final double calibrationDistInches = 60;
-	private static final double calibrationWidthInches = 10.25;
+	private static final double calibrationWidthInches = 10.25; //contingency: initialize() method in centerBelt command needs to be fixed with this 
 	private static final double calibrationWidthPixel = 116;
 	private static final double focalLength = calibrationWidthPixel * calibrationDistInches / calibrationWidthInches;
 

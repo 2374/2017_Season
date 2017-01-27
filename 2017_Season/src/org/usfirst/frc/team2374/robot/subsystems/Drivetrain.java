@@ -10,9 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,8 +21,9 @@ public class Drivetrain extends Subsystem {
 	private Talon left0, left1, right0, right1;
 	private Victor left2, right2;
 	private MultiSpeedController masterLeft, masterRight;
-	private Encoder eLeft, eRight;
 	private RobotDrive robotDrive;
+	private Encoder eLeft, eRight;
+	private MultiEncoderPIDSource masterEncoder;
 	private AHRS navX;
 
 	private PIDController gyroPID;
@@ -51,22 +50,27 @@ public class Drivetrain extends Subsystem {
 		right1 = new Talon(RobotMap.talonDriveTalonRight1);
 		right2 = new Victor(RobotMap.talonDriveVictorRight);
 
+		// eLeft = new Encoder(2, 3);
+		// eRight = new Encoder(0, 1);
+
+		// masterEncoder = new MultiEncoderPIDSource(eLeft, eRight);
+
 		masterLeft = new MultiSpeedController(left0, left1, left2);
 		masterRight = new MultiSpeedController(right0, right1, right2);
 
 		robotDrive = new RobotDrive(masterLeft, masterRight);
 		robotDrive.setSafetyEnabled(true);
 		robotDrive.setExpiration(0.2);
-
-		navX = new AHRS(SPI.Port.kMXP);
-		navX.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyroPID = new PIDController(gyroP, gyroI, gyroD, navX, gyroOut);
-		gyroPID.setContinuous();
-		gyroPID.setInputRange(-180, 180);
-
-		driveIn = new MultiEncoderPIDSource(eLeft, eRight);
-		driveIn.setPIDSourceType(PIDSourceType.kDisplacement);
-		drivePID = new PIDController(driveP, driveI, driveD, driveIn, driveOut);
+		/*
+		 * navX = new AHRS(SPI.Port.kMXP);
+		 * navX.setPIDSourceType(PIDSourceType.kDisplacement); gyroPID = new
+		 * PIDController(gyroP, gyroI, gyroD, navX, gyroOut);
+		 * gyroPID.setContinuous(); gyroPID.setInputRange(-180, 180);
+		 */
+		// driveIn = new MultiEncoderPIDSource(eLeft, eRight);
+		// driveIn.setPIDSourceType(PIDSourceType.kDisplacement);
+		// drivePID = new PIDController(driveP, driveI, driveD, driveIn,
+		// driveOut);
 	}
 
 	@Override
@@ -76,10 +80,6 @@ public class Drivetrain extends Subsystem {
 
 	public void tankDrive(double left, double right) {
 		robotDrive.tankDrive(left, right);
-	}
-
-	public void arcadeDrive(double move, double rotate) {
-		robotDrive.arcadeDrive(move, rotate);
 	}
 
 	public void setDrivePIDSpeed(double speed) {
@@ -92,9 +92,10 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setOutputRange(-output, output);
 	}
 
-	public void setDrivePIDSetPoint(double inches) {
-		drivePID.setSetpoint(inchesToRotations(inches));
-	}
+	/*
+	 * public void setDrivePIDSetPoint(double inches) {
+	 * drivePID.setSetpoint(inchesToRotations(inches)); }
+	 */
 
 	public void setGyroPIDSetPoint(double angle) {
 		gyroPID.setSetpoint(angle);
@@ -135,39 +136,35 @@ public class Drivetrain extends Subsystem {
 		return navX.getYaw();
 	}
 
-	public double getLeftDistanceInches() {
-		return rotationsToInches(eLeft.getDistance());
-	}
-
-	public double getRightDistanceInches() {
-		return rotationsToInches(eRight.getDistance());
-	}
-
-	public double getLeftVelocityInchesPerSecond() {
-		return rpmToInchesPerSecond(eLeft.getRate());
-	}
-
-	public double getRightVelocityInchesPerSecond() {
-		return rpmToInchesPerSecond(eRight.getRate());
-	}
-
-	private static double rotationsToInches(double rotations) {
-		return rotations * (WHEEL_DIAMETER * Math.PI);
-	}
-
-	private static double inchesToRotations(double inches) {
-		return inches / (WHEEL_DIAMETER * Math.PI);
-	}
-
-	private static double rpmToInchesPerSecond(double rpm) {
-		return rotationsToInches(rpm) / 60;
-	}
-
+	/*
+	 * public double getLeftDistanceInches() { return
+	 * rotationsToInches(eLeft.getDistance()); }
+	 * 
+	 * public double getRightDistanceInches() { return
+	 * rotationsToInches(eRight.getDistance()); }
+	 * 
+	 * public double getLeftVelocityInchesPerSecond() { return
+	 * rpmToInchesPerSecond(eLeft.getRate()); }
+	 * 
+	 * public double getRightVelocityInchesPerSecond() { return
+	 * rpmToInchesPerSecond(eRight.getRate()); }
+	 * 
+	 * private static double rotationsToInches(double rotations) { return
+	 * rotations * (WHEEL_DIAMETER * Math.PI); }
+	 * 
+	 * private static double inchesToRotations(double inches) { return inches /
+	 * (WHEEL_DIAMETER * Math.PI); }
+	 * 
+	 * private static double rpmToInchesPerSecond(double rpm) { return
+	 * rotationsToInches(rpm) / 60; }
+	 */
 	public void toSmartDashboard() {
-		SmartDashboard.putNumber("left_position", getLeftDistanceInches());
-		SmartDashboard.putNumber("right_position", getRightDistanceInches());
-		SmartDashboard.putNumber("left_velocity", getLeftVelocityInchesPerSecond());
-		SmartDashboard.putNumber("right_velocity", getRightVelocityInchesPerSecond());
+		// SmartDashboard.putNumber("left_position", getLeftDistanceInches());
+		// SmartDashboard.putNumber("right_position", getRightDistanceInches());
+		// SmartDashboard.putNumber("left_velocity",
+		// getLeftVelocityInchesPerSecond());
+		// SmartDashboard.putNumber("right_velocity",
+		// getRightVelocityInchesPerSecond());
 		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("gyro_angle", navX.getYaw());
 		SmartDashboard.putNumber("heading_error", gyroPID.getError());

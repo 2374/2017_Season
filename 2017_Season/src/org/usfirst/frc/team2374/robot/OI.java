@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 
@@ -28,7 +29,8 @@ public class OI {
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
-
+		
+		buttonA.whenPressed(new MoveBeltToPoint(0, Robot.belt.MAX_BELT_SPEED));
 		leftBumper.whenPressed(new OpenGrabber());
 		rightBumper.whenPressed(new CloseGrabber());
 	}

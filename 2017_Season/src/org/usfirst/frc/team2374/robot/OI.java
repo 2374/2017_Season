@@ -1,8 +1,5 @@
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
-import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
-
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -20,7 +17,6 @@ public class OI {
 	JoystickButton buttonA;
 	JoystickButton buttonB;
 
-
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
 		leftBumper = new JoystickButton(driver, RobotMap.rsLeftBumper);
@@ -28,9 +24,6 @@ public class OI {
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
-
-		leftBumper.whenPressed(new OpenGrabber());
-		rightBumper.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {
@@ -52,11 +45,11 @@ public class OI {
 	public boolean getButtonX() {
 		return driver.getRawButton(RobotMap.rsButtonX);
 	}
-	
+
 	public boolean getButtonA() {
 		return driver.getRawButton(RobotMap.rsButtonA);
 	}
-	
+
 	public boolean getButtonB() {
 		return driver.getRawButton(RobotMap.rsButtonB);
 	}

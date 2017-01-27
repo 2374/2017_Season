@@ -16,25 +16,11 @@ public class RobotMap {
 	public static int rsButtonA = 1;
 	public static int rsButtonB = 2;
 
-	// CAN
-	public static final int talonDriveMasterLeft = 0;
-	public static final int talonDriveMasterRight = 1;
-	public static final int talonDriveFrontLeft = 2;
-	public static final int talonDriveFrontRight = 3;
-	public static final int talonDriveBackLeft = 4;
-	public static final int talonDriveBackRight = 5;
-
 	// PWM
-	public static final int speedControllerBelt = 0;
-	public static final int speedControllerGrabber = 1;
-	public static final int speedControllerClimber = 2;
-
-	// DIO
-	public static final int encoderBeltA = 0;
-	public static final int encoderBeltB = 1;
-	public static final int limitSwitchBeltLeft = 2;
-	public static final int limitSwitchBeltRight = 3;
-	public static final int limitSwitchGrabberOpen = 4;
-	public static final int limitSwitchGrabberClose = 5;
-
+	public static final int talonDriveTalonLeft0 = 0;
+	public static final int talonDriveTalonLeft1 = 1;
+	public static final int talonDriveTalonRight0 = 2;
+	public static final int talonDriveTalonRight1 = 3;
+	public static final int talonDriveVictorLeft = 5;
+	public static final int talonDriveVictorRight = 4;
 }

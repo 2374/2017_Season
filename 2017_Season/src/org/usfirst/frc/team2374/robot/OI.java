@@ -1,10 +1,11 @@
 package org.usfirst.frc.team2374.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 

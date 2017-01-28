@@ -51,7 +51,7 @@ public class Drivetrain extends Subsystem {
 		right2 = new Victor(RobotMap.talonDriveVictorRight);
 
 		// eLeft = new Encoder(2, 3);
-		// eRight = new Encoder(0, 1);
+		eRight = new Encoder(0, 1);
 
 		// masterEncoder = new MultiEncoderPIDSource(eLeft, eRight);
 
@@ -165,9 +165,12 @@ public class Drivetrain extends Subsystem {
 		// getLeftVelocityInchesPerSecond());
 		// SmartDashboard.putNumber("right_velocity",
 		// getRightVelocityInchesPerSecond());
-		SmartDashboard.putNumber("drive_error", drivePID.getError());
-		SmartDashboard.putNumber("gyro_angle", navX.getYaw());
-		SmartDashboard.putNumber("heading_error", gyroPID.getError());
+		SmartDashboard.putNumber("encoder distance", eRight.getDistance());
+		SmartDashboard.putNumber("encoder counts", eRight.get());
+		SmartDashboard.putNumber("encoder rate", eRight.getRate());
+		//SmartDashboard.putNumber("drive_error", drivePID.getError());
+		//SmartDashboard.putNumber("gyro_angle", navX.getYaw());
+		//SmartDashboard.putNumber("heading_error", gyroPID.getError());
 	}
 
 }

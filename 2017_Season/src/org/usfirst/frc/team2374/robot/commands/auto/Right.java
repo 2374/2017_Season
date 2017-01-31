@@ -29,25 +29,32 @@ public class Right extends CommandGroup {
     	addSequential(new DriveToInch(inchesToTarget, drive.MAX_AUTO_SPEED));
     	//turn left 60 degrees
     	addSequential(new TurnToDegree(-60));
-    	//correct for angle
-    	for(int i = 0; i < 1; i+=0){
-    		addSequential(new CorrectForAngle());
-    		addSequential(new DriveToInch(correctionInches));
-    		if(Math.abs(camera.compareAreas()) <= 20) i++;
+    	if(camera.isReal()) {
+    		//correct for angle
+    		for(int i = 0; i < 1; i+=0){
+    			addSequential(new CorrectForAngle());
+    			addSequential(new DriveToInch(correctionInches));
+    			if(Math.abs(camera.compareAreas()) <= 20) i++;
+    		}
+    		//align gear with peg
+    		addSequential(new CenterBelt());
+    		//drive to target
+    		addSequential(new DriveStraightWithVision());
+    		//release gear
+    		addSequential(new OpenGrabber());
+    		//back up
+    		addSequential(new DriveToInch(-2 * 12));
+    		//turn left
+    		addSequential(new TurnToDegree(60));
+    		//drive to other end of field, close grabber and center belt
+    		addParallel(new DriveToInch(feetToEnd * 12));
+    		addParallel(new CloseGrabber());
+    		addSequential(new MoveBeltToPoint(0, belt.MAX_BELT_SPEED));
     	}
-    	//align gear with peg
-    	addSequential(new CenterBelt());
-    	//drive to target
-    	addSequential(new DriveStraightWithVision());
-    	//release gear
-    	addSequential(new OpenGrabber());
-    	//back up
-    	addSequential(new DriveToInch(-2 * 12));
-    	//turn right
-    	addSequential(new TurnToDegree(60));
-    	//drive to other end of field, close grabber and center belt
-    	addParallel(new DriveToInch(feetToEnd * 12));
-    	addParallel(new CloseGrabber());
-    	addSequential(new MoveBeltToPoint(0, belt.MAX_BELT_SPEED));
+    	//if not just cross the base line, don't drop the gear, and stay in the same general area as the target
+    	else {
+    		addSequential(new TurnToDegree(0));
+    		addSequential(new DriveToInch(3 * 12, drive.MAX_AUTO_SPEED));
+    	}
     }
 }

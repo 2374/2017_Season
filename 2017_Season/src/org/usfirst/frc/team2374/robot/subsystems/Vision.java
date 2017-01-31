@@ -45,14 +45,21 @@ public class Vision extends Subsystem {
 			}
 		}
 	}
+	
+	//returns true if there are at least two vision targets
+	public boolean isReal() {
+		return contours.size() >= 2;
+	}
 
+	// will return a positive or negative if valid, but will return the maximum double if not valid
 	public int pixelsToCenter() {
 		if (contours.size() < 2)
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
 		return center - resolutionX / 2;
 	}
-
+	
+	// will always be positive if its valid
 	public int getTargetWidth() {
 		if (contours.size() < 2)
 			return -1;
@@ -63,6 +70,7 @@ public class Vision extends Subsystem {
 		return calibrationWidthInches * focalLength / getTargetWidth();
 	}
 
+	// will return a positive or negative if valid, but will return the maximum double if not valid
 	public double compareAreas() {
 		if (contours.size() < 2)
 			return Double.MAX_VALUE;

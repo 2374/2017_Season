@@ -1,9 +1,5 @@
 package org.usfirst.frc.team2374.robot.commands.drivetrain;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
 
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;

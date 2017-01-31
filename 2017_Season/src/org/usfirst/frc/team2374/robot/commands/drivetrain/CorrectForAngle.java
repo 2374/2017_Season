@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2374.robot.commands.drivetrain;
 
-
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;

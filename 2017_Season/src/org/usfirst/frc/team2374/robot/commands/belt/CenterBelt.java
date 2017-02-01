@@ -36,7 +36,6 @@ public class CenterBelt extends Command{
 		}
 	
 	protected void end() {
-		Robot.belt.enablePID(false);
 		Robot.belt.setBelt(0);
 	}
 	

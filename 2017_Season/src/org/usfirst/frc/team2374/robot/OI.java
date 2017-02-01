@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
+import org.usfirst.frc.team2374.robot.commands.teleop.PlaceGear;
+import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -31,7 +33,8 @@ public class OI {
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
 		
-		buttonA.whenPressed(new MoveBeltToPoint(0, Robot.belt.MAX_BELT_SPEED));
+		buttonA.whenPressed(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
+		buttonB.whenPressed(new PlaceGear());
 		leftBumper.whenPressed(new OpenGrabber());
 		rightBumper.whenPressed(new CloseGrabber());
 	}

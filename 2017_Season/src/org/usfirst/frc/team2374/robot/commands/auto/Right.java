@@ -18,6 +18,7 @@ public class Right extends CommandGroup {
 	private double inchesToTarget = 60;//CHANGE THIS LATER
 	private int feetToEnd = 45;//CHANGE THIS LATER
 	private int correctionInches = 4;//CHANGE THIS LATER
+	private final int INCHES_TO_FEET = 12;
 	
     public Right() {
     	requires(drive);
@@ -26,7 +27,7 @@ public class Right extends CommandGroup {
     	requires(grabber);
     	
     	//drive forward
-    	addSequential(new DriveToInch(inchesToTarget, drive.MAX_AUTO_SPEED));
+    	addSequential(new DriveToInch(inchesToTarget, Drivetrain.MAX_AUTO_SPEED));
     	//turn left 60 degrees
     	addSequential(new TurnToDegree(-60));
     	if(camera.isReal()) {
@@ -43,18 +44,18 @@ public class Right extends CommandGroup {
     		//release gear
     		addSequential(new OpenGrabber());
     		//back up
-    		addSequential(new DriveToInch(-2 * 12));
+    		addSequential(new DriveToInch(-2 * INCHES_TO_FEET));
     		//turn left
     		addSequential(new TurnToDegree(60));
     		//drive to other end of field, close grabber and center belt
-    		addParallel(new DriveToInch(feetToEnd * 12));
+    		addParallel(new DriveToInch(feetToEnd * INCHES_TO_FEET));
     		addParallel(new CloseGrabber());
-    		addSequential(new MoveBeltToPoint(0, belt.MAX_BELT_SPEED));
+    		addSequential(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
     	}
     	//if not just cross the base line, don't drop the gear, and stay in the same general area as the target
     	else {
     		addSequential(new TurnToDegree(0));
-    		addSequential(new DriveToInch(3 * 12, drive.MAX_AUTO_SPEED));
+    		addSequential(new DriveToInch(3 * INCHES_TO_FEET, Drivetrain.MAX_AUTO_SPEED));
     	}
     }
 }

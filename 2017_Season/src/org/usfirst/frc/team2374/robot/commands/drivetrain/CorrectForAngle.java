@@ -19,11 +19,11 @@ public class CorrectForAngle extends TimedCommand {
 	}
 	
 	protected void Initialize() {
-		targetOffset = camera.compareAreas();
-    	drive.resetEncoders();
+		targetOffset = camera.compareAreas(); //percent difference between rectangle areas
+    	drive.resetEncoders(); 
     	if(targetOffset < 0) drive.setDrivePIDSetPoint(-25);
     	else if(targetOffset > 0) drive.setDrivePIDSetPoint(25);
-    	drive.setDrivePIDSpeed(drive.MAX_AUTO_SPEED);
+    	drive.setDrivePIDSpeed(Drivetrain.MAX_AUTO_SPEED);
     	drive.enableDrivePID(true);
 	}
 	

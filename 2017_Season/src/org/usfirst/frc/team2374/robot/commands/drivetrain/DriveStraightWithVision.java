@@ -20,7 +20,7 @@ public class DriveStraightWithVision extends Command{
 		targetDistance = camera.distanceToTargetInches();
 		drive.resetEncoders();
     	drive.setDrivePIDSetPoint(targetDistance);
-    	drive.setDrivePIDSpeed(drive.MAX_AUTO_SPEED);
+    	drive.setDrivePIDSpeed(Drivetrain.MAX_AUTO_SPEED);
     	drive.enableDrivePID(true);
 	}
 	

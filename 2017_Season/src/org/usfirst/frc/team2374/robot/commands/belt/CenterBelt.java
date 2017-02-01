@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 // need to account for offset
 public class CenterBelt extends Command{
 	
-	private int initialPos;
+	private double offset;
+	private double initialPos;
 	
 	public CenterBelt(){
 		requires(Robot.belt);
@@ -16,25 +17,23 @@ public class CenterBelt extends Command{
 	}
 	
 	protected void initialize(){
+		offset = 0;
 		initialPos = Robot.camera.pixelsToCenter();
-		Robot.belt.setPIDSpeed(Belt.MAX_BELT_SPEED);
-		Robot.belt.setPIDSetpoint(0);
-		Robot.belt.enablePID(true);
+		if (initialPos > offset) Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
+		else Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
 	}
 	
 	protected void execute() {
-		Robot.belt.setBelt(Robot.belt.getPIDOutput());
 	}
 	
 	@Override
 	protected boolean isFinished() {
 		if (Robot.belt.isAtLimit())
 			return true;
-		if(initialPos<0){
-			return Robot.camera.pixelsToCenter() >= 0;
+		if (initialPos > offset)
+			return Robot.camera.pixelsToCenter() <= offset;
+		return Robot.camera.pixelsToCenter() >= offset;
 		}
-		return Robot.camera.pixelsToCenter() <= 0;
-	}
 	
 	protected void end() {
 		Robot.belt.enablePID(false);

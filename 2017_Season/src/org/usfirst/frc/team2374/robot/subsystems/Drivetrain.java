@@ -102,6 +102,10 @@ public class Drivetrain extends Subsystem {
 		drivePID.setSetpoint(inchesToRotations(inches));
 	}
 	
+	public void setDrivePIDInputs(double min, double max) {
+		drivePID.setInputRange(min, max);
+	}
+	
 	public void setGyroPIDSetPoint(double angle) {
 		gyroPID.setSetpoint(angle);
 	}

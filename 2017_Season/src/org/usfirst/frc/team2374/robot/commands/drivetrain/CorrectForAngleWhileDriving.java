@@ -6,30 +6,32 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.command.*;
 
-public class CorrectForAngle extends TimedCommand {
+public class CorrectForAngleWhileDriving extends TimedCommand {
 	
 	private Drivetrain drive = Robot.drivetrain;
 	private Vision camera = Robot.camera;
-	private double targetOffset;
 	
-	public CorrectForAngle(double time) {
+	public CorrectForAngleWhileDriving(double time) {
 		super(time);
 		requires(drive);
 		requires(camera);
 	}
 	
 	protected void Initialize() {
-		targetOffset = camera.compareAreas(); //percent difference between rectangle areas
-    	drive.resetEncoders(); 
-    	if(targetOffset < 0) drive.setDrivePIDSetPoint(-25);
-    	else if(targetOffset > 0) drive.setDrivePIDSetPoint(25);
+		double initialError = camera.compareAreas(); //percent difference between rectangle areas
+    	drive.resetEncoders();
     	drive.setDrivePIDSpeed(Drivetrain.MAX_AUTO_SPEED);
+    	drive.setDrivePIDInputs(-100, 100);
+    	if(initialError < 0) drive.setDrivePIDSetPoint(-25);
+    	else drive.setDrivePIDSetPoint(25);
     	drive.enableDrivePID(true);
 	}
 	
 	protected void Execute() {
-		if(targetOffset < 0) drive.tankDrive(0, drive.getDrivePIDOutput());//turn left
-		else if(targetOffset > 0) drive.tankDrive(drive.getDrivePIDOutput(), 0);//turn right
+		double currentError = camera.compareAreas();
+		dr
+		if(initialError < 0) drive.tankDrive(0, drive.getDrivePIDOutput());//turn left
+		else if(initialError > 0) drive.tankDrive(drive.getDrivePIDOutput(), 0);//turn right
 	}
 
 	@Override

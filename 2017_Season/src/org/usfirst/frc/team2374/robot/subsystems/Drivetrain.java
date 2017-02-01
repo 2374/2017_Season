@@ -2,6 +2,7 @@ package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
+import org.usfirst.frc.team2374.util.CameraPIDSource;
 import org.usfirst.frc.team2374.util.MultiCANTalonPIDSource;
 import org.usfirst.frc.team2374.util.SimplePIDOutput;
 
@@ -35,6 +36,13 @@ public class Drivetrain extends Subsystem {
 	private static final double driveP = 0;
 	private static final double driveI = 0;
 	private static final double driveD = 0;
+	
+	private PIDController cameraPID;
+	private CameraPIDSource cameraIn;
+	private SimplePIDOutput cameraOut;
+	private static final double cameraP = 0;
+	private static final double cameraI = 0;
+	private static final double cameraD = 0;
 	
 	public static final double MAX_AUTO_SPEED = 0.75;
 	private static final double WHEEL_DIAMETER = 6; //inches
@@ -73,6 +81,10 @@ public class Drivetrain extends Subsystem {
 		driveIn = new MultiCANTalonPIDSource(masterLeft, masterRight);
 		driveIn.setPIDSourceType(PIDSourceType.kDisplacement);
 		drivePID = new PIDController(driveP, driveI, driveD, driveIn, driveOut);
+		
+		cameraIn = new CameraPIDSource();
+		cameraPID = new PIDController(cameraP, cameraI, cameraD, cameraIn, cameraOut);
+		cameraPID.setInputRange(-100, 100);
 	}
 
 	@Override
@@ -98,16 +110,21 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setOutputRange(-output, output);
 	}
 	
+	public void setCameraPIDSpeed(double speed) {
+		double output = Math.min(speed, MAX_AUTO_SPEED);
+		cameraPID.setOutputRange(-output, output);
+	}
+	
 	public void setDrivePIDSetPoint(double inches) {
 		drivePID.setSetpoint(inchesToRotations(inches));
 	}
 	
-	public void setDrivePIDInputs(double min, double max) {
-		drivePID.setInputRange(min, max);
-	}
-	
 	public void setGyroPIDSetPoint(double angle) {
 		gyroPID.setSetpoint(angle);
+	}
+	
+	public void setCameraPIDSetPoint(double error) {
+		cameraPID.setSetpoint(error);
 	}
 	
 	public double getDrivePIDOutput() {
@@ -116,6 +133,10 @@ public class Drivetrain extends Subsystem {
 	
 	public double getGyroPIDOutput() {
 		return gyroOut.get();
+	}
+	
+	public double getCameraPIDOutput() {
+		return cameraOut.get();
 	}
 	
 	public void enableDrivePID(boolean enable) {
@@ -130,6 +151,13 @@ public class Drivetrain extends Subsystem {
 			drivePID.enable();
 		else
 			drivePID.disable();
+	}
+	
+	public void enableCameraPID(boolean enable) {
+		if (enable)
+			cameraPID.enable();
+		else
+			cameraPID.disable();
 	}
 	
 	public void resetEncoders() {

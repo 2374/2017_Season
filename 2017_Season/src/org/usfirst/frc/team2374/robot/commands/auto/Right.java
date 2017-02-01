@@ -33,7 +33,7 @@ public class Right extends CommandGroup {
     	if(camera.isReal()) {
     		//correct for angle
     		for(int i = 0; i < 1; i+=0){
-    			addSequential(new CorrectForAngleWhileDriving(1));
+    			addSequential(new CorrectForAngle(1));
     			addSequential(new DriveToInch(correctionInches));
     			if(Math.abs(camera.compareAreas()) <= 20) i++;
     		}

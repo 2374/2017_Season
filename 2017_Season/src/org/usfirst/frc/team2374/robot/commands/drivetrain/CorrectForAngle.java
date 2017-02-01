@@ -6,32 +6,32 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.command.*;
 
-public class CorrectForAngleWhileDriving extends TimedCommand {
+public class CorrectForAngle extends TimedCommand {
 	
 	private Drivetrain drive = Robot.drivetrain;
 	private Vision camera = Robot.camera;
+	private double initialError;
 	
-	public CorrectForAngleWhileDriving(double time) {
+	private final double MAX_TURN_SPEED = 0.40;
+	
+	public CorrectForAngle(double time) {
 		super(time);
 		requires(drive);
 		requires(camera);
 	}
 	
 	protected void Initialize() {
-		double initialError = camera.compareAreas(); //percent difference between rectangle areas
-    	drive.resetEncoders();
-    	drive.setDrivePIDSpeed(Drivetrain.MAX_AUTO_SPEED);
-    	drive.setDrivePIDInputs(-100, 100);
-    	if(initialError < 0) drive.setDrivePIDSetPoint(-25);
-    	else drive.setDrivePIDSetPoint(25);
-    	drive.enableDrivePID(true);
+		initialError = camera.compareAreas(); //percent difference between rectangle areas
+		drive.setCameraPIDSpeed(MAX_TURN_SPEED);
+    	if(initialError < 0) 
+    		drive.setCameraPIDSetPoint(-25);
+    	else 
+    		drive.setCameraPIDSetPoint(25);
+    	drive.enableCameraPID(true);
 	}
 	
 	protected void Execute() {
-		double currentError = camera.compareAreas();
-		dr
-		if(initialError < 0) drive.tankDrive(0, drive.getDrivePIDOutput());//turn left
-		else if(initialError > 0) drive.tankDrive(drive.getDrivePIDOutput(), 0);//turn right
+		drive.arcadeDrive(0, drive.getCameraPIDOutput());
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class CorrectForAngleWhileDriving extends TimedCommand {
 	}
 	
 	protected void end(){
-    	drive.enableDrivePID(false);
+    	drive.enableCameraPID(false);
 		drive.arcadeDrive(0, 0);
 	}
 	

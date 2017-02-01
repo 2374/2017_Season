@@ -33,7 +33,7 @@ public class CenterBelt extends Command{
 		if (initialPos > offset)
 			return Robot.camera.pixelsToCenter() <= offset;
 		return Robot.camera.pixelsToCenter() >= offset;
-		}
+	}
 	
 	protected void end() {
 		Robot.belt.setBelt(0);

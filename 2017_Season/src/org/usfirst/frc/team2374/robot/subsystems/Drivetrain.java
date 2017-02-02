@@ -2,6 +2,7 @@ package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DrivetrainPID;
 import org.usfirst.frc.team2374.util.CameraPIDSource;
 import org.usfirst.frc.team2374.util.MultiCANTalonPIDSource;
 import org.usfirst.frc.team2374.util.SimplePIDOutput;
@@ -89,7 +90,7 @@ public class Drivetrain extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new DriveWithJoystick());
+		setDefaultCommand(new DrivetrainPID());
 	}
 	
 	public void tankDrive(double left, double right) {

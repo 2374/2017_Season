@@ -16,7 +16,7 @@ public class CenterBelt extends Command{
 	}
 	
 	protected void initialize(){
-		offset = 0;
+		offset = 0; //offset between camera and center of gear (inches)
 		initialPos = Robot.camera.pixelsToCenter();
 		inchesToPixels = Robot.camera.getTargetWidth() / 10.25; //pixels/inches
 		if (initialPos > offset) Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision extends Subsystem {
 
@@ -16,7 +15,13 @@ public class Vision extends Subsystem {
 	private static final int resolutionX = 640;
 
 	private static final double calibrationDistInches = 60;
-	private static final double calibrationWidthInches = 10.25; //contingency: initialize() method in centerBelt command needs to be fixed with this 
+	private static final double calibrationWidthInches = 10.25; // contingency:
+																// initialize()
+																// method in
+																// centerBelt
+																// command needs
+																// to be fixed
+																// with this
 	private static final double calibrationWidthPixel = 116;
 	private static final double focalLength = calibrationWidthPixel * calibrationDistInches / calibrationWidthInches;
 
@@ -45,20 +50,21 @@ public class Vision extends Subsystem {
 			}
 		}
 	}
-	
-	//returns true if there are at least two vision targets
+
+	// returns true if there are at least two vision targets
 	public boolean isReal() {
 		return contours.size() >= 2;
 	}
 
-	// will return a positive or negative if valid, but will return the maximum double if not valid
+	// will return a positive or negative if valid, but will return the maximum
+	// double if not valid
 	public int pixelsToCenter() {
 		if (contours.size() < 2)
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
 		return center - resolutionX / 2;
 	}
-	
+
 	// will always be positive if its valid
 	public int getTargetWidth() {
 		if (contours.size() < 2)
@@ -70,7 +76,8 @@ public class Vision extends Subsystem {
 		return calibrationWidthInches * focalLength / getTargetWidth();
 	}
 
-	// will return a positive or negative if valid, but will return the maximum double if not valid
+	// will return a positive or negative if valid, but will return the maximum
+	// double if not valid
 	public double compareAreas() {
 		if (contours.size() < 2)
 			return Double.MAX_VALUE;
@@ -78,10 +85,13 @@ public class Vision extends Subsystem {
 	}
 
 	public void toSmartDashboard() {
-		SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
-		SmartDashboard.putNumber("distanceToTarget", distanceToTargetInches());
-		SmartDashboard.putNumber("areaDifference", compareAreas());
-		SmartDashboard.putNumber("targetWidth", getTargetWidth());
+		/*
+		 * SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
+		 * SmartDashboard.putNumber("distanceToTarget",
+		 * distanceToTargetInches()); SmartDashboard.putNumber("areaDifference",
+		 * compareAreas()); SmartDashboard.putNumber("targetWidth",
+		 * getTargetWidth());
+		 */
 	}
 
 	private class Rectangle {

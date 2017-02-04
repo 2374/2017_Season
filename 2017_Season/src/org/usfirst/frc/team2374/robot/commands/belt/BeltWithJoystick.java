@@ -26,17 +26,18 @@ public class BeltWithJoystick extends Command {
 	protected void execute() {
 		double left = Robot.oi.getLeftTrigger();
 		double right = Robot.oi.getRightTrigger();
+
 		if (left != 0 && right == 0)
 			belt.setBelt(-left);
 		else if (left == 0 && right != 0)
 			belt.setBelt(right);
 		else
 			belt.setBelt(0);
+		/*
+		 * if (belt.isAtLimit()) Robot.oi.setRumble(true); else
+		 * Robot.oi.setRumble(false);
+		 */
 
-		if (belt.isAtLimit())
-			Robot.oi.setRumble(true);
-		else
-			Robot.oi.setRumble(false);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

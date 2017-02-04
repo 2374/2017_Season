@@ -2,10 +2,8 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
-import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
-import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,9 +24,8 @@ public class Robot extends IterativeRobot {
 	public static Drivetrain drivetrain = new Drivetrain();
 	public static Belt belt = new Belt();
 	public static Grabber grabber = new Grabber();
-	public static Climber climber = new Climber();
 	public static OI oi;
-	public static Vision camera = new Vision();
+	// public static Vision camera = new Vision();
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -93,6 +90,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		// drivetrain.toSmartDashboard();
+		// belt.toSmartDashboard();
 	}
 
 	@Override
@@ -103,6 +102,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		Robot.drivetrain.resetEncoders();
 	}
 
 	/**
@@ -111,6 +111,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		oi.toSmartDashboard();
+		drivetrain.toSmartDashboard();
+		belt.toSmartDashboard();
+		grabber.toSmartDashboard();
 	}
 
 	/**

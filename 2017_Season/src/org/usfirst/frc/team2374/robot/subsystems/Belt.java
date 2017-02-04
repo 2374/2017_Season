@@ -7,10 +7,10 @@ import org.usfirst.frc.team2374.util.SimplePIDOutput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Belt extends Subsystem {
 
@@ -34,12 +34,13 @@ public class Belt extends Subsystem {
 	public Belt() {
 		beltController = new Spark(RobotMap.speedControllerBelt);
 		beltEncoder = new Encoder(RobotMap.encoderBeltA, RobotMap.encoderBeltB);
-		leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
-		rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);
+		// leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
+		// rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);
 
-		beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		beltPID = new PIDController(beltP, beltI, beltD, beltEncoder, beltOut);
-		beltPID.setOutputRange(-MAX_BELT_SPEED, MAX_BELT_SPEED);
+		// beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		// beltPID = new PIDController(beltP, beltI, beltD, beltEncoder,
+		// beltOut);
+		// beltPID.setOutputRange(-MAX_BELT_SPEED, MAX_BELT_SPEED);
 	}
 
 	@Override
@@ -49,12 +50,11 @@ public class Belt extends Subsystem {
 
 	// negative speed is left and positive speed is right
 	public void setBelt(double speed) {
-		if (speed < 0 && leftLimitSwitch.get())
-			beltController.set(0);
-		else if (speed > 0 && rightLimitSwitch.get())
-			beltController.set(0);
+		if (speed < 0)
+			beltController.set(Math.max(speed, -MAX_BELT_SPEED));
 		else
 			beltController.set(Math.min(speed, MAX_BELT_SPEED));
+
 	}
 
 	public boolean isAtLimit() {
@@ -87,6 +87,10 @@ public class Belt extends Subsystem {
 
 	public void resetEncoder() {
 		beltEncoder.reset();
+	}
+
+	public void toSmartDashboard() {
+		SmartDashboard.putNumber("belt_position", beltEncoder.getDistance());
 	}
 
 }

@@ -1,15 +1,9 @@
 package org.usfirst.frc.team2374.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-
-import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
-import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
-import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
-import org.usfirst.frc.team2374.robot.commands.teleop.PlaceGear;
-import org.usfirst.frc.team2374.robot.subsystems.Belt;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,7 +18,6 @@ public class OI {
 	JoystickButton buttonA;
 	JoystickButton buttonB;
 
-
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
 		leftBumper = new JoystickButton(driver, RobotMap.rsLeftBumper);
@@ -32,11 +25,11 @@ public class OI {
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
-		
-		buttonA.whenPressed(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
-		buttonB.whenPressed(new PlaceGear());
-		leftBumper.whenPressed(new OpenGrabber());
-		rightBumper.whenPressed(new CloseGrabber());
+
+		// buttonA.whenPressed(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
+		// buttonB.whenPressed(new PlaceGear());
+		// leftBumper.whenPressed(new OpenGrabber());
+		// rightBumper.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {
@@ -58,13 +51,21 @@ public class OI {
 	public boolean getButtonX() {
 		return driver.getRawButton(RobotMap.rsButtonX);
 	}
-	
+
 	public boolean getButtonA() {
 		return driver.getRawButton(RobotMap.rsButtonA);
 	}
-	
+
 	public boolean getButtonB() {
 		return driver.getRawButton(RobotMap.rsButtonB);
+	}
+
+	public boolean getLeftBumper() {
+		return leftBumper.get();
+	}
+
+	public boolean getRightBumper() {
+		return rightBumper.get();
 	}
 
 	public void setRumble(boolean enable) {
@@ -88,4 +89,12 @@ public class OI {
 	public double quadraticScale(double value) {
 		return value * Math.abs(value);
 	}
+
+	public void toSmartDashboard() {
+		SmartDashboard.putNumber("left_joystick", getDriverLeftY());
+		SmartDashboard.putNumber("right_joystick", getDriverRightY());
+		SmartDashboard.putBoolean("left_bumper", getLeftBumper());
+		SmartDashboard.putBoolean("right_bumper", getRightBumper());
+	}
+
 }

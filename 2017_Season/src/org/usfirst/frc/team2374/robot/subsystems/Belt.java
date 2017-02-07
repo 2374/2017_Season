@@ -91,6 +91,7 @@ public class Belt extends Subsystem {
 
 	public void toSmartDashboard() {
 		SmartDashboard.putNumber("belt_position", beltEncoder.getDistance());
+		SmartDashboard.putNumber("belt_rate", beltEncoder.getRate());
 	}
 
 }

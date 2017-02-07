@@ -4,6 +4,7 @@ package org.usfirst.frc.team2374.robot;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
+import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,7 +26,7 @@ public class Robot extends IterativeRobot {
 	public static Belt belt = new Belt();
 	public static Grabber grabber = new Grabber();
 	public static OI oi;
-	// public static Vision camera = new Vision();
+	public static Vision camera;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		camera = new Vision();
 		chooser.addDefault("Default Auto", null);
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
@@ -115,6 +117,7 @@ public class Robot extends IterativeRobot {
 		drivetrain.toSmartDashboard();
 		belt.toSmartDashboard();
 		grabber.toSmartDashboard();
+		camera.toSmartDashboard();
 	}
 
 	/**

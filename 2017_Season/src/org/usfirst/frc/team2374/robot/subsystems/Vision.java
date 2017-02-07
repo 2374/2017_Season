@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision extends Subsystem {
 
@@ -85,13 +86,11 @@ public class Vision extends Subsystem {
 	}
 
 	public void toSmartDashboard() {
-		/*
-		 * SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
-		 * SmartDashboard.putNumber("distanceToTarget",
-		 * distanceToTargetInches()); SmartDashboard.putNumber("areaDifference",
-		 * compareAreas()); SmartDashboard.putNumber("targetWidth",
-		 * getTargetWidth());
-		 */
+		updateContours();
+		SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
+		SmartDashboard.putNumber("distanceToTarget", distanceToTargetInches());
+		SmartDashboard.putNumber("areaDifference", compareAreas());
+		SmartDashboard.putNumber("targetWidth", getTargetWidth());
 	}
 
 	private class Rectangle {

@@ -3,6 +3,7 @@ package org.usfirst.frc.team2374.robot.subsystems;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
 import org.usfirst.frc.team2374.util.SimplePIDOutput;
+import org.usfirst.frc.team2374.util.TwoEncoderPIDSource;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -10,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
@@ -30,12 +32,12 @@ public class Drivetrain extends Subsystem {
 	private static final double gyroI = 0;
 	private static final double gyroD = 0;
 
-	private PIDController drivePID;
-	// private MultiCANTalonPIDSource driveIn;
+	public PIDController drivePID;
+	private TwoEncoderPIDSource driveIn;
 	private SimplePIDOutput driveOut;
-	private static final double driveP = 0;
-	private static final double driveI = 0;
-	private static final double driveD = 0;
+	private static final double driveP = 0.1;
+	private static final double driveI = 0.1;
+	private static final double driveD = 0.1;
 
 	private PIDController cameraPID;
 	// private CameraPIDSource cameraIn;
@@ -46,7 +48,8 @@ public class Drivetrain extends Subsystem {
 
 	public static final double MAX_AUTO_SPEED = 0.75;
 	private static final double WHEEL_DIAMETER = 6; // inches
-	private static final double GEAR_RATIO = 1 / 8.45;
+	private static final double EC_PER_REV_LEFT = 557.7238;
+	private static final double EC_PER_REV_RIGHT = 803.493;
 
 	public Drivetrain() {
 
@@ -59,6 +62,8 @@ public class Drivetrain extends Subsystem {
 
 		leftEncoder = new Encoder(RobotMap.encoderDriveLA, RobotMap.encoderDriveLB);
 		rightEncoder = new Encoder(RobotMap.encoderDriveRA, RobotMap.encoderDriveRB);
+		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
 		fLeft.changeControlMode(TalonControlMode.Follower);
 		fRight.changeControlMode(TalonControlMode.Follower);
@@ -78,14 +83,20 @@ public class Drivetrain extends Subsystem {
 
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.setPIDSourceType(PIDSourceType.kDisplacement);
-		// gyroPID = new PIDController(gyroP, gyroI, gyroD, navX, gyroOut);
+		// gyroPID = new PIDController(gyroP, gyroI, gyroD, gyroSource,
+		// gyroOut);
 		// gyroPID.setContinuous();
 		// gyroPID.setInputRange(-180, 180);
 
-		// driveIn = new MultiCANTalonPIDSource(masterLeft, masterRight);
-		// driveIn.setPIDSourceType(PIDSourceType.kDisplacement);
-		// drivePID = new PIDController(driveP, driveI, driveD, driveIn,
-		// driveOut);
+		driveIn = new TwoEncoderPIDSource(leftEncoder, rightEncoder);
+		drivePID = new PIDController(driveP, driveI, driveD, driveIn, new PIDOutput() {
+			@Override
+			public void pidWrite(double arg0) {
+
+			}
+		});
+
+		drivePID.setOutputRange(-1, 1);
 
 		// cameraIn = new CameraPIDSource();
 		// cameraPID = new PIDController(cameraP, cameraI, cameraD, cameraIn,
@@ -123,7 +134,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void setDrivePIDSetPoint(double inches) {
-		drivePID.setSetpoint(inchesToRotations(inches));
+		drivePID.setSetpoint(inches);
 	}
 
 	public void setGyroPIDSetPoint(double angle) {
@@ -135,7 +146,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getDrivePIDOutput() {
-		return driveOut.get();
+		return drivePID.get();
 	}
 
 	public double getGyroPIDOutput() {
@@ -181,31 +192,19 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftDistanceInches() {
-		return rotationsToInches(leftEncoder.getDistance());
+		return encoderCntsToInches(leftEncoder.getDistance(), EC_PER_REV_LEFT);
 	}
 
 	public double getRightDistanceInches() {
-		return rotationsToInches(rightEncoder.getDistance());
+		return encoderCntsToInches(rightEncoder.getDistance(), EC_PER_REV_RIGHT);
 	}
 
-	public double getLeftVelocityInchesPerSecond() {
-		return rpmToInchesPerSecond(leftEncoder.getRate());
+	public static double encoderCntsToInches(double counts, double countsPerRev) {
+		return (counts / countsPerRev) * (WHEEL_DIAMETER * Math.PI);
 	}
 
-	public double getRightVelocityInchesPerSecond() {
-		return rpmToInchesPerSecond(rightEncoder.getRate());
-	}
-
-	private static double rotationsToInches(double rotations) {
-		return rotations * (WHEEL_DIAMETER * Math.PI * GEAR_RATIO);
-	}
-
-	private static double inchesToRotations(double inches) {
-		return inches / (WHEEL_DIAMETER * Math.PI * GEAR_RATIO);
-	}
-
-	private static double rpmToInchesPerSecond(double rpm) {
-		return rotationsToInches(rpm) / 60;
+	public static double inchesToEncoderCnts(double inches, double countsPerRev) {
+		return inches * countsPerRev / (WHEEL_DIAMETER * Math.PI);
 	}
 
 	public void toSmartDashboard() {
@@ -213,14 +212,14 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putNumber("right_position", getRightDistanceInches());
 		SmartDashboard.putNumber("left_raw", leftEncoder.getDistance());
 		SmartDashboard.putNumber("right_raw", rightEncoder.getDistance());
-		SmartDashboard.putNumber("left_velocity", getLeftVelocityInchesPerSecond());
-		SmartDashboard.putNumber("right_velocity", getRightVelocityInchesPerSecond());
 		SmartDashboard.putNumber("left_velocity_raw", leftEncoder.getRate());
 		SmartDashboard.putNumber("right_velocity_raw", rightEncoder.getRate());
 		// SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("gyro_angle", navX.getYaw());
 		// SmartDashboard.putNumber("heading_error", gyroPID.getError());
-		// SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
+		SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
+		SmartDashboard.putNumber("drivePID_out", drivePID.get());
+		SmartDashboard.putNumber("driveIn", driveIn.pidGet());
 		// SmartDashboard.putBoolean("gyroPID_enable", gyroPID.isEnabled());
 		// SmartDashboard.putBoolean("cameraPID_enable", cameraPID.isEnabled());
 	}

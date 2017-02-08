@@ -6,54 +6,59 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveToInch extends Command {
-	
+
 	private Drivetrain drive = Robot.drivetrain;
 	private double wantedDistance;
 	private double speed;
 
-    public DriveToInch(double inches, double speed) {
-        requires(drive);
-        wantedDistance = inches;
-        this.speed = speed;
-    }
-    
-    public DriveToInch(double inches) {
-    	this(inches, Drivetrain.MAX_AUTO_SPEED);
-    }
+	public DriveToInch(double inches, double speed) {
+		requires(drive);
+		wantedDistance = inches;
+		this.speed = speed;
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	drive.resetEncoders();
-    	drive.resetGyro();
-    	drive.setDrivePIDSetPoint(wantedDistance);
-    	drive.setDrivePIDSpeed(speed);
-    	drive.setGyroPIDSetPoint(0);
-    	drive.setGyroPIDSpeed(speed);
-    	drive.enableDrivePID(true);
-    	drive.enableGyroPID(true);
-    }
+	public DriveToInch(double inches) {
+		this(inches, Drivetrain.MAX_AUTO_SPEED);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	drive.arcadeDrive(drive.getDrivePIDOutput(), drive.getGyroPIDOutput());
-    }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		drive.resetEncoders();
+		// drive.resetGyro();
+		drive.setDrivePIDSetPoint(wantedDistance);
+		// drive.setDrivePIDSpeed(speed);
+		// drive.setGyroPIDSetPoint(0);
+		// drive.setGyroPIDSpeed(speed);
+		drive.enableDrivePID(true);
+		// drive.enableGyroPID(true);
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	double currentDistance = (drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2;
-    	return currentDistance >= wantedDistance;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		drive.arcadeDrive(Robot.drivetrain.drivePID.get(), 0);
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	drive.enableDrivePID(false);
-    	drive.enableGyroPID(false);
-    	drive.arcadeDrive(0, 0);
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		double currentDistance = (drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2;
+		return currentDistance >= wantedDistance;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		drive.enableDrivePID(false);
+		// drive.enableGyroPID(false);
+		drive.arcadeDrive(0, 0);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+		end();
+	}
 }

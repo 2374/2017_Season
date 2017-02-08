@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
@@ -22,9 +23,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Drivetrain drivetrain = new Drivetrain();
-	public static Belt belt = new Belt();
-	public static Grabber grabber = new Grabber();
+	public static Drivetrain drivetrain;
+	public static Belt belt;
+	public static Grabber grabber;
 	public static OI oi;
 	public static Vision camera;
 
@@ -37,9 +38,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		drivetrain = new Drivetrain();
+		belt = new Belt();
+		grabber = new Grabber();
 		oi = new OI();
 		camera = new Vision();
-		chooser.addDefault("Default Auto", null);
+		chooser.addDefault("Default Auto", new DriveToInch(6));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
@@ -92,8 +96,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		// drivetrain.toSmartDashboard();
-		// belt.toSmartDashboard();
+		oi.toSmartDashboard();
+		drivetrain.toSmartDashboard();
+		belt.toSmartDashboard();
+		grabber.toSmartDashboard();
+		camera.toSmartDashboard();
 	}
 
 	@Override

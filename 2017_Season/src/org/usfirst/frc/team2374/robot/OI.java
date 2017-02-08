@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
+
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -26,7 +28,7 @@ public class OI {
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
 
-		// buttonA.whenPressed(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
+		buttonA.whenPressed(new DriveToInch(6));
 		// buttonB.whenPressed(new PlaceGear());
 		// leftBumper.whenPressed(new OpenGrabber());
 		// rightBumper.whenPressed(new CloseGrabber());

@@ -1,11 +1,8 @@
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
-
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -28,7 +25,6 @@ public class OI {
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
 
-		buttonA.whenPressed(new DriveToInch(6));
 		// buttonB.whenPressed(new PlaceGear());
 		// leftBumper.whenPressed(new OpenGrabber());
 		// rightBumper.whenPressed(new CloseGrabber());
@@ -93,10 +89,6 @@ public class OI {
 	}
 
 	public void toSmartDashboard() {
-		SmartDashboard.putNumber("left_joystick", getDriverLeftY());
-		SmartDashboard.putNumber("right_joystick", getDriverRightY());
-		SmartDashboard.putBoolean("left_bumper", getLeftBumper());
-		SmartDashboard.putBoolean("right_bumper", getRightBumper());
 	}
 
 }

@@ -3,6 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.drivetrain;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveToInch extends Command {
@@ -25,19 +26,18 @@ public class DriveToInch extends Command {
 	@Override
 	protected void initialize() {
 		drive.resetEncoders();
-		// drive.resetGyro();
+		drive.resetGyro();
+		Timer.delay(0.1);
 		drive.setDrivePIDSetPoint(wantedDistance);
-		// drive.setDrivePIDSpeed(speed);
-		// drive.setGyroPIDSetPoint(0);
-		// drive.setGyroPIDSpeed(speed);
+		drive.setGyroPIDSetPoint(0);
 		drive.enableDrivePID(true);
-		// drive.enableGyroPID(true);
+		drive.enableGyroPID(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		drive.arcadeDrive(Robot.drivetrain.drivePID.get(), 0);
+		drive.arcadeDrive(Robot.drivetrain.getDrivePIDOutput(), Robot.drivetrain.getGyroPIDOutput());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -51,7 +51,7 @@ public class DriveToInch extends Command {
 	@Override
 	protected void end() {
 		drive.enableDrivePID(false);
-		// drive.enableGyroPID(false);
+		drive.enableGyroPID(false);
 		drive.arcadeDrive(0, 0);
 	}
 

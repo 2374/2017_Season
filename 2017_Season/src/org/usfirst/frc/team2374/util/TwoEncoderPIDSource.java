@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class TwoEncoderPIDSource implements PIDSource {
 
 	private Encoder leftEncoder, rightEncoder;
-	private static final double EC_PER_REV_LEFT = 557.7238;
-	private static final double EC_PER_REV_RIGHT = 803.493;
-	private static final double WHEEL_DIAMETER = 6; // inches
+	private static final double EC_PER_REV_LEFT = 250.08;
+	private static final double EC_PER_REV_RIGHT = 359.89;
+	private static final double WHEEL_DIAMETER = 6.0; // inches
 
 	public TwoEncoderPIDSource(Encoder left, Encoder right) {
 		leftEncoder = left;
@@ -18,14 +18,14 @@ public class TwoEncoderPIDSource implements PIDSource {
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		return null;
+		return PIDSourceType.kDisplacement;
 	}
 
 	@Override
 	public double pidGet() {
 		double leftInches = getLeftDistanceInches();
 		double rightInches = getRightDistanceInches();
-		return (leftInches + rightInches) / 2;
+		return (leftInches + rightInches) / 2.0;
 	}
 
 	@Override

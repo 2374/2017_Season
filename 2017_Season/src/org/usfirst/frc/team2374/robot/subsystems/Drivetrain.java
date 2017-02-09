@@ -28,16 +28,16 @@ public class Drivetrain extends Subsystem {
 
 	private PIDController gyroPID;
 	private SimplePIDOutput gyroOut;
-	private static final double gyroP = 0;
-	private static final double gyroI = 0;
-	private static final double gyroD = 0;
+	private static final double gyroP = 0.005;
+	private static final double gyroI = 0.0002;
+	private static final double gyroD = 0.001;
 
 	public PIDController drivePID;
 	private TwoEncoderPIDSource driveIn;
 	private SimplePIDOutput driveOut;
-	private static final double driveP = 0.1;
-	private static final double driveI = 0.1;
-	private static final double driveD = 0.1;
+	private static final double driveP = 0.03;
+	private static final double driveI = 0.001;
+	private static final double driveD = 0;
 
 	private PIDController cameraPID;
 	// private CameraPIDSource cameraIn;
@@ -48,8 +48,8 @@ public class Drivetrain extends Subsystem {
 
 	public static final double MAX_AUTO_SPEED = 0.75;
 	private static final double WHEEL_DIAMETER = 6; // inches
-	private static final double EC_PER_REV_LEFT = 557.7238;
-	private static final double EC_PER_REV_RIGHT = 803.493;
+	private static final double EC_PER_REV_LEFT = 250.08;
+	private static final double EC_PER_REV_RIGHT = 359.89;
 
 	public Drivetrain() {
 
@@ -78,25 +78,28 @@ public class Drivetrain extends Subsystem {
 		masterRight.setInverted(true);
 
 		robotDrive = new RobotDrive(masterLeft, masterRight);
-		robotDrive.setSafetyEnabled(true);
-		robotDrive.setExpiration(0.2);
+		robotDrive.setSafetyEnabled(false);
+		// robotDrive.setExpiration(0.3);
 
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.setPIDSourceType(PIDSourceType.kDisplacement);
-		// gyroPID = new PIDController(gyroP, gyroI, gyroD, gyroSource,
-		// gyroOut);
-		// gyroPID.setContinuous();
-		// gyroPID.setInputRange(-180, 180);
+		gyroPID = new PIDController(gyroP, gyroI, gyroD, navX, new PIDOutput() {
+			@Override
+			public void pidWrite(double arg0) {
+			}
+		});
+		gyroPID.setInputRange(-180.0, 180.0);
+		gyroPID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+		gyroPID.setContinuous(true);
 
 		driveIn = new TwoEncoderPIDSource(leftEncoder, rightEncoder);
 		drivePID = new PIDController(driveP, driveI, driveD, driveIn, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
-
 			}
 		});
-
-		drivePID.setOutputRange(-1, 1);
+		drivePID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+		drivePID.setContinuous(false);
 
 		// cameraIn = new CameraPIDSource();
 		// cameraPID = new PIDController(cameraP, cameraI, cameraD, cameraIn,
@@ -115,7 +118,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void arcadeDrive(double move, double rotate) {
-		robotDrive.arcadeDrive(move, rotate);
+		robotDrive.arcadeDrive(-move, rotate);
 	}
 
 	public void setDrivePIDSpeed(double speed) {
@@ -150,7 +153,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getGyroPIDOutput() {
-		return gyroOut.get();
+		return gyroPID.get();
 	}
 
 	public double getCameraPIDOutput() {
@@ -161,14 +164,14 @@ public class Drivetrain extends Subsystem {
 		if (enable)
 			drivePID.enable();
 		else
-			drivePID.disable();
+			drivePID.reset();
 	}
 
 	public void enableGyroPID(boolean enable) {
 		if (enable)
-			drivePID.enable();
+			gyroPID.enable();
 		else
-			drivePID.disable();
+			gyroPID.reset();
 	}
 
 	public void enableCameraPID(boolean enable) {
@@ -212,15 +215,13 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putNumber("right_position", getRightDistanceInches());
 		SmartDashboard.putNumber("left_raw", leftEncoder.getDistance());
 		SmartDashboard.putNumber("right_raw", rightEncoder.getDistance());
-		SmartDashboard.putNumber("left_velocity_raw", leftEncoder.getRate());
-		SmartDashboard.putNumber("right_velocity_raw", rightEncoder.getRate());
-		// SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("gyro_angle", navX.getYaw());
-		// SmartDashboard.putNumber("heading_error", gyroPID.getError());
+		SmartDashboard.putNumber("heading_error", gyroPID.getError());
+		SmartDashboard.putNumber("gyro_get", gyroPID.get());
 		SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
+		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("drivePID_out", drivePID.get());
-		SmartDashboard.putNumber("driveIn", driveIn.pidGet());
-		// SmartDashboard.putBoolean("gyroPID_enable", gyroPID.isEnabled());
+		SmartDashboard.putBoolean("gyroPID_enable", gyroPID.isEnabled());
 		// SmartDashboard.putBoolean("cameraPID_enable", cameraPID.isEnabled());
 	}
 

@@ -43,7 +43,8 @@ public class Robot extends IterativeRobot {
 		grabber = new Grabber();
 		oi = new OI();
 		camera = new Vision();
-		chooser.addDefault("Default Auto", new DriveToInch(6));
+		chooser.addDefault("Default Auto", new DriveToInch(60.0));
+		// chooser.addObject("DriveToInch", new DriveToInch(60.0));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}

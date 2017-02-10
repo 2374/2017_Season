@@ -11,6 +11,8 @@ public class Vision extends Subsystem {
 
 	private NetworkTable table;
 	private List<Rectangle> contours;
+	private Rectangle left;
+	private Rectangle right;
 
 	private static final String networkTableName = "vision";
 	private static final int resolutionX = 640;
@@ -50,6 +52,12 @@ public class Vision extends Subsystem {
 			} catch (ArrayIndexOutOfBoundsException ex) {
 			}
 		}
+	}
+	
+	public void fixRectangles() {//call this method if camera sees 3 rectangles
+		int[][] corners = new int[3][4];
+		for(int i = 0; i < 3; i++)
+			corners[i] = contours.get(i).getYCorners();
 	}
 
 	// returns true if there are at least two vision targets
@@ -96,13 +104,25 @@ public class Vision extends Subsystem {
 	private class Rectangle {
 
 		@SuppressWarnings("unused")
-		private int x, y, width, height;
+		private int x, y, width, height, x2, y2;
 
 		public Rectangle(int x, int y, int w, int h) {
 			this.x = x;
 			this.y = y;
 			width = w;
 			height = h;
+			x2 = x + width;
+			y2 = y + height;
+		}
+		
+		public int[] getYCorners() {
+			int[] i = {y, y, y2, y2};
+			return i;
+		}
+		
+		public int[] getXCorners() {
+			int[] i = {x, x, x2, x2};
+			return i;
 		}
 
 		public int getArea() {

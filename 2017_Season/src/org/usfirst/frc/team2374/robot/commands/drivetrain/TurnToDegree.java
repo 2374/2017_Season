@@ -10,17 +10,11 @@ public class TurnToDegree extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private double wantedAngle;
-	private double speed;
-	private double offset = 1.0;
-
-	public TurnToDegree(double angle, double speed) {
-		requires(drive);
-		wantedAngle = angle;
-		this.speed = speed;
-	}
+	private final double offset = 1.0;
 
 	public TurnToDegree(double angle) {
-		this(angle, Drivetrain.MAX_AUTO_SPEED);
+		requires(drive);
+		wantedAngle = angle;
 	}
 
 	// Called just before this Command runs the first time

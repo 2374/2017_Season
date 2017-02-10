@@ -31,11 +31,11 @@ public class OI {
 	}
 
 	public double getDriverLeftY() {
-		return quadraticScale(driver.getRawAxis(RobotMap.rsLeftAxisY));
+		return driver.getRawAxis(RobotMap.rsLeftAxisY);
 	}
 
 	public double getDriverRightY() {
-		return quadraticScale(driver.getRawAxis(RobotMap.rsRightAxisY));
+		return driver.getRawAxis(RobotMap.rsRightAxisY);
 	}
 
 	public double getLeftTrigger() {

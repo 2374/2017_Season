@@ -25,7 +25,7 @@ public class RobotMap {
 	public static final int talonDriveBackRight = 5;
 
 	// PWM
-	public static final int speedControllerBelt = 3;
+	public static final int speedControllerBelt = 4;
 	public static final int speedControllerGrabber = 2;
 	public static final int speedControllerClimber = 9;
 

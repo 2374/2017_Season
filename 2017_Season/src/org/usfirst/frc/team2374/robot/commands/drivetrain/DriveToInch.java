@@ -10,16 +10,11 @@ public class DriveToInch extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private double wantedDistance;
-	private double speed;
-
-	public DriveToInch(double inches, double speed) {
-		requires(drive);
-		wantedDistance = inches;
-		this.speed = speed;
-	}
+	private final double offset = 1.0;
 
 	public DriveToInch(double inches) {
-		this(inches, Drivetrain.MAX_AUTO_SPEED);
+		requires(drive);
+		wantedDistance = inches;
 	}
 
 	// Called just before this Command runs the first time
@@ -44,7 +39,9 @@ public class DriveToInch extends Command {
 	@Override
 	protected boolean isFinished() {
 		double currentDistance = (drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2;
-		return currentDistance >= wantedDistance;
+		if (wantedDistance < 0)
+			return currentDistance <= wantedDistance + offset;
+		return currentDistance >= wantedDistance - offset;
 	}
 
 	// Called once after isFinished returns true

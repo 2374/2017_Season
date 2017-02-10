@@ -2,6 +2,7 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
@@ -43,9 +44,13 @@ public class Robot extends IterativeRobot {
 		grabber = new Grabber();
 		oi = new OI();
 		camera = new Vision();
-		chooser.addDefault("Default Auto", new DriveToInch(60.0));
-		// chooser.addObject("DriveToInch", new DriveToInch(60.0));
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addDefault("Default Auto", new TurnToDegree(90.0)); // this must
+																	// be named
+																	// "Default
+																	// Auto"
+		chooser.addObject("TurnToAngleN90", new TurnToDegree(-90.0));
+		chooser.addObject("DriveToInch60", new DriveToInch(96.0));
+		chooser.addObject("DriveToInchN60", new DriveToInch(-96.0));
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

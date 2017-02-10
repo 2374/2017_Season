@@ -26,7 +26,6 @@ public class BeltWithJoystick extends Command {
 	protected void execute() {
 		double left = Robot.oi.getLeftTrigger();
 		double right = Robot.oi.getRightTrigger();
-
 		if (left != 0 && right == 0)
 			belt.setBelt(-left);
 		else if (left == 0 && right != 0)

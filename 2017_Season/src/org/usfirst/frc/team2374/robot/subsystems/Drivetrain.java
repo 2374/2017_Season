@@ -27,16 +27,14 @@ public class Drivetrain extends Subsystem {
 	private AHRS navX;
 
 	private PIDController gyroPID;
-	private SimplePIDOutput gyroOut;
 	private static final double gyroP = 0.005;
 	private static final double gyroI = 0.0002;
 	private static final double gyroD = 0.001;
 
 	public PIDController drivePID;
 	private TwoEncoderPIDSource driveIn;
-	private SimplePIDOutput driveOut;
-	private static final double driveP = 0.03;
-	private static final double driveI = 0.001;
+	private static final double driveP = 0.015;
+	private static final double driveI = 0.0002;
 	private static final double driveD = 0;
 
 	private PIDController cameraPID;

@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
@@ -51,6 +52,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("TurnToAngleN90", new TurnToDegree(-90.0));
 		chooser.addObject("DriveToInch60", new DriveToInch(96.0));
 		chooser.addObject("DriveToInchN60", new DriveToInch(-96.0));
+		chooser.addObject("CenterBelt", new CenterBelt());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

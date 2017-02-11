@@ -11,11 +11,11 @@ public class Vision extends Subsystem {
 
 	private NetworkTable table;
 	private List<Rectangle> contours;
-	private Rectangle left;
-	private Rectangle right;
 
 	private static final String networkTableName = "vision";
 	private static final int resolutionX = 640;
+	private static final double offset = 5.50; //inches between camera and center of gear
+	private static final double widthOfTarget = 10.25; //inches
 
 	private static final double calibrationDistInches = 60;
 	private static final double calibrationWidthInches = 10.25; // contingency:
@@ -54,10 +54,27 @@ public class Vision extends Subsystem {
 		}
 	}
 	
-	public void fixRectangles() {//call this method if camera sees 3 rectangles
-		int[][] corners = new int[3][4];
-		for(int i = 0; i < 3; i++)
-			corners[i] = contours.get(i).getYCorners();
+	public void fixRectangles() {
+		Rectangle whole, fixed, top, bottom;
+		int index = 0;
+		for (int i = 0; i < 3; i++) {
+			if (contours.get(i).getArea() > contours.get(index).getArea())
+				index = i;
+		}
+		whole = contours.remove(index);
+		if (contours.get(0).y < contours.get(1).y) {
+			top = contours.get(0);
+			bottom = contours.get(1);
+		}
+		else {
+			top = contours.get(1);
+			bottom = contours.get(0);
+		}
+		int height = bottom.y2 - top.y;
+		fixed = new Rectangle(top.x, top.y, top.width, height);
+		contours.clear();
+		contours.add(whole);
+		contours.add(fixed);
 	}
 
 	// returns true if there are at least two vision targets
@@ -67,17 +84,23 @@ public class Vision extends Subsystem {
 
 	// will return a positive or negative if valid, but will return the maximum
 	// double if not valid
-	public int pixelsToCenter() {
+	public double pixelsToCenter() {
 		if (contours.size() < 2)
 			return Integer.MAX_VALUE;
+		if (contours.size() == 3)
+			fixRectangles();
 		int center = contours.get(0).getCenter(contours.get(1));
-		return center - resolutionX / 2;
+		int pixToCenter = center - resolutionX / 2;
+		double inchesToPixels = getTargetWidth() / widthOfTarget; //pixels/inches
+		return inchesToPixels * offset + pixToCenter;
 	}
 
 	// will always be positive if its valid
 	public int getTargetWidth() {
 		if (contours.size() < 2)
 			return -1;
+		if (contours.size() == 3)
+			fixRectangles();
 		return contours.get(0).getWidth(contours.get(1));
 	}
 
@@ -90,6 +113,8 @@ public class Vision extends Subsystem {
 	public double compareAreas() {
 		if (contours.size() < 2)
 			return Double.MAX_VALUE;
+		if (contours.size() == 3)
+			fixRectangles();
 		return contours.get(0).compareAreas(contours.get(1));
 	}
 
@@ -103,26 +128,14 @@ public class Vision extends Subsystem {
 
 	private class Rectangle {
 
-		@SuppressWarnings("unused")
-		private int x, y, width, height, x2, y2;
+		private int x, y, width, height, y2;
 
 		public Rectangle(int x, int y, int w, int h) {
 			this.x = x;
 			this.y = y;
 			width = w;
 			height = h;
-			x2 = x + width;
 			y2 = y + height;
-		}
-		
-		public int[] getYCorners() {
-			int[] i = {y, y, y2, y2};
-			return i;
-		}
-		
-		public int[] getXCorners() {
-			int[] i = {x, x, x2, x2};
-			return i;
 		}
 
 		public int getArea() {

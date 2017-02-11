@@ -4,11 +4,10 @@ import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
-// passed peer review
-// need to account for offset
+
 public class CenterBelt extends Command{
 	
-	private double offset, initialPos, inchesToPixels;
+	private double initialPos;
 	
 	public CenterBelt(){
 		requires(Robot.belt);
@@ -16,10 +15,8 @@ public class CenterBelt extends Command{
 	}
 	
 	protected void initialize(){
-		offset = 0; //offset between camera and center of gear (inches)
 		initialPos = Robot.camera.pixelsToCenter();
-		inchesToPixels = Robot.camera.getTargetWidth() / 10.25; //pixels/inches
-		if (initialPos > offset) Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
+		if (initialPos > 0) Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
 		else Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
 	}
 	
@@ -28,11 +25,9 @@ public class CenterBelt extends Command{
 	
 	@Override
 	protected boolean isFinished() {
-		if (Robot.belt.isAtLimit())
-			return true;
-		if (initialPos > offset)
-			return Robot.camera.pixelsToCenter() <= offset * inchesToPixels;
-		return Robot.camera.pixelsToCenter() >= offset * inchesToPixels;
+		if (initialPos > 0)
+			return Robot.camera.pixelsToCenter() <= 0;
+		return Robot.camera.pixelsToCenter() >= 0;
 	}
 	
 	protected void end() {

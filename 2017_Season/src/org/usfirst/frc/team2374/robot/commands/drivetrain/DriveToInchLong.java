@@ -6,44 +6,49 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnToDegree extends Command {
+public class DriveToInchLong extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;
-	private double wantedAngle;
-	private final double offset = 1.0;
+	private double wantedDistance;
+	private final double offset = 0.0;
 
-	public TurnToDegree(double angle) {
+	public DriveToInchLong(double inches) {
 		requires(drive);
-		wantedAngle = angle;
+		wantedDistance = inches;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		drive.resetEncoders();
 		drive.resetGyro();
-		drive.setTurnPID();
+		drive.setLongPID();
 		Timer.delay(0.1);
-		drive.setGyroPIDSetPoint(wantedAngle);
+		drive.setDrivePIDSetPoint(wantedDistance);
+		drive.setGyroPIDSetPoint(0);
+		drive.enableDrivePID(true);
 		drive.enableGyroPID(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		drive.arcadeDrive(0, drive.getGyroPIDOutput());
+		drive.arcadeDrive(Robot.drivetrain.getDrivePIDOutput(), Robot.drivetrain.getGyroPIDOutput());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (wantedAngle < 0)
-			return drive.getAngle() <= wantedAngle + offset;
-		return drive.getAngle() >= wantedAngle - offset;
+		double currentDistance = (drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2;
+		if (wantedDistance < 0)
+			return currentDistance <= wantedDistance + offset;
+		return currentDistance >= wantedDistance - offset;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		drive.enableDrivePID(false);
 		drive.enableGyroPID(false);
 		drive.arcadeDrive(0, 0);
 	}

@@ -3,43 +3,48 @@ package org.usfirst.frc.team2374.robot.commands.belt;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-// passed peer review
-// need to account for offset
-public class CenterBelt extends Command{
-	
-	private double offset, initialPos, inchesToPixels;
-	
-	public CenterBelt(){
+
+public class CenterBelt extends Command {
+
+	private double initialPos;
+
+	private final double offset = 30;
+
+	public CenterBelt() {
 		requires(Robot.belt);
 		requires(Robot.camera);
 	}
-	
-	protected void initialize(){
-		offset = 0; //offset between camera and center of gear (inches)
+
+	@Override
+	protected void initialize() {
+		Timer.delay(0.25);
 		initialPos = Robot.camera.pixelsToCenter();
-		inchesToPixels = Robot.camera.getTargetWidth() / 10.25; //pixels/inches
-		if (initialPos > offset) Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
-		else Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
+		if (initialPos > 0)
+			Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
+		else
+			Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
 	}
-	
+
+	@Override
 	protected void execute() {
 	}
-	
+
 	@Override
 	protected boolean isFinished() {
-		if (Robot.belt.isAtLimit())
-			return true;
-		if (initialPos > offset)
-			return Robot.camera.pixelsToCenter() <= offset * inchesToPixels;
-		return Robot.camera.pixelsToCenter() >= offset * inchesToPixels;
+		if (initialPos > 0)
+			return Robot.camera.pixelsToCenter() <= offset;
+		return Robot.camera.pixelsToCenter() >= -offset;
 	}
-	
+
+	@Override
 	protected void end() {
 		Robot.belt.setBelt(0);
 	}
-	
-	protected void interrupted(){
+
+	@Override
+	protected void interrupted() {
 		end();
 	}
 

@@ -1,8 +1,12 @@
 
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
-import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;
@@ -23,12 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Drivetrain drivetrain = new Drivetrain();
-	public static Belt belt = new Belt();
-	public static Grabber grabber = new Grabber();
-	public static Climber climber = new Climber();
+	public static Drivetrain drivetrain;
+	public static Belt belt;
+	public static Grabber grabber;
 	public static OI oi;
-	public static Vision camera = new Vision();
+	public static Vision camera;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -39,9 +42,19 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		drivetrain = new Drivetrain();
+		belt = new Belt();
+		grabber = new Grabber();
 		oi = new OI();
-		chooser.addDefault("Default Auto", null);
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		camera = new Vision();
+		chooser.addDefault("Default Auto", new CenterBelt()); // this must
+		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
+		chooser.addObject("DriveToTarget", new DriveToTarget(30));
+		chooser.addObject("DriveToInch20", new DriveToInchShort(20));
+		chooser.addObject("DriveToInch77", new DriveToInchLong(77));
+		// be named
+		// "Default
+		// Auto"
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
@@ -93,6 +106,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		oi.toSmartDashboard();
+		drivetrain.toSmartDashboard();
+		belt.toSmartDashboard();
+		grabber.toSmartDashboard();
+		camera.toSmartDashboard();
 	}
 
 	@Override
@@ -103,6 +121,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		Robot.drivetrain.resetEncoders();
 	}
 
 	/**
@@ -111,6 +130,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		oi.toSmartDashboard();
+		drivetrain.toSmartDashboard();
+		belt.toSmartDashboard();
+		grabber.toSmartDashboard();
+		camera.toSmartDashboard();
 	}
 
 	/**

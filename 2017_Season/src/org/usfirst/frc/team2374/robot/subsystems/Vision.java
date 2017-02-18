@@ -9,19 +9,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision extends Subsystem {
 
-	private NetworkTable table;
+	private NetworkTable tableIn, tableOut;
 	private List<Rectangle> contours;
 
-	private static final String networkTableName = "vision";
 	private static final int resolutionX = 640;
+	private static final double offset = 4.96; // inches between camera and
+												// center of gear
+	private static final double widthOfTarget = 10.25; // inches
 
 	private static final double calibrationDistInches = 60;
-	private static final double calibrationWidthInches = 10.25; //contingency: initialize() method in centerBelt command needs to be fixed with this 
-	private static final double calibrationWidthPixel = 116;
+	private static final double calibrationWidthInches = 10.25; // contingency:
+																// initialize()
+																// method in
+																// centerBelt
+																// command needs
+																// to be fixed
+																// with this
+	private static final double calibrationWidthPixel = 122;
 	private static final double focalLength = calibrationWidthPixel * calibrationDistInches / calibrationWidthInches;
 
 	public Vision() {
-		table = NetworkTable.getTable(networkTableName);
+		tableIn = NetworkTable.getTable("vision");
+		tableOut = NetworkTable.getTable("visionOut");
 		contours = new ArrayList<>();
 	}
 
@@ -32,10 +41,10 @@ public class Vision extends Subsystem {
 	}
 
 	public void updateContours() {
-		double[] x = table.getNumberArray("x", new double[0]);
-		double[] y = table.getNumberArray("y", new double[0]);
-		double[] w = table.getNumberArray("w", new double[0]);
-		double[] h = table.getNumberArray("h", new double[0]);
+		double[] x = tableIn.getNumberArray("x", new double[0]);
+		double[] y = tableIn.getNumberArray("y", new double[0]);
+		double[] w = tableIn.getNumberArray("w", new double[0]);
+		double[] h = tableIn.getNumberArray("h", new double[0]);
 		contours.clear();
 		for (int i = 0; i < x.length; i++) {
 			try {
@@ -44,21 +53,49 @@ public class Vision extends Subsystem {
 			} catch (ArrayIndexOutOfBoundsException ex) {
 			}
 		}
+		if (contours.size() == 3)
+			fixRectangles();
 	}
-	
-	//returns true if there are at least two vision targets
+
+	public void fixRectangles() {
+		Rectangle whole, fixed, top, bottom;
+		int index = 0;
+		for (int i = 0; i < 3; i++) {
+			if (contours.get(i).getArea() > contours.get(index).getArea())
+				index = i;
+		}
+		whole = contours.remove(index);
+		if (contours.get(0).y < contours.get(1).y) {
+			top = contours.get(0);
+			bottom = contours.get(1);
+		} else {
+			top = contours.get(1);
+			bottom = contours.get(0);
+		}
+		int height = bottom.y2 - top.y;
+		fixed = new Rectangle(top.x, top.y, top.width, height);
+		contours.clear();
+		contours.add(whole);
+		contours.add(fixed);
+	}
+
+	// returns true if there are at least two vision targets
 	public boolean isReal() {
 		return contours.size() >= 2;
 	}
 
-	// will return a positive or negative if valid, but will return the maximum double if not valid
-	public int pixelsToCenter() {
+	// will return a positive or negative if valid, but will return the maximum
+	// double if not valid
+	public double pixelsToCenter() {
 		if (contours.size() < 2)
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
-		return center - resolutionX / 2;
+		int pixToCenter = center - resolutionX / 2;
+		double pixelsPerInch = getTargetWidth() / widthOfTarget; // pixels/inches
+		// DriverStation.reportWarning("pixPerInch " + pixelsPerInch, true);
+		return (-pixToCenter) + offset * pixelsPerInch;
 	}
-	
+
 	// will always be positive if its valid
 	public int getTargetWidth() {
 		if (contours.size() < 2)
@@ -70,30 +107,46 @@ public class Vision extends Subsystem {
 		return calibrationWidthInches * focalLength / getTargetWidth();
 	}
 
-	// will return a positive or negative if valid, but will return the maximum double if not valid
+	// will return a positive or negative if valid, but will return the maximum
+	// double if not valid
 	public double compareAreas() {
 		if (contours.size() < 2)
 			return Double.MAX_VALUE;
-		return contours.get(0).compareAreas(contours.get(1));
+		return -(contours.get(0).compareAreas(contours.get(1)));
 	}
 
 	public void toSmartDashboard() {
+		updateContours();
 		SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
 		SmartDashboard.putNumber("distanceToTarget", distanceToTargetInches());
 		SmartDashboard.putNumber("areaDifference", compareAreas());
 		SmartDashboard.putNumber("targetWidth", getTargetWidth());
+		double[] x = new double[contours.size()];
+		double[] y = new double[contours.size()];
+		double[] width = new double[contours.size()];
+		double[] height = new double[contours.size()];
+		for (int i = 0; i < contours.size(); i++) {
+			x[i] = contours.get(i).x;
+			y[i] = contours.get(i).y;
+			width[i] = contours.get(i).width;
+			height[i] = contours.get(i).height;
+		}
+		tableOut.putNumberArray("x", x);
+		tableOut.putNumberArray("y", y);
+		tableOut.putNumberArray("width", width);
+		tableOut.putNumberArray("height", height);
 	}
 
 	private class Rectangle {
 
-		@SuppressWarnings("unused")
-		private int x, y, width, height;
+		private int x, y, width, height, y2;
 
 		public Rectangle(int x, int y, int w, int h) {
 			this.x = x;
 			this.y = y;
 			width = w;
 			height = h;
+			y2 = y + height;
 		}
 
 		public int getArea() {

@@ -21,9 +21,9 @@ public class GrabberWithJoystick extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Robot.oi.getLeftBumper() && !Robot.oi.getRightBumper())
+		if (Robot.oi.getButtonX() && !Robot.oi.getButtonA())
 			Robot.grabber.open();
-		else if (Robot.oi.getRightBumper() && !Robot.oi.getLeftBumper())
+		else if (Robot.oi.getButtonA() && !Robot.oi.getButtonX())
 			Robot.grabber.close();
 		else
 			Robot.grabber.stop();

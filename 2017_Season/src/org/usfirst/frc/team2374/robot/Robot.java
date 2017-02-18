@@ -2,7 +2,9 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -45,14 +47,14 @@ public class Robot extends IterativeRobot {
 		grabber = new Grabber();
 		oi = new OI();
 		camera = new Vision();
-		chooser.addDefault("Default Auto", new TurnToDegree(90.0)); // this must
-																	// be named
-																	// "Default
-																	// Auto"
-		chooser.addObject("TurnToAngleN90", new TurnToDegree(-90.0));
-		chooser.addObject("DriveToInch60", new DriveToInch(96.0));
-		chooser.addObject("DriveToInchN60", new DriveToInch(-96.0));
-		chooser.addObject("CenterBelt", new CenterBelt());
+		chooser.addDefault("Default Auto", new CenterBelt()); // this must
+		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
+		chooser.addObject("DriveToTarget", new DriveToTarget(30));
+		chooser.addObject("DriveToInch20", new DriveToInchShort(20));
+		chooser.addObject("DriveToInch77", new DriveToInchLong(77));
+		// be named
+		// "Default
+		// Auto"
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

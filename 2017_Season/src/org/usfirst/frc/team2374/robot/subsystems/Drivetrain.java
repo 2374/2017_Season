@@ -2,7 +2,6 @@ package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
-import org.usfirst.frc.team2374.util.SimplePIDOutput;
 import org.usfirst.frc.team2374.util.TwoEncoderPIDSource;
 
 import com.ctre.CANTalon;
@@ -27,22 +26,27 @@ public class Drivetrain extends Subsystem {
 	private AHRS navX;
 
 	private PIDController gyroPID;
-	private static final double gyroP = 0.005;
-	private static final double gyroI = 0.0002;
-	private static final double gyroD = 0.001;
+	private static final double gyroPS = 0.07;
+	private static final double gyroIS = 0.0002;
+	private static final double gyroDS = 0.001;
+
+	private static final double gyroPL = 0.07;
+	private static final double gyroIL = 0.001;
+	private static final double gyroDL = 0.001;
+
+	private static final double gyroPT = 0.007;
+	private static final double gyroIT = 0.00045;
+	private static final double gyroDT = 0.003;
 
 	public PIDController drivePID;
 	private TwoEncoderPIDSource driveIn;
-	private static final double driveP = 0.015;
-	private static final double driveI = 0.0002;
-	private static final double driveD = 0;
+	private static final double drivePS = 0.1;
+	private static final double driveIS = 0.0001;
+	private static final double driveDS = 0;
 
-	private PIDController cameraPID;
-	// private CameraPIDSource cameraIn;
-	private SimplePIDOutput cameraOut;
-	private static final double cameraP = 0;
-	private static final double cameraI = 0;
-	private static final double cameraD = 0;
+	private static final double drivePL = 0.017;
+	private static final double driveIL = 0.0005;
+	private static final double driveDL = 0;
 
 	public static final double MAX_AUTO_SPEED = 0.75;
 	private static final double WHEEL_DIAMETER = 6; // inches
@@ -81,7 +85,7 @@ public class Drivetrain extends Subsystem {
 
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyroPID = new PIDController(gyroP, gyroI, gyroD, navX, new PIDOutput() {
+		gyroPID = new PIDController(gyroPL, gyroIL, gyroDL, navX, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
 			}
@@ -91,7 +95,7 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setContinuous(true);
 
 		driveIn = new TwoEncoderPIDSource(leftEncoder, rightEncoder);
-		drivePID = new PIDController(driveP, driveI, driveD, driveIn, new PIDOutput() {
+		drivePID = new PIDController(drivePL, driveIL, driveDL, driveIn, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
 			}
@@ -99,16 +103,34 @@ public class Drivetrain extends Subsystem {
 		drivePID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
 		drivePID.setContinuous(false);
 
-		// cameraIn = new CameraPIDSource();
-		// cameraPID = new PIDController(cameraP, cameraI, cameraD, cameraIn,
-		// cameraOut);
-		// cameraPID.setInputRange(-100, 100);
-
+		/*
+		 * cameraIn = new CameraPIDSource(); cameraPID = new
+		 * PIDController(cameraP, cameraI, cameraD, cameraIn, new PIDOutput() {
+		 * 
+		 * @Override public void pidWrite(double arg0) { } });
+		 * cameraPID.setInputRange(-100.0, 100.0);
+		 * cameraPID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+		 */
 	}
 
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new DriveWithJoystick());
+		// setDefaultCommand(new DrivetrainPID());
+	}
+
+	public void setShortPID() {
+		drivePID.setPID(drivePS, driveIS, driveDS);
+		gyroPID.setPID(gyroPS, gyroIS, gyroDS);
+	}
+
+	public void setLongPID() {
+		drivePID.setPID(drivePL, driveIL, driveDL);
+		gyroPID.setPID(gyroPL, gyroIL, gyroDL);
+	}
+
+	public void setTurnPID() {
+		gyroPID.setPID(gyroPT, gyroIT, gyroDT);
 	}
 
 	public void tankDrive(double left, double right) {
@@ -119,21 +141,6 @@ public class Drivetrain extends Subsystem {
 		robotDrive.arcadeDrive(-move, rotate);
 	}
 
-	public void setDrivePIDSpeed(double speed) {
-		double output = Math.min(speed, MAX_AUTO_SPEED);
-		drivePID.setOutputRange(-output, output);
-	}
-
-	public void setGyroPIDSpeed(double speed) {
-		double output = Math.min(speed, MAX_AUTO_SPEED);
-		gyroPID.setOutputRange(-output, output);
-	}
-
-	public void setCameraPIDSpeed(double speed) {
-		double output = Math.min(speed, MAX_AUTO_SPEED);
-		cameraPID.setOutputRange(-output, output);
-	}
-
 	public void setDrivePIDSetPoint(double inches) {
 		drivePID.setSetpoint(inches);
 	}
@@ -142,20 +149,12 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setSetpoint(angle);
 	}
 
-	public void setCameraPIDSetPoint(double error) {
-		cameraPID.setSetpoint(error);
-	}
-
 	public double getDrivePIDOutput() {
 		return drivePID.get();
 	}
 
 	public double getGyroPIDOutput() {
 		return gyroPID.get();
-	}
-
-	public double getCameraPIDOutput() {
-		return cameraOut.get();
 	}
 
 	public void enableDrivePID(boolean enable) {
@@ -170,13 +169,6 @@ public class Drivetrain extends Subsystem {
 			gyroPID.enable();
 		else
 			gyroPID.reset();
-	}
-
-	public void enableCameraPID(boolean enable) {
-		if (enable)
-			cameraPID.enable();
-		else
-			cameraPID.disable();
 	}
 
 	public void resetEncoders() {
@@ -216,11 +208,10 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putNumber("gyro_angle", navX.getYaw());
 		SmartDashboard.putNumber("heading_error", gyroPID.getError());
 		SmartDashboard.putNumber("gyro_get", gyroPID.get());
+		SmartDashboard.putBoolean("gyroPID_enable", gyroPID.isEnabled());
 		SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
 		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("drivePID_out", drivePID.get());
-		SmartDashboard.putBoolean("gyroPID_enable", gyroPID.isEnabled());
-		// SmartDashboard.putBoolean("cameraPID_enable", cameraPID.isEnabled());
 	}
 
 }

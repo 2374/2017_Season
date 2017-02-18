@@ -24,10 +24,6 @@ public class OI {
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
-
-		// buttonB.whenPressed(new PlaceGear());
-		// leftBumper.whenPressed(new OpenGrabber());
-		// rightBumper.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {

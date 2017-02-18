@@ -2,7 +2,6 @@ package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.belt.BeltWithJoystick;
-import org.usfirst.frc.team2374.util.SimplePIDOutput;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,7 +18,6 @@ public class Belt extends Subsystem {
 	private DigitalInput leftLimitSwitch, rightLimitSwitch;
 
 	private PIDController beltPID;
-	private SimplePIDOutput beltOut;
 	private static final double beltP = 0;
 	private static final double beltI = 0;
 	private static final double beltD = 0;
@@ -75,7 +73,7 @@ public class Belt extends Subsystem {
 	}
 
 	public double getPIDOutput() {
-		return beltOut.get();
+		return beltPID.get();
 	}
 
 	public void enablePID(boolean enable) {

@@ -6,13 +6,13 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveToInch extends Command {
+public class DriveToInchLong extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private double wantedDistance;
-	private final double offset = 1.0;
+	private final double offset = 0.0;
 
-	public DriveToInch(double inches) {
+	public DriveToInchLong(double inches) {
 		requires(drive);
 		wantedDistance = inches;
 	}
@@ -22,6 +22,7 @@ public class DriveToInch extends Command {
 	protected void initialize() {
 		drive.resetEncoders();
 		drive.resetGyro();
+		drive.setLongPID();
 		Timer.delay(0.1);
 		drive.setDrivePIDSetPoint(wantedDistance);
 		drive.setGyroPIDSetPoint(0);

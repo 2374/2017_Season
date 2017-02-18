@@ -31,6 +31,7 @@ public class Belt extends Subsystem {
 
 	public Belt() {
 		beltController = new Spark(RobotMap.speedControllerBelt);
+		beltController.setInverted(true);
 		beltEncoder = new Encoder(RobotMap.encoderBeltA, RobotMap.encoderBeltB);
 		// leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
 		// rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);

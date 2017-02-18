@@ -14,7 +14,7 @@ public class RobotMap {
 	public static int rsRightBumper = 6;
 	public static int rsButtonX = 3;
 	public static int rsButtonA = 1;
-	public static int rsButtonB = 2;
+	public static int rsButtonY = 4;
 
 	// CAN
 	public static final int talonDriveMasterLeft = 1;

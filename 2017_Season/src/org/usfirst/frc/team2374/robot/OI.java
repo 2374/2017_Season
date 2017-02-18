@@ -15,7 +15,7 @@ public class OI {
 	JoystickButton rightBumper;
 	JoystickButton buttonX;
 	JoystickButton buttonA;
-	JoystickButton buttonB;
+	JoystickButton buttonY;
 
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
@@ -23,7 +23,7 @@ public class OI {
 		rightBumper = new JoystickButton(driver, RobotMap.rsRightBumper);
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
-		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
+		buttonY = new JoystickButton(driver, RobotMap.rsButtonY);
 	}
 
 	public double getDriverLeftY() {
@@ -50,8 +50,8 @@ public class OI {
 		return driver.getRawButton(RobotMap.rsButtonA);
 	}
 
-	public boolean getButtonB() {
-		return driver.getRawButton(RobotMap.rsButtonB);
+	public boolean getButtonY() {
+		return driver.getRawButton(RobotMap.rsButtonY);
 	}
 
 	public boolean getLeftBumper() {

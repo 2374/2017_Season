@@ -7,6 +7,7 @@ import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
+import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
 	public static Grabber grabber;
 	public static OI oi;
 	public static Vision camera;
+	public static Climber climber;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -47,6 +49,7 @@ public class Robot extends IterativeRobot {
 		grabber = new Grabber();
 		oi = new OI();
 		camera = new Vision();
+		climber = new Climber();
 		chooser.addDefault("Default Auto", new CenterBelt()); // this must
 		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
 		chooser.addObject("DriveToTarget", new DriveToTarget(30));

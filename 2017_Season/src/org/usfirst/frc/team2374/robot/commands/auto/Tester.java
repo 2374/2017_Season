@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2374.robot.commands.auto;
 
 import org.usfirst.frc.team2374.robot.Robot;
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
@@ -29,7 +29,7 @@ public class Tester extends CommandGroup {
 		requires(grabber);
 
 		addSequential(new DriveToTarget(30));
-		addSequential(new CenterBelt());
-		addSequential(new DriveToInchShort(20)); // LEAVE 23
+		addSequential(new CenterBeltOnTarget());
+		addSequential(new DriveToInchShort(22)); // LEAVE 23
 	}
 }

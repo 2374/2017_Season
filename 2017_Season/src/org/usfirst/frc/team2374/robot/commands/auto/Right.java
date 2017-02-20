@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2374.robot.commands.auto;
 
 import org.usfirst.frc.team2374.robot.Robot;
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.CorrectForAngle;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
@@ -43,7 +43,7 @@ public class Right extends CommandGroup {
 					i++;
 			}
 			// align gear with peg
-			addSequential(new CenterBelt());
+			addSequential(new CenterBeltOnTarget());
 			// drive to target
 			// addSequential(new DriveStraightWithVision());
 			// release gear
@@ -55,7 +55,7 @@ public class Right extends CommandGroup {
 			// drive to other end of field, close grabber and center belt
 			addParallel(new DriveToInchLong(feetToEnd * INCHES_TO_FEET));
 			// addParallel(new CloseGrabber());
-			addSequential(new MoveBeltToPoint(0, Belt.MAX_BELT_SPEED));
+			addSequential(new MoveBeltToPoint(0));
 		}
 		// if not just cross the base line, don't drop the gear, and stay in the
 		// same general area as the target

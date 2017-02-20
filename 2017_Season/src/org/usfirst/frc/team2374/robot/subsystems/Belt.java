@@ -6,6 +6,8 @@ import org.usfirst.frc.team2374.robot.commands.belt.BeltWithJoystick;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,8 +20,8 @@ public class Belt extends Subsystem {
 	private DigitalInput leftLimitSwitch, rightLimitSwitch;
 
 	private PIDController beltPID;
-	private static final double beltP = 0;
-	private static final double beltI = 0;
+	private static final double beltP = 0.1;
+	private static final double beltI = 0.0001;
 	private static final double beltD = 0;
 
 	public static final double MAX_BELT_SPEED = 0.5;
@@ -36,10 +38,15 @@ public class Belt extends Subsystem {
 		// leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
 		// rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);
 
-		// beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		// beltPID = new PIDController(beltP, beltI, beltD, beltEncoder,
-		// beltOut);
-		// beltPID.setOutputRange(-MAX_BELT_SPEED, MAX_BELT_SPEED);
+		beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		beltPID = new PIDController(beltP, beltI, beltD, beltEncoder, new PIDOutput() {
+			@Override
+			public void pidWrite(double arg0) {
+			}
+		});
+		beltPID.setOutputRange(-MAX_BELT_SPEED, MAX_BELT_SPEED);
+		beltPID.setAbsoluteTolerance(60);
+		beltPID.setContinuous(false);
 	}
 
 	@Override
@@ -60,11 +67,6 @@ public class Belt extends Subsystem {
 		return leftLimitSwitch.get() || rightLimitSwitch.get();
 	}
 
-	public void setPIDSpeed(double speed) {
-		double output = Math.min(speed, MAX_BELT_SPEED);
-		beltPID.setOutputRange(-output, output);
-	}
-
 	public void setPIDSetpoint(double setpoint) {
 		beltPID.setSetpoint(setpoint);
 	}
@@ -81,7 +83,7 @@ public class Belt extends Subsystem {
 		if (enable)
 			beltPID.enable();
 		else
-			beltPID.disable();
+			beltPID.reset();
 	}
 
 	public void resetEncoder() {
@@ -90,7 +92,9 @@ public class Belt extends Subsystem {
 
 	public void toSmartDashboard() {
 		SmartDashboard.putNumber("belt_position", beltEncoder.getDistance());
-		SmartDashboard.putNumber("belt_rate", beltEncoder.getRate());
+		SmartDashboard.putBoolean("beltPID_enable", beltPID.isEnabled());
+		SmartDashboard.putNumber("beltPID_out", beltPID.get());
+		SmartDashboard.putNumber("beltPID_error", beltPID.getError());
 	}
 
 }

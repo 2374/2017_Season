@@ -8,20 +8,18 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveBeltToPoint extends Command {
 
 	private Belt belt = Robot.belt;
-	private double wantedPosition;
-	private double speed;
+	private double wantedPosition, initialPosition;
 
-	public MoveBeltToPoint(double position, double speed) {
+	public MoveBeltToPoint(double position) {
 		requires(belt);
 		wantedPosition = position;
-		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		initialPosition = belt.getPosition();
 		belt.setPIDSetpoint(wantedPosition);
-		belt.setPIDSpeed(speed);
 		belt.enablePID(true);
 	}
 
@@ -34,8 +32,13 @@ public class MoveBeltToPoint extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (belt.isAtLimit())
-			return true;
+		// if (belt.isAtLimit())
+		// return true;
+		if (wantedPosition == 0) {
+			if (initialPosition < 0)
+				return belt.getPosition() >= 0;
+			return belt.getPosition() <= 0;
+		}
 		if (wantedPosition < 0)
 			return belt.getPosition() <= wantedPosition;
 		return belt.getPosition() >= wantedPosition;

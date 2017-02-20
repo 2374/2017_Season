@@ -6,13 +6,13 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CenterBelt extends Command {
+public class CenterBeltOnTarget extends Command {
 
 	private double initialPos;
 
 	private final double offset = 30;
 
-	public CenterBelt() {
+	public CenterBeltOnTarget() {
 		requires(Robot.belt);
 		requires(Robot.camera);
 	}

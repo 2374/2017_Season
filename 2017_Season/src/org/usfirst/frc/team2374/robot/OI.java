@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
+
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -16,6 +18,7 @@ public class OI {
 	JoystickButton buttonX;
 	JoystickButton buttonA;
 	JoystickButton buttonY;
+	JoystickButton buttonB;
 
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
@@ -24,6 +27,9 @@ public class OI {
 		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonY = new JoystickButton(driver, RobotMap.rsButtonY);
+		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
+
+		buttonB.whenPressed(new MoveBeltToPoint(0));
 	}
 
 	public double getDriverLeftY() {

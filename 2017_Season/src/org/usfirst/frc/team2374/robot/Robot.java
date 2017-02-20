@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBelt;
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
@@ -50,7 +50,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		camera = new Vision();
 		climber = new Climber();
-		chooser.addDefault("Default Auto", new CenterBelt()); // this must
+		chooser.addDefault("Default Auto", new CenterBeltOnTarget()); // this
+																		// must
 		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
 		chooser.addObject("DriveToTarget", new DriveToTarget(30));
 		chooser.addObject("DriveToInch20", new DriveToInchShort(20));
@@ -125,6 +126,7 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		Robot.drivetrain.resetEncoders();
+		Robot.belt.resetEncoder();
 	}
 
 	/**

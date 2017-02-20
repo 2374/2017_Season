@@ -50,8 +50,8 @@ public class Drivetrain extends Subsystem {
 
 	public static final double MAX_AUTO_SPEED = 0.75;
 	private static final double WHEEL_DIAMETER = 6; // inches
-	private static final double EC_PER_REV_LEFT = 250.08;
-	private static final double EC_PER_REV_RIGHT = 359.89;
+	private static final double EC_PER_REV_LEFT = 352.25;
+	private static final double EC_PER_REV_RIGHT = 358.98;
 
 	public Drivetrain() {
 

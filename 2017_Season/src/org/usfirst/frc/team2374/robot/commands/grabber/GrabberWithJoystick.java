@@ -22,9 +22,9 @@ public class GrabberWithJoystick extends Command {
 	@Override
 	protected void execute() {
 		if (Robot.oi.getButtonX() && !Robot.oi.getButtonA())
-			Robot.grabber.open();
-		else if (Robot.oi.getButtonA() && !Robot.oi.getButtonX())
 			Robot.grabber.close();
+		else if (Robot.oi.getButtonA() && !Robot.oi.getButtonX())
+			Robot.grabber.open();
 		else
 			Robot.grabber.stop();
 	}

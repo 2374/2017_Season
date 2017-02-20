@@ -15,6 +15,7 @@ public class RobotMap {
 	public static int rsButtonX = 3;
 	public static int rsButtonA = 1;
 	public static int rsButtonY = 4;
+	public static int rsButtonB = 2;
 
 	// CAN
 	public static final int talonDriveMasterLeft = 1;
@@ -27,7 +28,7 @@ public class RobotMap {
 	// PWM
 	public static final int speedControllerBelt = 4;
 	public static final int speedControllerGrabber = 2;
-	public static final int speedControllerClimber = 9;
+	public static final int speedControllerClimber = 5;
 
 	// DIO
 	public static final int encoderBeltA = 4;

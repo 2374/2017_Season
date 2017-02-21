@@ -21,21 +21,17 @@ public class GrabberWithJoystick extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		// TODO: (Code review) Switch to a toggle with a single button,
-		// If you can use onPressed instead of just getting the current
-		// button state, that would be better for toggling
 		if (Robot.grabber.isAtLimit() && Robot.oi.getButtonBack() || Robot.oi.getButtonStart())
 			Robot.oi.setRumble(true);
 		else {
 			Robot.oi.setRumble(false);
-
-			if (Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
-				Robot.grabber.close();
-			else if (Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
-				Robot.grabber.open();
-			else
-				Robot.grabber.stop();
-		}
+		if (!Robot.grabber.isClose() && Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
+			Robot.grabber.close();
+		else if (!Robot.grabber.isOpen() && Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
+			Robot.grabber.open();
+		else
+			Robot.grabber.stop();
+	}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

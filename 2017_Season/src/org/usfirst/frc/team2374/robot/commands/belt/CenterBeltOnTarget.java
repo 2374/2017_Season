@@ -3,7 +3,6 @@ package org.usfirst.frc.team2374.robot.commands.belt;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CenterBeltOnTarget extends Command {

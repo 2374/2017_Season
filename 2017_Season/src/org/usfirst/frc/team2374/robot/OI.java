@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 
 	private Joystick driver;
+	
 	private JoystickButton leftBumper;
 	private JoystickButton rightBumper;
 	private JoystickButton buttonX;
@@ -38,6 +39,7 @@ public class OI {
 		buttonB.whenPressed(new MoveBeltToPoint(0));
 		buttonB.whenPressed(new CloseGrabber());
 		buttonA.whenPressed(new OpenGrabber());
+		buttonX.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {
@@ -49,31 +51,31 @@ public class OI {
 	}
 
 	public double getLeftTrigger() {
-		return quadraticScale(driver.getRawAxis(RobotMap.RS_LEFT_TRIGGER));
+		return driver.getRawAxis(RobotMap.RS_LEFT_TRIGGER);
 	}
 
 	public double getRightTrigger() {
-		return quadraticScale(driver.getRawAxis(RobotMap.RS_RIGHT_TRIGGER));
+		return driver.getRawAxis(RobotMap.RS_RIGHT_TRIGGER);
 	}
 
 	public boolean getButtonX() {
-		return driver.getRawButton(RobotMap.RS_BUTTON_X);
+		return buttonX.get();
 	}
 
 	public boolean getButtonA() {
-		return driver.getRawButton(RobotMap.RS_BUTTON_A);
+		return buttonA.get();
 	}
 
 	public boolean getButtonY() {
-		return driver.getRawButton(RobotMap.RS_BUTTON_Y);
+		return buttonY.get();
 	}
 
 	public boolean getButtonBack() {
-		return driver.getRawButton(RobotMap.RS_BUTTON_BACK);
+		return buttonBack.get();
 	}
 
 	public boolean getButtonStart() {
-		return driver.getRawButton(RobotMap.RS_BUTTON_START);
+		return buttonStart.get();
 
 	}
 

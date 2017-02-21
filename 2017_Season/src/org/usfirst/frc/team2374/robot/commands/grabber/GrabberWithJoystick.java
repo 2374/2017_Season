@@ -26,14 +26,16 @@ public class GrabberWithJoystick extends Command {
 		// button state, that would be better for toggling
 		if (Robot.grabber.isAtLimit() && Robot.oi.getButtonBack() || Robot.oi.getButtonStart())
 			Robot.oi.setRumble(true);
-		else
+		else {
 			Robot.oi.setRumble(false);
-		if (Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
-			Robot.grabber.close();
-		else if (Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
-			Robot.grabber.open();
-		else
-			Robot.grabber.stop();
+
+			if (Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
+				Robot.grabber.close();
+			else if (Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
+				Robot.grabber.open();
+			else
+				Robot.grabber.stop();
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

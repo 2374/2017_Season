@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
+import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
+import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
@@ -30,6 +32,8 @@ public class OI {
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
 
 		buttonB.whenPressed(new MoveBeltToPoint(0));
+		buttonA.whenPressed(new OpenGrabber());
+		buttonX.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {

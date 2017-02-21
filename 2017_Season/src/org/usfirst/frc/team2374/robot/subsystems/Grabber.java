@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
-import org.usfirst.frc.team2374.robot.commands.grabber.GrabberWithJoystick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
@@ -27,7 +26,6 @@ public class Grabber extends Subsystem {
 
 	@Override
 	public void initDefaultCommand() {
-		setDefaultCommand(new GrabberWithJoystick());
 	}
 
 	public void open() {

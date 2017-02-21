@@ -36,8 +36,8 @@ public class OI {
 		buttonStart = new JoystickButton(driver, RobotMap.rsButtonStart);
 
 		buttonB.whenPressed(new MoveBeltToPoint(0));
+		buttonB.whenPressed(new CloseGrabber());
 		buttonA.whenPressed(new OpenGrabber());
-		buttonX.whenPressed(new CloseGrabber());
 	}
 
 	public double getDriverLeftY() {

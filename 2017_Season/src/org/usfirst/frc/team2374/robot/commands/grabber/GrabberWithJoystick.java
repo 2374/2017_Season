@@ -24,6 +24,10 @@ public class GrabberWithJoystick extends Command {
 		// TODO: (Code review) Switch to a toggle with a single button,
 		// If you can use onPressed instead of just getting the current
 		// button state, that would be better for toggling
+		if (Robot.grabber.isAtLimit() && Robot.oi.getButtonBack() || Robot.oi.getButtonStart())
+			Robot.oi.setRumble(true);
+		else
+			Robot.oi.setRumble(false);
 		if (Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
 			Robot.grabber.close();
 		else if (Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())

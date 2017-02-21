@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 
 public class CorrectForAngle extends TimedCommand {
 
+	// TODO: (Code review) Make private static final
 	private Drivetrain drive = Robot.drivetrain;
 	private Vision camera = Robot.camera;
 	private double initialError;
@@ -18,6 +19,7 @@ public class CorrectForAngle extends TimedCommand {
 		requires(camera);
 	}
 
+	// TODO: (Code review) Can this be moved into the constructor?
 	protected void Initialize() {
 
 		initialError = camera.compareAreas(); // percent difference between
@@ -28,12 +30,14 @@ public class CorrectForAngle extends TimedCommand {
 			drive.arcadeDrive(0, -0.5);
 	}
 
+	// TODO: (Code review) Useless function
 	protected void Execute() {
 	}
 
 	@Override
 	protected boolean isFinished() {
 		double error = camera.compareAreas();
+		// TODO: (Code review) Have comment on a single line
 		return error < -20.0 || error > 20.0 || this.isTimedOut();// ends
 																	// when
 																	// we

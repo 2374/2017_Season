@@ -13,6 +13,10 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+// TODO: (Code review) Comments in Left.java are applicable here, too
+// TODO: (Code review) Is having a Right/Left class necessary? Could you instead have
+// a single class that changes behavior? Lots of duplicate code here. At the very least,
+// have a class that Left/Right extend so you can re-use code like the member variables.
 public class Right extends CommandGroup {
 
 	private Drivetrain drive = Robot.drivetrain;

@@ -12,13 +12,16 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+// TODO: (Code review) Add Javadoc for all class definitions
 public class Center extends CommandGroup {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private Belt belt = Robot.belt;
 	private Vision camera = Robot.camera;
 	private Grabber grabber = Robot.grabber;
+	// TODO: (Code review) Make this comment a TODO
 	private int feetToEnd = 45;// CHANGE THIS LATER
+	// TODO: (Code review) Make INCHES_TO_FEET public final static int
 	private final int INCHES_TO_FEET = 12;
 
 	public Center() {
@@ -34,6 +37,7 @@ public class Center extends CommandGroup {
 			// drive to target
 			double targetDistance = 6.75;
 			double currentDistance = camera.distanceToTargetInches();
+			// TODO: (Code review) I think you mean travelDistance (right click > refactor)
 			double tavelDistance = currentDistance - targetDistance;
 			addSequential(new DriveToInchLong(tavelDistance));
 			// release gear

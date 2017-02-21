@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// TODO: (Code review) AmericanoArchive
 public class Drivetrain extends Subsystem {
 
 	private CANTalon masterLeft, masterRight, fLeft, fRight, bLeft, bRight;
@@ -38,6 +39,7 @@ public class Drivetrain extends Subsystem {
 	private static final double gyroIT = 0.00045;
 	private static final double gyroDT = 0.003;
 
+	// TODO: (Code review) Move non-constants either before or after constant declarations
 	public PIDController drivePID;
 	private TwoEncoderPIDSource driveIn;
 	private static final double drivePS = 0.1;
@@ -80,6 +82,7 @@ public class Drivetrain extends Subsystem {
 		masterRight.setInverted(true);
 
 		robotDrive = new RobotDrive(masterLeft, masterRight);
+		// TODO: (Code review) Uhhhhhh... Seems unsafe
 		robotDrive.setSafetyEnabled(false);
 		// robotDrive.setExpiration(0.3);
 
@@ -158,6 +161,8 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void enableDrivePID(boolean enable) {
+		// TODO: (Code review) Can be made one line with:
+		// enable ? drivePID.enable() : drivePID.reset();
 		if (enable)
 			drivePID.enable();
 		else
@@ -165,6 +170,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void enableGyroPID(boolean enable) {
+		// TODO: (Code review) Same comment as enableDrivePID
 		if (enable)
 			gyroPID.enable();
 		else

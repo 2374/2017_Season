@@ -6,6 +6,11 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+// TODO: (Code review) JAVADOGOO
+// TODO: (Code review) Comments in DriveToInchLong apply here
+// TODO: (Code review) It looks like the only real difference is using drive.setShortPID()
+// instead of drive.setLongPID() - should be able to re-use code with inheritance or taking
+// a constructor parameter
 public class DriveToInchShort extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;

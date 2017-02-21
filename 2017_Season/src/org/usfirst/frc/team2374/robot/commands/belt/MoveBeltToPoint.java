@@ -5,6 +5,7 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+// TODO: (Code review) WHY DO NONE OF THESE HAVE JAVADOC COMMENTS?!?!?!
 public class MoveBeltToPoint extends Command {
 
 	private Belt belt = Robot.belt;
@@ -34,6 +35,10 @@ public class MoveBeltToPoint extends Command {
 	protected boolean isFinished() {
 		// if (belt.isAtLimit())
 		// return true;
+		// TODO: (Code review) This seems like it could be simplified by having a small
+		// threshold around the wantedPosition that's considered valid - doubles are imprecise
+		// e.g.
+		// return (Math.abs(belt.getPosition() - wantedPosition) <= threshold)
 		if (wantedPosition == 0) {
 			if (initialPosition < 0)
 				return belt.getPosition() >= 0;

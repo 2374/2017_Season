@@ -23,6 +23,7 @@ public class DriveToInchLong extends Command {
 		drive.resetEncoders();
 		drive.resetGyro();
 		drive.setLongPID();
+		// TODO: (Code review) Sleeps bad, see comment in CenterBeltOnTarget.java
 		Timer.delay(0.1);
 		drive.setDrivePIDSetPoint(wantedDistance);
 		drive.setGyroPIDSetPoint(0);
@@ -40,6 +41,8 @@ public class DriveToInchLong extends Command {
 	@Override
 	protected boolean isFinished() {
 		double currentDistance = (drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2;
+		// TODO: (Code review) Can be combined into one line, e.g.
+		// return Math.abs((drive.getLeftDistanceInches() + drive.getRightDistanceInches()) / 2 - wantedDistance) <= offset
 		if (wantedDistance < 0)
 			return currentDistance <= wantedDistance + offset;
 		return currentDistance >= wantedDistance - offset;

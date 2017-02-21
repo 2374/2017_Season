@@ -6,10 +6,12 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+// TODO: (Code review) EspressoWood
 public class TurnToDegree extends Command {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private double wantedAngle;
+	// TODO: (Code review) private static final double
 	private final double offset = 1.0;
 
 	public TurnToDegree(double angle) {
@@ -22,6 +24,7 @@ public class TurnToDegree extends Command {
 	protected void initialize() {
 		drive.resetGyro();
 		drive.setTurnPID();
+		// TODO: (Code review) SLEEP BAD STAHP
 		Timer.delay(0.1);
 		drive.setGyroPIDSetPoint(wantedAngle);
 		drive.enableGyroPID(true);
@@ -36,6 +39,8 @@ public class TurnToDegree extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		// TODO: (Code review) Can be made into one line with
+		// return Math.abs(drive.getAngle() - wantedAngle) <= offset
 		if (wantedAngle < 0)
 			return drive.getAngle() <= wantedAngle + offset;
 		return drive.getAngle() >= wantedAngle - offset;

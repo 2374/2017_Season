@@ -19,6 +19,7 @@ public class Left extends CommandGroup {
 	private Belt belt = Robot.belt;
 	private Vision camera = Robot.camera;
 	private Grabber grabber = Robot.grabber;
+	// TODO: (Code review) These look like they should be constants
 	private double inchesToTarget = 60;// CHANGE THIS LATER
 	private int feetToEnd = 45;// CHANGE THIS LATER
 	private int correctionInches = 4;// CHANGE THIS LATER
@@ -31,6 +32,7 @@ public class Left extends CommandGroup {
 		requires(grabber);
 
 		// drive forward
+		// TODO: (Code review) Remove commented code
 		// addSequential(new DriveToInch(inchesToTarget,
 		// Drivetrain.MAX_AUTO_SPEED));
 		// turn right 60 degrees
@@ -38,9 +40,13 @@ public class Left extends CommandGroup {
 		// do we have a valid target?
 		if (camera.isReal()) {
 			// correct for angle
+			// TODO: (Code review) i += 0 is extraneous. Kyle says you're stupid for doing this
+			// TODO: (Code review) Better way would be while(!isDone) {... if (Math.abs()...){isDone = true;} }
+			// TODO: (Code review) Is there any guarantee that this will ever terminate?
 			for (int i = 0; i < 1; i += 0) {
 				addSequential(new CorrectForAngle(1));
 				addSequential(new DriveToInchLong(correctionInches));
+				// TODO: (Code review) What is this magic number 20? Add a comment
 				if (Math.abs(camera.compareAreas()) <= 20)
 					i++;
 			}

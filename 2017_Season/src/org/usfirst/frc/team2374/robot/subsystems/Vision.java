@@ -80,6 +80,8 @@ public class Vision extends Subsystem {
 	}
 
 	// returns true if there are at least two vision targets
+	// TODO: (Code review) isReal doesn't seem like a good name for this. hasSufficientTargets
+	// or something like that would be more descriptive
 	public boolean isReal() {
 		return contours.size() >= 2;
 	}

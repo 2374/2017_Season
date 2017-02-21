@@ -25,6 +25,8 @@ public class DriveWithJoystick extends Command {
 		else if (leftTrigger != 0)
 			Robot.drivetrain.arcadeDrive(-leftTrigger, 0);
 		else {
+			// TODO: (Code review) Don't bother creating variables for this, just pass
+			// getDriver*Y() directly to tankDrive()
 			double leftJoy = Robot.oi.getDriverLeftY();
 			double rightJoy = Robot.oi.getDriverRightY();
 			Robot.drivetrain.tankDrive(leftJoy, rightJoy);

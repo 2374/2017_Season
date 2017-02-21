@@ -19,6 +19,9 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected void initialize() {
+		// TODO: (Code review) What's the purpose of this sleep? Sleeps are generally
+		// bad to have if you're waiting for an event to happen. If it's a multithreading issue,
+		// use a semaphore
 		Timer.delay(0.25);
 		initialPos = Robot.camera.pixelsToCenter();
 		if (initialPos > 0)
@@ -27,6 +30,7 @@ public class CenterBeltOnTarget extends Command {
 			Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
 	}
 
+	// TODO: (Code review) Shouldn't need to have an empty, overridden function
 	@Override
 	protected void execute() {
 	}

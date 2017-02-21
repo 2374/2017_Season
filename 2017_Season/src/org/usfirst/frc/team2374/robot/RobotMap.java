@@ -2,6 +2,9 @@ package org.usfirst.frc.team2374.robot;
 
 public class RobotMap {
 
+	// TODO: (Code review) Constants are usually all caps and underscores
+	// e.g. EXAMPLE_CONSTANT to help distinguish them from variables
+	// TODO: (Code review) Why are some set as final, and others not?
 	// Driver Station USB
 	public static int driverJoy = 0;
 

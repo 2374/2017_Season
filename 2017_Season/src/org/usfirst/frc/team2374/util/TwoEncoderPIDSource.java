@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
+// TODO: (Code review) CappucinoContract
 public class TwoEncoderPIDSource implements PIDSource {
 
 	private Encoder leftEncoder, rightEncoder;

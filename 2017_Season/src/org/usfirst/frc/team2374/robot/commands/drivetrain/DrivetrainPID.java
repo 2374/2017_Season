@@ -7,12 +7,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DrivetrainPID extends Command {
+	// TODO: (Code review) Split declarations onto different, organized lines for readability
 	private double speedLeft, speedRight, reallyOldSpeedLeft, reallyOldSpeedRight, integralLeft, integralRight, dxLeft,
 			dxRight, dy, oldSpeedLeft, oldSpeedRight, time;
 	private final double P, I, D;
 
 	public DrivetrainPID() {
 		requires(Robot.drivetrain);
+		// TODO: (Code review) If these are being statically set, they should be
+		// statically set as constants above
 		P = .001;
 		I = 0;
 		D = 0;
@@ -35,6 +38,9 @@ public class DrivetrainPID extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		// TODO: (Code review) Marking speedLeft/speedRight as rawSpeedLeft/rawSpeedRight
+		// would be helpful, as there's so many variables it's hard to tell immediately
+		// what's being read directly from the controller
 		speedLeft = Robot.oi.getDriverLeftY();// get speed from joystick
 		speedRight = Robot.oi.getDriverRightY();
 		double currentTime = Timer.getFPGATimestamp();// get time
@@ -78,6 +84,8 @@ public class DrivetrainPID extends Command {
 																// the desired
 																// speed
 		integralRight += (speedRight - currentSpeedRight) * dy;
+		// TODO: (Code review) Shouldn't it be:
+		// reallyOldSpeed
 		oldSpeedLeft = currentSpeedLeft;// current left speed
 		oldSpeedRight = currentSpeedRight;// current right speed
 		reallyOldSpeedLeft = speedLeft;

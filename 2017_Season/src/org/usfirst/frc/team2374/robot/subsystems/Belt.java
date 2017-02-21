@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// TODO: (Code review) MochaPulp
 public class Belt extends Subsystem {
 
 	private SpeedController beltController;
@@ -23,9 +24,11 @@ public class Belt extends Subsystem {
 	private static final double beltP = 0.1;
 	private static final double beltI = 0.0001;
 	private static final double beltD = 0;
-
+	// TODO: (Code review) Bad naming ^^^
+	// TODO: (Code review) Good naming vvv
 	public static final double MAX_BELT_SPEED = 0.5;
-
+	
+	// TODO: (Code review) What comment do?
 	// direction reference:
 	// front
 	// left right

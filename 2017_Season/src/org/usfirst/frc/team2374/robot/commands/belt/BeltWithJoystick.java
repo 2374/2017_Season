@@ -5,6 +5,7 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+// TODO: (Code review) ADD JAVADOCS TO ALL CLASSES
 /**
  *
  */
@@ -30,6 +31,9 @@ public class BeltWithJoystick extends Command {
 			belt.setBelt(Belt.MAX_BELT_SPEED);
 		else
 			belt.setBelt(0);
+		// TODO: (Code review) Rumble seems like a good feature, but this snippet
+		// will cause it to rumble all the time if it's at a limit. Conditional
+		// should be if (isAtLimit() && (getLeftBumper() || getRightBumper()))
 		/*
 		 * if (belt.isAtLimit()) Robot.oi.setRumble(true); else
 		 * Robot.oi.setRumble(false);

@@ -7,6 +7,9 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+// TODO: (Code review) COFFEEPAPER
+// TODO: (Code review) This looks like it could benefit from the use of inheritance
+// Most of the code is similar to other DriveTo*.java
 public class DriveToTarget extends Command {
 
 	private double currentDistance, travelDistance;
@@ -16,6 +19,8 @@ public class DriveToTarget extends Command {
 	private final double targetDistance;
 	private final double offset = 1.0;
 
+	// TODO: (Code review) Try to have full variable names when possible, particularly
+	// for function arguments
 	public DriveToTarget(double tar) {
 		requires(drive);
 		requires(camera);

@@ -28,6 +28,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	// TODO: (Code review) This is bad practice going forward. Member variables should be
+	// private and accessed with getters/setters. Then a Robot object should be passed to
+	// anything that needs it. This might be an issue with the library you're using,
+	// in which case there's nothing you can really do about it, but it just feels
+	// so wrong.
 	public static Drivetrain drivetrain;
 	public static Belt belt;
 	public static Grabber grabber;
@@ -50,6 +55,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		camera = new Vision();
 		climber = new Climber();
+		// TODO: (Code review) comments got split? Why one word per line? Kyle says it looks weird
 		chooser.addDefault("Default Auto", new CenterBeltOnTarget()); // this
 																		// must
 		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
@@ -72,6 +78,7 @@ public class Robot extends IterativeRobot {
 
 	}
 
+	// TODO: (Code review) What does this function do?
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
@@ -92,6 +99,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
 
+		// TODO: (Code review) Try not to commit commented-out code
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand

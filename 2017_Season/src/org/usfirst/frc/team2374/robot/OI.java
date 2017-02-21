@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 
 	private Joystick driver;
-	
+
 	private JoystickButton leftBumper;
 	private JoystickButton rightBumper;
 	private JoystickButton buttonX;
@@ -76,7 +76,10 @@ public class OI {
 
 	public boolean getButtonStart() {
 		return buttonStart.get();
+	}
 
+	public int getPOV() {
+		return driver.getPOV(0);
 	}
 
 	public boolean getLeftBumper() {

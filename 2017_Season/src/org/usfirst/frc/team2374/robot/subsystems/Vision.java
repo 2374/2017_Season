@@ -12,21 +12,15 @@ public class Vision extends Subsystem {
 	private NetworkTable tableIn, tableOut;
 	private List<Rectangle> contours;
 
-	private static final int resolutionX = 640;
-	private static final double offset = 4.96; // inches between camera and
-												// center of gear
-	private static final double widthOfTarget = 10.25; // inches
+	private static final int RESOLUTION_X = 640;
+	private static final double OFFSET = 4.96; 
+	// inches between camera and center of gear
+	private static final double WIDTH_OF_TARGET = 10.25; // inches
 
-	private static final double calibrationDistInches = 60;
-	private static final double calibrationWidthInches = 10.25; // contingency:
-																// initialize()
-																// method in
-																// centerBelt
-																// command needs
-																// to be fixed
-																// with this
-	private static final double calibrationWidthPixel = 122;
-	private static final double focalLength = calibrationWidthPixel * calibrationDistInches / calibrationWidthInches;
+	private static final double CALIBRATION_DIST_INCHES = 60;
+	private static final double CALIBRATION_WIDTH_INCHES = 10.25; 
+	private static final double CALIBRATION_WIDTH_PIXELS = 122;
+	private static final double FOCAL_LENGTH = CALIBRATION_WIDTH_PIXELS * CALIBRATION_DIST_INCHES / CALIBRATION_WIDTH_INCHES;
 
 	public Vision() {
 		tableIn = NetworkTable.getTable("vision");
@@ -36,8 +30,6 @@ public class Vision extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void updateContours() {
@@ -80,9 +72,7 @@ public class Vision extends Subsystem {
 	}
 
 	// returns true if there are at least two vision targets
-	// TODO: (Code review) isReal doesn't seem like a good name for this. hasSufficientTargets
-	// or something like that would be more descriptive
-	public boolean isReal() {
+	public boolean twoOrMoreTargets() {
 		return contours.size() >= 2;
 	}
 
@@ -92,10 +82,10 @@ public class Vision extends Subsystem {
 		if (contours.size() < 2)
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
-		int pixToCenter = center - resolutionX / 2;
-		double pixelsPerInch = getTargetWidth() / widthOfTarget; // pixels/inches
+		int pixToCenter = center - RESOLUTION_X / 2;
+		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET; // pixels/inches
 		// DriverStation.reportWarning("pixPerInch " + pixelsPerInch, true);
-		return (-pixToCenter) + offset * pixelsPerInch;
+		return (-pixToCenter) + OFFSET * pixelsPerInch;
 	}
 
 	// will always be positive if its valid
@@ -106,7 +96,7 @@ public class Vision extends Subsystem {
 	}
 
 	public double distanceToTargetInches() {
-		return calibrationWidthInches * focalLength / getTargetWidth();
+		return CALIBRATION_WIDTH_INCHES * FOCAL_LENGTH / getTargetWidth();
 	}
 
 	// will return a positive or negative if valid, but will return the maximum

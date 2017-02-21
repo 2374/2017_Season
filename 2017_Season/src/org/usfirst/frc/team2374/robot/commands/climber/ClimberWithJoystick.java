@@ -5,15 +5,13 @@ import org.usfirst.frc.team2374.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
+
 public class ClimberWithJoystick extends Command {
 
-	Climber climber = Robot.climber;
+	private static final Climber CLIMBER = Robot.climber;
 
 	public ClimberWithJoystick() {
-		requires(climber);
+		requires(CLIMBER);
 	}
 
 	@Override
@@ -23,9 +21,9 @@ public class ClimberWithJoystick extends Command {
 	@Override
 	protected void execute() {
 		if (Robot.oi.getButtonY())
-			climber.start();
+			CLIMBER.start();
 		else
-			climber.stop();
+			CLIMBER.stop();
 	}
 
 	@Override
@@ -35,7 +33,7 @@ public class ClimberWithJoystick extends Command {
 
 	@Override
 	protected void end() {
-		climber.stop();
+		CLIMBER.stop();
 	}
 
 	@Override

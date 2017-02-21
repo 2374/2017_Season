@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
-// TODO: (Code review) CappucinoContract
+
 public class TwoEncoderPIDSource implements PIDSource {
 
 	private Encoder leftEncoder, rightEncoder;
@@ -31,8 +31,6 @@ public class TwoEncoderPIDSource implements PIDSource {
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public double getLeftDistanceInches() {

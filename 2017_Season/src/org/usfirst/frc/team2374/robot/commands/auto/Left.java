@@ -3,8 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.auto;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.CorrectForAngle;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -38,14 +37,14 @@ public class Left extends CommandGroup {
 		// turn right 60 degrees
 		addSequential(new TurnToDegree(60));
 		// do we have a valid target?
-		if (camera.isReal()) {
+		if (camera.twoOrMoreTargets()) {
 			// correct for angle
 			// TODO: (Code review) i += 0 is extraneous. Kyle says you're stupid for doing this
 			// TODO: (Code review) Better way would be while(!isDone) {... if (Math.abs()...){isDone = true;} }
 			// TODO: (Code review) Is there any guarantee that this will ever terminate?
 			for (int i = 0; i < 1; i += 0) {
-				addSequential(new CorrectForAngle(1));
-				addSequential(new DriveToInchLong(correctionInches));
+				//addSequential(new CorrectForAngle(1));
+				//addSequential(new DriveToInch(correctionInches));
 				// TODO: (Code review) What is this magic number 20? Add a comment
 				if (Math.abs(camera.compareAreas()) <= 20)
 					i++;
@@ -57,11 +56,11 @@ public class Left extends CommandGroup {
 			// release gear
 			// addSequential(new OpenGrabber());
 			// back up
-			addSequential(new DriveToInchLong(-2 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(-2 * INCHES_TO_FEET));
 			// turn left
 			addSequential(new TurnToDegree(-60));
 			// drive to other end of field, close grabber and center belt
-			addParallel(new DriveToInchLong(feetToEnd * INCHES_TO_FEET));
+			//addParallel(new DriveToInch(feetToEnd * INCHES_TO_FEET));
 			// addParallel(new CloseGrabber());
 			addSequential(new MoveBeltToPoint(0));
 		}
@@ -69,7 +68,7 @@ public class Left extends CommandGroup {
 		// same general area as the target
 		else {
 			// addSequential(new TurnToDegree(0));
-			addSequential(new DriveToInchLong(3 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(3 * INCHES_TO_FEET));
 		}
 	}
 }

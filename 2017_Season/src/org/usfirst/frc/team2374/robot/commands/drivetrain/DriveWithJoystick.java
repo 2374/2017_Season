@@ -1,13 +1,16 @@
 package org.usfirst.frc.team2374.robot.commands.drivetrain;
 
 import org.usfirst.frc.team2374.robot.Robot;
+import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithJoystick extends Command {
-
+	
+	private static final Drivetrain DRIVE = Robot.drivetrain;
+	
 	public DriveWithJoystick() {
-		requires(Robot.drivetrain);
+		requires(DRIVE);
 	}
 
 	// Called just before this Command runs the first time
@@ -21,16 +24,11 @@ public class DriveWithJoystick extends Command {
 		double leftTrigger = Robot.oi.getLeftTrigger();
 		double rightTrigger = Robot.oi.getRightTrigger();
 		if (rightTrigger != 0)
-			Robot.drivetrain.arcadeDrive(rightTrigger, 0);
+			DRIVE.arcadeDrive(rightTrigger, 0);
 		else if (leftTrigger != 0)
-			Robot.drivetrain.arcadeDrive(-leftTrigger, 0);
-		else {
-			// TODO: (Code review) Don't bother creating variables for this, just pass
-			// getDriver*Y() directly to tankDrive()
-			double leftJoy = Robot.oi.getDriverLeftY();
-			double rightJoy = Robot.oi.getDriverRightY();
-			Robot.drivetrain.tankDrive(leftJoy, rightJoy);
-		}
+			DRIVE.arcadeDrive(-leftTrigger, 0);
+		else 
+			DRIVE.tankDrive(Robot.oi.getDriverLeftY(), Robot.oi.getDriverRightY());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

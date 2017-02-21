@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// TODO: (Code review) AmericanoArchive
+
 public class Drivetrain extends Subsystem {
 
 	private CANTalon masterLeft, masterRight, fLeft, fRight, bLeft, bRight;
@@ -26,46 +26,48 @@ public class Drivetrain extends Subsystem {
 	private Encoder rightEncoder;
 	private AHRS navX;
 
-	private PIDController gyroPID;
-	private static final double gyroPS = 0.07;
-	private static final double gyroIS = 0.0002;
-	private static final double gyroDS = 0.001;
-
-	private static final double gyroPL = 0.07;
-	private static final double gyroIL = 0.001;
-	private static final double gyroDL = 0.001;
-
-	private static final double gyroPT = 0.007;
-	private static final double gyroIT = 0.00045;
-	private static final double gyroDT = 0.003;
-
-	// TODO: (Code review) Move non-constants either before or after constant declarations
-	public PIDController drivePID;
 	private TwoEncoderPIDSource driveIn;
-	private static final double drivePS = 0.1;
-	private static final double driveIS = 0.0001;
-	private static final double driveDS = 0;
+	private PIDController drivePID;
+	
+	private PIDController gyroPID;
+	
+	private static final double GYRO_PS = 0.07;
+	private static final double GYRO_IS = 0.0002;
+	private static final double GYRO_DS = 0.001;
 
-	private static final double drivePL = 0.017;
-	private static final double driveIL = 0.0005;
-	private static final double driveDL = 0;
+	private static final double GYRO_PL = 0.07;
+	private static final double GYRO_IL = 0.001;
+	private static final double GYRO_DL = 0.001;
 
-	public static final double MAX_AUTO_SPEED = 0.75;
+	private static final double GYRO_PT = 0.007;
+	private static final double GYRO_IT = 0.00045;
+	private static final double GYRO_DT = 0.003;
+
+	private static final double DRIVE_PS = 0.1;
+	private static final double DRIVE_IS = 0.0001;
+	private static final double DRIVE_DS = 0;
+
+	private static final double DRIVE_PL = 0.017;
+	private static final double DRIVE_IL = 0.0005;
+	private static final double DRIVE_DL = 0;
+
 	private static final double WHEEL_DIAMETER = 6; // inches
 	private static final double EC_PER_REV_LEFT = 352.25;
 	private static final double EC_PER_REV_RIGHT = 358.98;
+	
+	private static final double MAX_AUTO_SPEED = 0.75;
 
 	public Drivetrain() {
 
-		masterLeft = new CANTalon(RobotMap.talonDriveMasterLeft);
-		masterRight = new CANTalon(RobotMap.talonDriveMasterRight);
-		fLeft = new CANTalon(RobotMap.talonDriveFrontLeft);
-		fRight = new CANTalon(RobotMap.talonDriveFrontRight);
-		bLeft = new CANTalon(RobotMap.talonDriveBackLeft);
-		bRight = new CANTalon(RobotMap.talonDriveBackRight);
+		masterLeft = new CANTalon(RobotMap.TALON_DRIVE_MASTER_LEFT);
+		masterRight = new CANTalon(RobotMap.TALON_DRIVE_MASTER_RIGHT);
+		fLeft = new CANTalon(RobotMap.TALON_DRIVE_FRONT_LEFT);
+		fRight = new CANTalon(RobotMap.TALON_DRIVE_FRONT_RIGHT);
+		bLeft = new CANTalon(RobotMap.TALON_DRIVE_BACK_LEFT);
+		bRight = new CANTalon(RobotMap.TALON_DRIVE_BACK_RIGHT);
 
-		leftEncoder = new Encoder(RobotMap.encoderDriveLA, RobotMap.encoderDriveLB);
-		rightEncoder = new Encoder(RobotMap.encoderDriveRA, RobotMap.encoderDriveRB);
+		leftEncoder = new Encoder(RobotMap.ENCODER_DRIVE_LA, RobotMap.ENCODER_DRIVE_LB);
+		rightEncoder = new Encoder(RobotMap.ENCODER_DRIVE_RA, RobotMap.ENCODER_DRIVE_RB);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
@@ -73,22 +75,20 @@ public class Drivetrain extends Subsystem {
 		fRight.changeControlMode(TalonControlMode.Follower);
 		bLeft.changeControlMode(TalonControlMode.Follower);
 		bRight.changeControlMode(TalonControlMode.Follower);
-		fLeft.set(RobotMap.talonDriveMasterLeft);
-		fRight.set(RobotMap.talonDriveMasterRight);
-		bLeft.set(RobotMap.talonDriveMasterLeft);
-		bRight.set(RobotMap.talonDriveMasterRight);
+		fLeft.set(RobotMap.TALON_DRIVE_MASTER_LEFT);
+		fRight.set(RobotMap.TALON_DRIVE_MASTER_RIGHT);
+		bLeft.set(RobotMap.TALON_DRIVE_MASTER_LEFT);
+		bRight.set(RobotMap.TALON_DRIVE_MASTER_RIGHT);
 
 		masterLeft.setInverted(true);
 		masterRight.setInverted(true);
 
 		robotDrive = new RobotDrive(masterLeft, masterRight);
-		// TODO: (Code review) Uhhhhhh... Seems unsafe
 		robotDrive.setSafetyEnabled(false);
-		// robotDrive.setExpiration(0.3);
 
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyroPID = new PIDController(gyroPL, gyroIL, gyroDL, navX, new PIDOutput() {
+		gyroPID = new PIDController(GYRO_PL, GYRO_IL, GYRO_DL, navX, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
 			}
@@ -98,42 +98,32 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setContinuous(true);
 
 		driveIn = new TwoEncoderPIDSource(leftEncoder, rightEncoder);
-		drivePID = new PIDController(drivePL, driveIL, driveDL, driveIn, new PIDOutput() {
+		drivePID = new PIDController(DRIVE_PL, DRIVE_IL, DRIVE_DL, driveIn, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
 			}
 		});
 		drivePID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
 		drivePID.setContinuous(false);
-
-		/*
-		 * cameraIn = new CameraPIDSource(); cameraPID = new
-		 * PIDController(cameraP, cameraI, cameraD, cameraIn, new PIDOutput() {
-		 * 
-		 * @Override public void pidWrite(double arg0) { } });
-		 * cameraPID.setInputRange(-100.0, 100.0);
-		 * cameraPID.setOutputRange(-MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-		 */
 	}
 
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new DriveWithJoystick());
-		// setDefaultCommand(new DrivetrainPID());
 	}
 
 	public void setShortPID() {
-		drivePID.setPID(drivePS, driveIS, driveDS);
-		gyroPID.setPID(gyroPS, gyroIS, gyroDS);
+		drivePID.setPID(DRIVE_PS, DRIVE_IS, DRIVE_DS);
+		gyroPID.setPID(GYRO_PS, GYRO_IS, GYRO_DS);
 	}
 
 	public void setLongPID() {
-		drivePID.setPID(drivePL, driveIL, driveDL);
-		gyroPID.setPID(gyroPL, gyroIL, gyroDL);
+		drivePID.setPID(DRIVE_PL, DRIVE_IL, DRIVE_DL);
+		gyroPID.setPID(GYRO_PL, GYRO_IL, GYRO_DL);
 	}
 
 	public void setTurnPID() {
-		gyroPID.setPID(gyroPT, gyroIT, gyroDT);
+		gyroPID.setPID(GYRO_PT, GYRO_IT, GYRO_DT);
 	}
 
 	public void tankDrive(double left, double right) {
@@ -161,8 +151,6 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void enableDrivePID(boolean enable) {
-		// TODO: (Code review) Can be made one line with:
-		// enable ? drivePID.enable() : drivePID.reset();
 		if (enable)
 			drivePID.enable();
 		else
@@ -170,20 +158,25 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void enableGyroPID(boolean enable) {
-		// TODO: (Code review) Same comment as enableDrivePID
 		if (enable)
 			gyroPID.enable();
 		else
 			gyroPID.reset();
 	}
 
-	public void resetEncoders() {
+	public void resetEncoders(boolean waitToReset) {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		while (waitToReset && leftEncoder.getDistance() > 100 || rightEncoder.getDistance() > 100) {
+			// waits for the delay until the encoders are truly reset
+		}
 	}
 
-	public void resetGyro() {
+	public void resetGyro(boolean waitToReset) {
 		navX.reset();
+		while (waitToReset && Math.abs(navX.getYaw()) > 2) {
+			// waits for the delay until the gyro is truly reset
+		}
 	}
 
 	public double getAngle() {

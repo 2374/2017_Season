@@ -2,8 +2,8 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchShort;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
@@ -28,11 +28,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	// TODO: (Code review) This is bad practice going forward. Member variables should be
-	// private and accessed with getters/setters. Then a Robot object should be passed to
-	// anything that needs it. This might be an issue with the library you're using,
-	// in which case there's nothing you can really do about it, but it just feels
-	// so wrong.
 	public static Drivetrain drivetrain;
 	public static Belt belt;
 	public static Grabber grabber;
@@ -55,16 +50,12 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		camera = new Vision();
 		climber = new Climber();
-		// TODO: (Code review) comments got split? Why one word per line? Kyle says it looks weird
-		chooser.addDefault("Default Auto", new CenterBeltOnTarget()); // this
-																		// must
+		chooser.addDefault("Default Auto", new CenterBeltOnTarget());
+		//This must be named "Default Auto"
 		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
 		chooser.addObject("DriveToTarget", new DriveToTarget(30));
-		chooser.addObject("DriveToInch20", new DriveToInchShort(20));
-		chooser.addObject("DriveToInch77", new DriveToInchLong(77));
-		// be named
-		// "Default
-		// Auto"
+		chooser.addObject("DriveToInch20", new DriveToInch(20, DriveToType.SHORT));
+		chooser.addObject("DriveToInch77", new DriveToInch(77, DriveToType.LONG));
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
@@ -78,7 +69,6 @@ public class Robot extends IterativeRobot {
 
 	}
 
-	// TODO: (Code review) What does this function do?
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
@@ -133,8 +123,6 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		Robot.drivetrain.resetEncoders();
-		Robot.belt.resetEncoder();
 	}
 
 	/**

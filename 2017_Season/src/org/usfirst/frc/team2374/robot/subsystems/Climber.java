@@ -7,10 +7,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-// TODO: (Code review) LatteLace
-/**
- *
- */
+
 public class Climber extends Subsystem {
 
 	private SpeedController climberController;
@@ -18,7 +15,7 @@ public class Climber extends Subsystem {
 	private static final double CLIMBER_SPEED = 1.0;
 
 	public Climber() {
-		climberController = new Talon(RobotMap.speedControllerClimber);
+		climberController = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER);
 		climberController.setInverted(true);
 	}
 

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// TODO: (Code review) FrappachinoFile
+
 public class Grabber extends Subsystem {
 
 	private SpeedController grabberController;
@@ -23,9 +23,9 @@ public class Grabber extends Subsystem {
 	 * return true
 	 */
 	public Grabber() {
-		grabberController = new Spark(RobotMap.speedControllerGrabber);
-		openLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberOpen);
-		closeLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberClose);
+		grabberController = new Spark(RobotMap.SPEED_CONTROLLER_GRABBER);
+		openLimitSwitch = new DigitalInput(RobotMap.LIMIT_SWITCH_GRABBER_OPEN);
+		closeLimitSwitch = new DigitalInput(RobotMap.LIMIT_SWITCH_GRABBER_CLOSE);
 	}
 
 	@Override

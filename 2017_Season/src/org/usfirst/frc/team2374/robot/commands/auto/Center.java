@@ -3,7 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.auto;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -31,7 +31,7 @@ public class Center extends CommandGroup {
 		requires(grabber);
 
 		// do we have a valid target?
-		if (camera.isReal()) {
+		if (camera.twoOrMoreTargets()) {
 			// align gear with peg
 			addSequential(new CenterBeltOnTarget());
 			// drive to target
@@ -39,30 +39,30 @@ public class Center extends CommandGroup {
 			double currentDistance = camera.distanceToTargetInches();
 			// TODO: (Code review) I think you mean travelDistance (right click > refactor)
 			double tavelDistance = currentDistance - targetDistance;
-			addSequential(new DriveToInchLong(tavelDistance));
+			//addSequential(new DriveToInch(tavelDistance));
 			// release gear
 			// addSequential(new OpenGrabber());
 			// back up
-			addSequential(new DriveToInchLong(-2 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(-2 * INCHES_TO_FEET));
 			// turn right
 			addSequential(new TurnToDegree(90));
 			// drive forward
-			addSequential(new DriveToInchLong(3 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(3 * INCHES_TO_FEET));
 			// turn left
 			addSequential(new TurnToDegree(-90));
 			// drive to other end of field, close grabber and center belt
-			addParallel(new DriveToInchLong(feetToEnd * INCHES_TO_FEET));
+			//addParallel(new DriveToInch(feetToEnd * INCHES_TO_FEET));
 			// addParallel(new CloseGrabber());
 			addSequential(new MoveBeltToPoint(0));
 		}
 		// if not just cross the base line, don't drop the gear, and stay in the
 		// same general area as the target
 		else {
-			addSequential(new DriveToInchLong(1 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(1 * INCHES_TO_FEET));
 			addSequential(new TurnToDegree(90));
-			addSequential(new DriveToInchLong(3 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(3 * INCHES_TO_FEET));
 			addSequential(new TurnToDegree(-90));
-			addSequential(new DriveToInchLong(6 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(6 * INCHES_TO_FEET));
 		}
 	}
 }

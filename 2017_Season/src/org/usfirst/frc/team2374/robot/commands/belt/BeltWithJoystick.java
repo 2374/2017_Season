@@ -5,16 +5,13 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-// TODO: (Code review) ADD JAVADOCS TO ALL CLASSES
-/**
- *
- */
+
 public class BeltWithJoystick extends Command {
 
-	Belt belt = Robot.belt;
+	private static final Belt BELT = Robot.belt;
 
 	public BeltWithJoystick() {
-		requires(belt);
+		requires(BELT);
 	}
 
 	// Called just before this Command runs the first time
@@ -26,18 +23,16 @@ public class BeltWithJoystick extends Command {
 	@Override
 	protected void execute() {
 		if (Robot.oi.getLeftBumper())
-			belt.setBelt(-Belt.MAX_BELT_SPEED);
+			BELT.setBelt(-Belt.MAX_BELT_SPEED);
 		else if (Robot.oi.getRightBumper())
-			belt.setBelt(Belt.MAX_BELT_SPEED);
+			BELT.setBelt(Belt.MAX_BELT_SPEED);
 		else
-			belt.setBelt(0);
-		// TODO: (Code review) Rumble seems like a good feature, but this snippet
-		// will cause it to rumble all the time if it's at a limit. Conditional
-		// should be if (isAtLimit() && (getLeftBumper() || getRightBumper()))
-		/*
-		 * if (belt.isAtLimit()) Robot.oi.setRumble(true); else
-		 * Robot.oi.setRumble(false);
-		 */
+			BELT.setBelt(0);
+		if (BELT.isAtLimit() && (Robot.oi.getLeftBumper() || Robot.oi.getRightBumper()))
+			Robot.oi.setRumble(true);
+		else
+			Robot.oi.setRumble(false);
+		 
 
 	}
 
@@ -50,7 +45,7 @@ public class BeltWithJoystick extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		belt.setBelt(0);
+		BELT.setBelt(0);
 	}
 
 	// Called when another command which requires one or more of the same

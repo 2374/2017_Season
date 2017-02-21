@@ -2,49 +2,46 @@ package org.usfirst.frc.team2374.robot;
 
 public class RobotMap {
 
-	// TODO: (Code review) Constants are usually all caps and underscores
-	// e.g. EXAMPLE_CONSTANT to help distinguish them from variables
-	// TODO: (Code review) Why are some set as final, and others not?
 	// Driver Station USB
-	public static int driverJoy = 0;
+	public static final int DRIVER_JOY = 0;
 
 	// Razer Sabertooth
-	public static int rsLeftAxisY = 1;
-	public static int rsRightAxisY = 5;
-	public static int rsLeftTrigger = 2;
-	public static int rsRightTrigger = 3;
-	public static int rsLeftBumper = 5;
-	public static int rsRightBumper = 6;
-	public static int rsButtonX = 3;
-	public static int rsButtonA = 1;
-	public static int rsButtonY = 4;
-	public static int rsButtonB = 2;
-	public static final int rsButtonBack = 7;
-	public static final int rsButtonStart = 8;
+	public static final int RS_LEFT_AXIS_Y = 1;
+	public static final int RS_RIGHT_AXIS_Y = 5;
+	public static final int RS_LEFT_TRIGGER = 2;
+	public static final int RS_RIGHT_TRIGGER = 3;
+	public static final int RS_LEFT_BUMPER = 5;
+	public static final int RS_RIGHT_BUMPER = 6;
+	public static final int RS_BUTTON_X = 3;
+	public static final int RS_BUTTON_A = 1;
+	public static final int RS_BUTTON_Y = 4;
+	public static final int RS_BUTTON_B = 2;
+	public static final int RS_BUTTON_BACK = 7;
+	public static final int RS_BUTTON_START = 8;
 
 	// CAN
-	public static final int talonDriveMasterLeft = 1;
-	public static final int talonDriveMasterRight = 2;
-	public static final int talonDriveFrontLeft = 4;
-	public static final int talonDriveFrontRight = 3;
-	public static final int talonDriveBackLeft = 6;
-	public static final int talonDriveBackRight = 5;
+	public static final int TALON_DRIVE_MASTER_LEFT = 1;
+	public static final int TALON_DRIVE_MASTER_RIGHT = 2;
+	public static final int TALON_DRIVE_FRONT_LEFT = 4;
+	public static final int TALON_DRIVE_FRONT_RIGHT = 3;
+	public static final int TALON_DRIVE_BACK_LEFT = 6;
+	public static final int TALON_DRIVE_BACK_RIGHT = 5;
 
 	// PWM
-	public static final int speedControllerBelt = 4;
-	public static final int speedControllerGrabber = 2;
-	public static final int speedControllerClimber = 5;
+	public static final int SPEED_CONTROLLER_BELT = 4;
+	public static final int SPEED_CONTROLLER_GRABBER = 2;
+	public static final int SPEED_CONTROLLER_CLIMBER = 5;
 
 	// DIO
-	public static final int encoderBeltA = 4;
-	public static final int encoderBeltB = 5;
-	public static final int encoderDriveLA = 0;
-	public static final int encoderDriveLB = 1;
-	public static final int encoderDriveRA = 2;
-	public static final int encoderDriveRB = 3;
-	public static final int limitSwitchBeltLeft = 9;
-	public static final int limitSwitchBeltRight = 9;
-	public static final int limitSwitchGrabberOpen = 7;
-	public static final int limitSwitchGrabberClose = 6;
+	public static final int ENCODER_BELT_A = 4;
+	public static final int ENCODER_BELT_B = 5;
+	public static final int ENCODER_DRIVE_LA = 0;
+	public static final int ENCODER_DRIVE_LB = 1;
+	public static final int ENCODER_DRIVE_RA = 2;
+	public static final int ENCODER_DRIVE_RB = 3;
+	public static final int LIMIT_SWITCH_BELT_LEFT = 9;
+	public static final int LIMIT_SWITCH_BELT_RIGHT = 9;
+	public static final int LIMIT_SWITCH_GRABBER_OPEN = 7;
+	public static final int LIMIT_SWITCH_GRABBER_CLOSE = 6;
 
 }

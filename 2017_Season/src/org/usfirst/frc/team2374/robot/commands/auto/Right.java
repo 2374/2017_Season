@@ -3,8 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.auto;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.CorrectForAngle;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInchLong;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -35,14 +34,14 @@ public class Right extends CommandGroup {
 		requires(grabber);
 
 		// drive forward
-		addSequential(new DriveToInchLong(inchesToTarget));
+		//addSequential(new DriveToInch(inchesToTarget));
 		// turn left 60 degrees
 		addSequential(new TurnToDegree(-60));
-		if (camera.isReal()) {
+		if (camera.twoOrMoreTargets()) {
 			// correct for angle
 			for (int i = 0; i < 1; i += 0) {
-				addSequential(new CorrectForAngle(1));
-				addSequential(new DriveToInchLong(correctionInches));
+				//addSequential(new CorrectForAngle(1));
+				//addSequential(new DriveToInch(correctionInches));
 				if (Math.abs(camera.compareAreas()) <= 20)
 					i++;
 			}
@@ -53,11 +52,11 @@ public class Right extends CommandGroup {
 			// release gear
 			// addSequential(new OpenGrabber());
 			// back up
-			addSequential(new DriveToInchLong(-2 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(-2 * INCHES_TO_FEET));
 			// turn left
 			addSequential(new TurnToDegree(60));
 			// drive to other end of field, close grabber and center belt
-			addParallel(new DriveToInchLong(feetToEnd * INCHES_TO_FEET));
+			//addParallel(new DriveToInch(feetToEnd * INCHES_TO_FEET));
 			// addParallel(new CloseGrabber());
 			addSequential(new MoveBeltToPoint(0));
 		}
@@ -65,7 +64,7 @@ public class Right extends CommandGroup {
 		// same general area as the target
 		else {
 			addSequential(new TurnToDegree(0));
-			addSequential(new DriveToInchLong(3 * INCHES_TO_FEET));
+			//addSequential(new DriveToInch(3 * INCHES_TO_FEET));
 		}
 	}
 }

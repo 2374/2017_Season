@@ -14,26 +14,26 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 
-	Joystick driver;
-	JoystickButton leftBumper;
-	JoystickButton rightBumper;
-	JoystickButton buttonX;
-	JoystickButton buttonA;
-	JoystickButton buttonY;
-	JoystickButton buttonB;
-	JoystickButton buttonBack;
-	JoystickButton buttonStart;
+	private Joystick driver;
+	private JoystickButton leftBumper;
+	private JoystickButton rightBumper;
+	private JoystickButton buttonX;
+	private JoystickButton buttonA;
+	private JoystickButton buttonY;
+	private JoystickButton buttonB;
+	private JoystickButton buttonBack;
+	private JoystickButton buttonStart;
 
 	public OI() {
-		driver = new Joystick(RobotMap.driverJoy);
-		leftBumper = new JoystickButton(driver, RobotMap.rsLeftBumper);
-		rightBumper = new JoystickButton(driver, RobotMap.rsRightBumper);
-		buttonX = new JoystickButton(driver, RobotMap.rsButtonX);
-		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
-		buttonY = new JoystickButton(driver, RobotMap.rsButtonY);
-		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
-		buttonBack = new JoystickButton(driver, RobotMap.rsButtonBack);
-		buttonStart = new JoystickButton(driver, RobotMap.rsButtonStart);
+		driver = new Joystick(RobotMap.DRIVER_JOY);
+		leftBumper = new JoystickButton(driver, RobotMap.RS_LEFT_BUMPER);
+		rightBumper = new JoystickButton(driver, RobotMap.RS_RIGHT_BUMPER);
+		buttonX = new JoystickButton(driver, RobotMap.RS_BUTTON_X);
+		buttonA = new JoystickButton(driver, RobotMap.RS_BUTTON_A);
+		buttonY = new JoystickButton(driver, RobotMap.RS_BUTTON_Y);
+		buttonB = new JoystickButton(driver, RobotMap.RS_BUTTON_B);
+		buttonBack = new JoystickButton(driver, RobotMap.RS_BUTTON_BACK);
+		buttonStart = new JoystickButton(driver, RobotMap.RS_BUTTON_START);
 
 		buttonB.whenPressed(new MoveBeltToPoint(0));
 		buttonA.whenPressed(new OpenGrabber());
@@ -41,39 +41,39 @@ public class OI {
 	}
 
 	public double getDriverLeftY() {
-		return driver.getRawAxis(RobotMap.rsLeftAxisY);
+		return driver.getRawAxis(RobotMap.RS_LEFT_AXIS_Y);
 	}
 
 	public double getDriverRightY() {
-		return driver.getRawAxis(RobotMap.rsRightAxisY);
+		return driver.getRawAxis(RobotMap.RS_RIGHT_AXIS_Y);
 	}
 
 	public double getLeftTrigger() {
-		return quadraticScale(driver.getRawAxis(RobotMap.rsLeftTrigger));
+		return quadraticScale(driver.getRawAxis(RobotMap.RS_LEFT_TRIGGER));
 	}
 
 	public double getRightTrigger() {
-		return quadraticScale(driver.getRawAxis(RobotMap.rsRightTrigger));
+		return quadraticScale(driver.getRawAxis(RobotMap.RS_RIGHT_TRIGGER));
 	}
 
 	public boolean getButtonX() {
-		return driver.getRawButton(RobotMap.rsButtonX);
+		return driver.getRawButton(RobotMap.RS_BUTTON_X);
 	}
 
 	public boolean getButtonA() {
-		return driver.getRawButton(RobotMap.rsButtonA);
+		return driver.getRawButton(RobotMap.RS_BUTTON_A);
 	}
 
 	public boolean getButtonY() {
-		return driver.getRawButton(RobotMap.rsButtonY);
+		return driver.getRawButton(RobotMap.RS_BUTTON_Y);
 	}
 
 	public boolean getButtonBack() {
-		return driver.getRawButton(RobotMap.rsButtonBack);
+		return driver.getRawButton(RobotMap.RS_BUTTON_BACK);
 	}
 
 	public boolean getButtonStart() {
-		return driver.getRawButton(RobotMap.rsButtonStart);
+		return driver.getRawButton(RobotMap.RS_BUTTON_START);
 
 	}
 

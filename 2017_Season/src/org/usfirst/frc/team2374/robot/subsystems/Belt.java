@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// TODO: (Code review) MochaPulp
+
 public class Belt extends Subsystem {
 
 	private SpeedController beltController;
@@ -21,28 +21,22 @@ public class Belt extends Subsystem {
 	private DigitalInput leftLimitSwitch, rightLimitSwitch;
 
 	private PIDController beltPID;
-	private static final double beltP = 0.1;
-	private static final double beltI = 0.0001;
-	private static final double beltD = 0;
-	// TODO: (Code review) Bad naming ^^^
-	// TODO: (Code review) Good naming vvv
-	public static final double MAX_BELT_SPEED = 0.5;
 	
-	// TODO: (Code review) What comment do?
-	// direction reference:
-	// front
-	// left right
-	// back
+	private static final double BELT_P = 0.1;
+	private static final double BELT_I = 0.0001;
+	private static final double BELT_D = 0;
+	
+	public static final double MAX_BELT_SPEED = 0.5;
 
 	public Belt() {
-		beltController = new Spark(RobotMap.speedControllerBelt);
+		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);
 		beltController.setInverted(true);
-		beltEncoder = new Encoder(RobotMap.encoderBeltA, RobotMap.encoderBeltB);
+		beltEncoder = new Encoder(RobotMap.ENCODER_BELT_A, RobotMap.ENCODER_BELT_B);
 		// leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
 		// rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);
 
 		beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		beltPID = new PIDController(beltP, beltI, beltD, beltEncoder, new PIDOutput() {
+		beltPID = new PIDController(BELT_P, BELT_I, BELT_D, beltEncoder, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
 			}

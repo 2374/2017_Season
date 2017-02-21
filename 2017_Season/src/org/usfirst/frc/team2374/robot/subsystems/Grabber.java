@@ -19,9 +19,8 @@ public class Grabber extends Subsystem {
 
 	public Grabber() {
 		grabberController = new Spark(RobotMap.speedControllerGrabber);
-		// openLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberOpen);
-		// closeLimitSwitch = new
-		// DigitalInput(RobotMap.limitSwitchGrabberClose);
+		openLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberOpen);
+		closeLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberClose);
 	}
 
 	@Override

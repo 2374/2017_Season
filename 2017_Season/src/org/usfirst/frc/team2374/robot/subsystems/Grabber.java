@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
 import org.usfirst.frc.team2374.robot.RobotMap;
+import org.usfirst.frc.team2374.robot.commands.grabber.GrabberWithJoystick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
@@ -17,6 +18,10 @@ public class Grabber extends Subsystem {
 
 	private static final double MAX_GRABBER_SPEED = 0.25;
 
+	/*
+	 * When the limit switches are open, which is the default condition, they
+	 * return true
+	 */
 	public Grabber() {
 		grabberController = new Spark(RobotMap.speedControllerGrabber);
 		openLimitSwitch = new DigitalInput(RobotMap.limitSwitchGrabberOpen);
@@ -25,6 +30,7 @@ public class Grabber extends Subsystem {
 
 	@Override
 	public void initDefaultCommand() {
+		setDefaultCommand(new GrabberWithJoystick());
 	}
 
 	public void open() {
@@ -40,15 +46,16 @@ public class Grabber extends Subsystem {
 	}
 
 	public boolean isOpen() {
-		return openLimitSwitch.get();
+		return !openLimitSwitch.get();
 	}
 
 	public boolean isClose() {
-		return closeLimitSwitch.get();
+		return !closeLimitSwitch.get();
 	}
 
 	public void toSmartDashboard() {
-		SmartDashboard.putNumber("grabber_speed", grabberController.get());
+		SmartDashboard.putBoolean("grabber_open", isOpen());
+		SmartDashboard.putBoolean("grabber_close", isClose());
 	}
 
 }

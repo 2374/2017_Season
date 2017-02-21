@@ -19,6 +19,8 @@ public class RobotMap {
 	public static int rsButtonA = 1;
 	public static int rsButtonY = 4;
 	public static int rsButtonB = 2;
+	public static final int rsButtonBack = 7;
+	public static final int rsButtonStart = 8;
 
 	// CAN
 	public static final int talonDriveMasterLeft = 1;
@@ -42,7 +44,7 @@ public class RobotMap {
 	public static final int encoderDriveRB = 3;
 	public static final int limitSwitchBeltLeft = 9;
 	public static final int limitSwitchBeltRight = 9;
-	public static final int limitSwitchGrabberOpen = 9;
-	public static final int limitSwitchGrabberClose = 9;
+	public static final int limitSwitchGrabberOpen = 7;
+	public static final int limitSwitchGrabberClose = 6;
 
 }

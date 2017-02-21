@@ -21,6 +21,8 @@ public class OI {
 	JoystickButton buttonA;
 	JoystickButton buttonY;
 	JoystickButton buttonB;
+	JoystickButton buttonBack;
+	JoystickButton buttonStart;
 
 	public OI() {
 		driver = new Joystick(RobotMap.driverJoy);
@@ -30,6 +32,8 @@ public class OI {
 		buttonA = new JoystickButton(driver, RobotMap.rsButtonA);
 		buttonY = new JoystickButton(driver, RobotMap.rsButtonY);
 		buttonB = new JoystickButton(driver, RobotMap.rsButtonB);
+		buttonBack = new JoystickButton(driver, RobotMap.rsButtonBack);
+		buttonStart = new JoystickButton(driver, RobotMap.rsButtonStart);
 
 		buttonB.whenPressed(new MoveBeltToPoint(0));
 		buttonA.whenPressed(new OpenGrabber());
@@ -62,6 +66,15 @@ public class OI {
 
 	public boolean getButtonY() {
 		return driver.getRawButton(RobotMap.rsButtonY);
+	}
+
+	public boolean getButtonBack() {
+		return driver.getRawButton(RobotMap.rsButtonBack);
+	}
+
+	public boolean getButtonStart() {
+		return driver.getRawButton(RobotMap.rsButtonStart);
+
 	}
 
 	public boolean getLeftBumper() {

@@ -53,6 +53,10 @@ public class Grabber extends Subsystem {
 		return !closeLimitSwitch.get();
 	}
 
+	public boolean isAtLimit() {
+		return isClose() || isOpen();
+	}
+
 	public void toSmartDashboard() {
 		SmartDashboard.putBoolean("grabber_open", isOpen());
 		SmartDashboard.putBoolean("grabber_close", isClose());

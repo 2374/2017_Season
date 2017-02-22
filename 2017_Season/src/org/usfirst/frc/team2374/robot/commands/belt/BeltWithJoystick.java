@@ -5,7 +5,6 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
 public class BeltWithJoystick extends Command {
 
 	private static final Belt BELT = Robot.belt;
@@ -28,11 +27,11 @@ public class BeltWithJoystick extends Command {
 			BELT.setBelt(Belt.MAX_BELT_SPEED);
 		else
 			BELT.setBelt(0);
-		if (BELT.isAtLimit() && (Robot.oi.getLeftBumper() || Robot.oi.getRightBumper()))
-			Robot.oi.setRumble(true);
-		else
-			Robot.oi.setRumble(false);
-		 
+		/*
+		 * waiting to be implemented if (BELT.isAtLimit() &&
+		 * (Robot.oi.getLeftBumper() || Robot.oi.getRightBumper()))
+		 * Robot.oi.setRumble(true); else Robot.oi.setRumble(false);
+		 */
 
 	}
 

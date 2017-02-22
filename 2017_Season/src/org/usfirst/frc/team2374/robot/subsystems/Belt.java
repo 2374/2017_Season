@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class Belt extends Subsystem {
 
 	private SpeedController beltController;
@@ -21,11 +20,11 @@ public class Belt extends Subsystem {
 	private DigitalInput leftLimitSwitch, rightLimitSwitch;
 
 	private PIDController beltPID;
-	
+
 	private static final double BELT_P = 0.1;
 	private static final double BELT_I = 0.0001;
 	private static final double BELT_D = 0;
-	
+
 	public static final double MAX_BELT_SPEED = 0.5;
 
 	public Belt() {

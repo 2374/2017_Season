@@ -21,17 +21,19 @@ public class GrabberWithJoystick extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Robot.grabber.isAtLimit() && Robot.oi.getButtonBack() || Robot.oi.getButtonStart())
-			Robot.oi.setRumble(true);
-		else {
-			Robot.oi.setRumble(false);
-		if (!Robot.grabber.isClose() && Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
-			Robot.grabber.close();
-		else if (!Robot.grabber.isOpen() && Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
-			Robot.grabber.open();
-		else
+		if (Robot.grabber.isClosed() && Robot.oi.getButtonBack()
+				|| Robot.grabber.isOpened() && Robot.oi.getButtonStart()) {
 			Robot.grabber.stop();
-	}
+			Robot.oi.setRumble(true);
+		} else {
+			Robot.oi.setRumble(false);
+			if (!Robot.grabber.isClosed() && Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
+				Robot.grabber.close();
+			else if (!Robot.grabber.isOpened() && Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
+				Robot.grabber.open();
+			else
+				Robot.grabber.stop();
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

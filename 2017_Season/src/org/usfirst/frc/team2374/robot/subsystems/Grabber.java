@@ -45,21 +45,21 @@ public class Grabber extends Subsystem {
 		grabberController.set(0);
 	}
 
-	public boolean isOpen() {
+	public boolean isOpened() {
 		return !openLimitSwitch.get();
 	}
 
-	public boolean isClose() {
+	public boolean isClosed() {
 		return !closeLimitSwitch.get();
 	}
 
 	public boolean isAtLimit() {
-		return isClose() || isOpen();
+		return isClosed() || isOpened();
 	}
 
 	public void toSmartDashboard() {
-		SmartDashboard.putBoolean("grabber_open", isOpen());
-		SmartDashboard.putBoolean("grabber_close", isClose());
+		SmartDashboard.putBoolean("grabber_open", isOpened());
+		SmartDashboard.putBoolean("grabber_close", isClosed());
 	}
 
 }

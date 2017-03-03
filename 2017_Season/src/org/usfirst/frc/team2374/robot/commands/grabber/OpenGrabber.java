@@ -28,7 +28,7 @@ public class OpenGrabber extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return GRABBER.isOpen();
+		return GRABBER.isOpened();
 	}
 
 	// Called once after isFinished returns true

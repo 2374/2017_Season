@@ -5,13 +5,11 @@ import org.usfirst.frc.team2374.robot.subsystems.Belt;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
-
 public class MoveBeltToPoint extends Command {
 
 	private static final Belt BELT = Robot.belt;
 	private static final double OFFSET = 30;
-	
+
 	private double wantedPosition;
 
 	public MoveBeltToPoint(double position) {
@@ -35,8 +33,8 @@ public class MoveBeltToPoint extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (BELT.isAtLimit())
-			return true;
+		// if (BELT.isAtLimit())
+		// return true;
 		return Math.abs(BELT.getPosition() - wantedPosition) <= OFFSET;
 	}
 

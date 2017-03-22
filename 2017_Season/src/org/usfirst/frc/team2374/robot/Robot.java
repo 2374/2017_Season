@@ -1,10 +1,12 @@
 
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.auto.Center;
+import org.usfirst.frc.team2374.robot.commands.auto.LoadGear;
 import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
+import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToOffset;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Climber;
@@ -47,16 +49,18 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		belt = new Belt();
 		grabber = new Grabber();
-		oi = new OI();
 		camera = new Vision();
 		climber = new Climber();
-		chooser.addDefault("Default Auto", new CenterBeltOnTarget());
-		//This must be named "Default Auto"
-		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
-		chooser.addObject("DriveToTarget", new DriveToTarget(30));
-		chooser.addObject("DriveToInch20", new DriveToInch(20, DriveToType.SHORT));
-		chooser.addObject("DriveToInch77", new DriveToInch(77, DriveToType.LONG));
+		oi = new OI(); // needs to be initialize last
+		chooser.addDefault("Center", new Center());
+		// This must be named "Default Auto"
+		chooser.addObject("DriveToInch90", new DriveToInch(90, DriveToType.LONG));
+		chooser.addObject("TurnToDegree60", new TurnToDegree(60));
+		chooser.addObject("LoadGear", new LoadGear());
+		chooser.addObject("CenterBelt", new CenterBeltOnTarget());
+		chooser.addObject("MoveBeltToOffset", new MoveBeltToOffset());
 		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData(Scheduler.getInstance());
 	}
 
 	/**

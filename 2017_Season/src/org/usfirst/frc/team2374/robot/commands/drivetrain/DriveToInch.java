@@ -3,40 +3,63 @@ package org.usfirst.frc.team2374.robot.commands.drivetrain;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveToInch extends Command {
-	
+
 	public enum DriveToType {
-		SHORT, LONG
+		SHORT, LONG, VIOLENT
 	}
-	
-	private DriveToType type;
-	private double wantedDistance;
+
+	protected DriveToType type;
+	protected double wantedDistance;
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
-	private static final double OFFSET = 0.0;
-	
+	private static final double OFFSET = 1.0;
+
+	public DriveToInch(double inches, DriveToType type, double timeout) {
+		requires(DRIVE);
+		this.type = type;
+		wantedDistance = inches;
+		setTimeout(timeout);
+	}
+
 	public DriveToInch(double inches, DriveToType type) {
 		requires(DRIVE);
 		this.type = type;
 		wantedDistance = inches;
+		setTimeout(3);
+	}
+
+	public DriveToInch(double timeout) {
+		requires(DRIVE);
+		setTimeout(timeout);
+	}
+
+	public DriveToInch() {
+		requires(DRIVE);
+		setTimeout(3);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		DRIVE.resetEncoders(true);
-		DRIVE.resetGyro(true);
+		DriverStation.reportWarning("DriveToInch initialized", true);
+		DRIVE.resetAllSenors(true);
 		if (type.equals(DriveToType.SHORT))
 			DRIVE.setShortPID();
-		else
+		else if (type.equals(DriveToType.LONG))
 			DRIVE.setLongPID();
+		else
+			DRIVE.setViolentPID();
 		DRIVE.setDrivePIDSetPoint(wantedDistance);
 		DRIVE.setGyroPIDSetPoint(0);
 		DRIVE.enableDrivePID(true);
 		DRIVE.enableGyroPID(true);
+		SmartDashboard.putNumber("Drive_wantedDist", wantedDistance);
+		DriverStation.reportWarning("DriveToInch initialized end", true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -48,7 +71,7 @@ public class DriveToInch extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs((DRIVE.getLeftDistanceInches() + DRIVE.getRightDistanceInches()) / 2 - wantedDistance) <= OFFSET;
+		return Math.abs(DRIVE.getLeftDistanceInches() - wantedDistance) <= OFFSET || isTimedOut();
 	}
 
 	// Called once after isFinished returns true

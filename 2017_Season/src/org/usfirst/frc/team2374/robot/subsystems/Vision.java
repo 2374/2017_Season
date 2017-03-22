@@ -13,14 +13,16 @@ public class Vision extends Subsystem {
 	private List<Rectangle> contours;
 
 	private static final int RESOLUTION_X = 640;
-	private static final double OFFSET = 4.96; 
+	private static final double OFFSET_TO_GEAR = 6.21;
 	// inches between camera and center of gear
 	private static final double WIDTH_OF_TARGET = 10.25; // inches
+	private static final double OFFSET_TO_FRONT = 4.0;
 
 	private static final double CALIBRATION_DIST_INCHES = 60;
-	private static final double CALIBRATION_WIDTH_INCHES = 10.25; 
+	private static final double CALIBRATION_WIDTH_INCHES = 10.25;
 	private static final double CALIBRATION_WIDTH_PIXELS = 122;
-	private static final double FOCAL_LENGTH = CALIBRATION_WIDTH_PIXELS * CALIBRATION_DIST_INCHES / CALIBRATION_WIDTH_INCHES;
+	private static final double FOCAL_LENGTH = CALIBRATION_WIDTH_PIXELS * CALIBRATION_DIST_INCHES
+			/ CALIBRATION_WIDTH_INCHES;
 
 	public Vision() {
 		tableIn = NetworkTable.getTable("vision");
@@ -85,7 +87,7 @@ public class Vision extends Subsystem {
 		int pixToCenter = center - RESOLUTION_X / 2;
 		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET; // pixels/inches
 		// DriverStation.reportWarning("pixPerInch " + pixelsPerInch, true);
-		return (-pixToCenter) + OFFSET * pixelsPerInch;
+		return (-pixToCenter) + OFFSET_TO_GEAR * pixelsPerInch;
 	}
 
 	// will always be positive if its valid
@@ -96,7 +98,7 @@ public class Vision extends Subsystem {
 	}
 
 	public double distanceToTargetInches() {
-		return CALIBRATION_WIDTH_INCHES * FOCAL_LENGTH / getTargetWidth();
+		return CALIBRATION_WIDTH_INCHES * FOCAL_LENGTH / getTargetWidth() - OFFSET_TO_FRONT;
 	}
 
 	// will return a positive or negative if valid, but will return the maximum

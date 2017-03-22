@@ -1,13 +1,12 @@
 package org.usfirst.frc.team2374.robot.commands.drivetrain;
 
+import org.usfirst.frc.team2374.robot.OI;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithJoystick extends Command {
-
-	private boolean isCreeping;
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
 
@@ -18,32 +17,21 @@ public class DriveWithJoystick extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		isCreeping = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		// determining if we should go into or out of creep mode
-		if (Robot.oi.getPOV() == 0)
-			isCreeping = false;
-		else if (Robot.oi.getPOV() == 180)
-			isCreeping = true;
 		double leftTrigger = Robot.oi.getLeftTrigger();
 		double rightTrigger = Robot.oi.getRightTrigger();
 		double leftJoystick = Robot.oi.getDriverLeftY();
 		double rightJoystick = Robot.oi.getDriverRightY();
-		// if we are in creep mode, reduce all inputs by 50%
-		if (isCreeping) {
-			leftTrigger *= 0.50;
-			rightTrigger *= 0.50;
-			leftJoystick *= 0.50;
-			leftJoystick *= 0.50;
-		}
 		if (rightTrigger != 0)
-			DRIVE.arcadeDrive(rightTrigger, 0);
+			DRIVE.tankDrive(-rightTrigger + OI.deadZone(leftJoystick, 0.2),
+					-rightTrigger + OI.deadZone(rightJoystick, 0.2));
 		else if (leftTrigger != 0)
-			DRIVE.arcadeDrive(-leftTrigger, 0);
+			DRIVE.tankDrive(leftTrigger + OI.deadZone(leftJoystick, 0.2),
+					leftTrigger + OI.deadZone(rightJoystick, 0.2));
 		else
 			DRIVE.tankDrive(leftJoystick, rightJoystick);
 	}

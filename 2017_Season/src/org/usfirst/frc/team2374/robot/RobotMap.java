@@ -18,6 +18,8 @@ public class RobotMap {
 	public static final int RS_BUTTON_B = 2;
 	public static final int RS_BUTTON_BACK = 7;
 	public static final int RS_BUTTON_START = 8;
+	public static final int RS_L3 = 9;
+	public static final int RS_R3 = 10;
 
 	// CAN
 	public static final int TALON_DRIVE_MASTER_LEFT = 1;

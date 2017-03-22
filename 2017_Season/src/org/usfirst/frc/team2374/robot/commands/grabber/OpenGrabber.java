@@ -5,7 +5,6 @@ import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
 public class OpenGrabber extends Command {
 
 	private static final Grabber GRABBER = Robot.grabber;

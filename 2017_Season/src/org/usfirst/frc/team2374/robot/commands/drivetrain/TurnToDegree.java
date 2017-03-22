@@ -3,14 +3,13 @@ package org.usfirst.frc.team2374.robot.commands.drivetrain;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnToDegree extends Command {
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
 	private static final double OFFSET = 1.0;
-	
+
 	private double wantedAngle;
 
 	public TurnToDegree(double angle) {
@@ -36,7 +35,7 @@ public class TurnToDegree extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		 return Math.abs(DRIVE.getAngle() - wantedAngle) <= OFFSET;
+		return Math.abs(DRIVE.getAngle() - wantedAngle) <= OFFSET;
 	}
 
 	// Called once after isFinished returns true

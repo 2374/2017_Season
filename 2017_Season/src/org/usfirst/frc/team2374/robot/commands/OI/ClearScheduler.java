@@ -1,22 +1,21 @@
-package org.usfirst.frc.team2374.robot.commands.grabber;
-
-import org.usfirst.frc.team2374.robot.Robot;
-import org.usfirst.frc.team2374.robot.subsystems.Grabber;
+package org.usfirst.frc.team2374.robot.commands.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class CloseGrabber extends Command {
+/**
+ *
+ */
+public class ClearScheduler extends Command {
 
-	private static final Grabber GRABBER = Robot.grabber;
-
-	public CloseGrabber() {
-		requires(GRABBER);
+	public ClearScheduler() {
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		GRABBER.close();
+		Scheduler.getInstance().removeAll();
+		Scheduler.getInstance().add(new TimedRumble(0.5));
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,19 +26,17 @@ public class CloseGrabber extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return GRABBER.isClosed();
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		GRABBER.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		end();
 	}
 }

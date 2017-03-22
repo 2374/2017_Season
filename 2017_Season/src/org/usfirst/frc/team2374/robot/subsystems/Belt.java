@@ -3,7 +3,6 @@ package org.usfirst.frc.team2374.robot.subsystems;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.belt.BeltWithJoystick;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -17,7 +16,6 @@ public class Belt extends Subsystem {
 
 	private SpeedController beltController;
 	private Encoder beltEncoder;
-	private DigitalInput leftLimitSwitch, rightLimitSwitch;
 
 	private PIDController beltPID;
 
@@ -25,14 +23,16 @@ public class Belt extends Subsystem {
 	private static final double BELT_I = 0.0001;
 	private static final double BELT_D = 0;
 
+	public static final double LEFT_LIMIT = -294.50;
+	public static final double RIGHT_LIMIT = 153.75;
+
 	public static final double MAX_BELT_SPEED = 0.5;
+	public static final double LEFT_OFFSET = -200.0;
 
 	public Belt() {
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);
 		beltController.setInverted(true);
 		beltEncoder = new Encoder(RobotMap.ENCODER_BELT_A, RobotMap.ENCODER_BELT_B);
-		// leftLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltLeft);
-		// rightLimitSwitch = new DigitalInput(RobotMap.limitSwitchBeltRight);
 
 		beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		beltPID = new PIDController(BELT_P, BELT_I, BELT_D, beltEncoder, new PIDOutput() {
@@ -59,8 +59,12 @@ public class Belt extends Subsystem {
 
 	}
 
-	public boolean isAtLimit() {
-		return leftLimitSwitch.get() || rightLimitSwitch.get();
+	public boolean isAtLeftLimit() {
+		return getPosition() < LEFT_LIMIT;
+	}
+
+	public boolean isAtRightLimit() {
+		return getPosition() > RIGHT_LIMIT;
 	}
 
 	public void setPIDSetpoint(double setpoint) {

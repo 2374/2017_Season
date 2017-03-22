@@ -8,15 +8,16 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 public class Drivetrain extends Subsystem {
 
@@ -28,9 +29,9 @@ public class Drivetrain extends Subsystem {
 
 	private TwoEncoderPIDSource driveIn;
 	private PIDController drivePID;
-	
+
 	private PIDController gyroPID;
-	
+
 	private static final double GYRO_PS = 0.07;
 	private static final double GYRO_IS = 0.0002;
 	private static final double GYRO_DS = 0.001;
@@ -43,7 +44,7 @@ public class Drivetrain extends Subsystem {
 	private static final double GYRO_IT = 0.00045;
 	private static final double GYRO_DT = 0.003;
 
-	private static final double DRIVE_PS = 0.1;
+	private static final double DRIVE_PS = 0.07;
 	private static final double DRIVE_IS = 0.0001;
 	private static final double DRIVE_DS = 0;
 
@@ -51,10 +52,14 @@ public class Drivetrain extends Subsystem {
 	private static final double DRIVE_IL = 0.0005;
 	private static final double DRIVE_DL = 0;
 
+	private static final double DRIVE_PV = 1.0;
+	private static final double DRIVE_IV = 0;
+	private static final double DRIVE_DV = 0;
+
 	private static final double WHEEL_DIAMETER = 6; // inches
-	private static final double EC_PER_REV_LEFT = 352.25;
+	private static final double EC_PER_REV_LEFT = 359.08;
 	private static final double EC_PER_REV_RIGHT = 358.98;
-	
+
 	private static final double MAX_AUTO_SPEED = 0.75;
 
 	public Drivetrain() {
@@ -126,6 +131,10 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setPID(GYRO_PT, GYRO_IT, GYRO_DT);
 	}
 
+	public void setViolentPID() {
+		drivePID.setPID(DRIVE_PV, DRIVE_IV, DRIVE_DV);
+	}
+
 	public void tankDrive(double left, double right) {
 		robotDrive.tankDrive(left, right);
 	}
@@ -167,16 +176,40 @@ public class Drivetrain extends Subsystem {
 	public void resetEncoders(boolean waitToReset) {
 		leftEncoder.reset();
 		rightEncoder.reset();
-		while (waitToReset && leftEncoder.getDistance() > 100 || rightEncoder.getDistance() > 100) {
-			// waits for the delay until the encoders are truly reset
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset
+				&& (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500)) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("Encoder didn't reset", true);
+				break;
+			}
 		}
 	}
 
 	public void resetGyro(boolean waitToReset) {
 		navX.reset();
-		while (waitToReset && Math.abs(navX.getYaw()) > 2) {
-			// waits for the delay until the gyro is truly reset
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset && Math.abs(navX.getYaw()) > 5) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("Gyro didn't reset", true);
+				break;
+			}
 		}
+	}
+
+	public void resetAllSenors(boolean waitToReset) {
+		leftEncoder.reset();
+		rightEncoder.reset();
+		navX.reset();
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset && (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500
+				|| Math.abs(navX.getYaw()) > 5)) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("A senors didn't reset", true);
+				break;
+			}
+		}
+
 	}
 
 	public double getAngle() {

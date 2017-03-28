@@ -17,7 +17,7 @@ public class MoveBeltToOffset extends MoveBeltToPoint {
 	@Override
 	protected void initialize() {
 		DriverStation.reportWarning("MoveBeltToOffset initialized", true);
-		wantedPosition = Robot.belt.getPosition() + Belt.LEFT_OFFSET;
+		wantedPosition = Robot.belt.getPosition() + Belt.BELT_LEFT_OFFSET;
 		super.initialize();
 	}
 

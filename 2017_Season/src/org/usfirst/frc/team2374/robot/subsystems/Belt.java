@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
+import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.belt.BeltWithJoystick;
 
@@ -23,11 +24,12 @@ public class Belt extends Subsystem {
 	private static final double BELT_I = 0.0001;
 	private static final double BELT_D = 0;
 
-	public static final double LEFT_LIMIT = -413.25;
-	public static final double RIGHT_LIMIT = 254.5;
-
 	public static final double MAX_BELT_SPEED = 0.5;
-	public static final double LEFT_OFFSET = -235.0;
+	
+	public static double BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -235.0);
+	public static double BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -413.25);
+	public static double BELT_RIGHT_LIMIT = Robot.prefs.getDouble("BELT_RIGHT_LIMIT", 254.5);
+	public static double BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 30);
 
 	public Belt() {
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);
@@ -60,11 +62,11 @@ public class Belt extends Subsystem {
 	}
 
 	public boolean isAtLeftLimit() {
-		return getPosition() < LEFT_LIMIT;
+		return getPosition() < BELT_LEFT_LIMIT;
 	}
 
 	public boolean isAtRightLimit() {
-		return getPosition() > RIGHT_LIMIT;
+		return getPosition() > BELT_RIGHT_LIMIT;
 	}
 
 	public void setPIDSetpoint(double setpoint) {
@@ -95,6 +97,18 @@ public class Belt extends Subsystem {
 		SmartDashboard.putBoolean("beltPID_enable", beltPID.isEnabled());
 		SmartDashboard.putNumber("beltPID_out", beltPID.get());
 		SmartDashboard.putNumber("beltPID_error", beltPID.getError());
+	}
+	
+	public void updatePreferences() {
+		BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -235.0);
+		BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -413.25);
+		BELT_RIGHT_LIMIT = Robot.prefs.getDouble("BELT_RIGHT_LIMIT", 254.5);
+		BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 30);
+		Robot.prefs.putDouble("BELT_LEFT_OFFSET", BELT_LEFT_OFFSET);
+		Robot.prefs.putDouble("BELT_LEFT_LIMIT", BELT_LEFT_LIMIT);
+		Robot.prefs.putDouble("BELT_RIGHT_LIMIT", BELT_RIGHT_LIMIT);
+		Robot.prefs.putDouble("BELT_CNTR_TAR_THRESH", BELT_CNTR_TAR_THRESH);
+
 	}
 
 }

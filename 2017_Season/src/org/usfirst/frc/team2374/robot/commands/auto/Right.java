@@ -1,15 +1,9 @@
 package org.usfirst.frc.team2374.robot.commands.auto;
 
 import org.usfirst.frc.team2374.robot.Robot;
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
-import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToOffset;
-import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
-import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
-import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
@@ -31,16 +25,8 @@ public class Right extends CommandGroup {
 		requires(camera);
 		requires(grabber);
 
-		addSequential(new DriveToInch(82 - 16, DriveToType.LONG, 3));
-		addSequential(new TurnToDegree(-60, 2.0));
-		addSequential(new DriveToTarget(30));
-		addSequential(new CenterBeltOnTarget());
-		addSequential(new DriveToInch(21.0, DriveToType.SHORT));
-		addSequential(new OpenGrabber(0.8));
-		addSequential(new MoveBeltToOffset());
-		addSequential(new DriveToInch(6, DriveToType.VIOLENT));
-		addSequential(new DriveToInch(-22, DriveToType.SHORT));
-		addParallel(new CloseGrabber());
-		addSequential(new MoveBeltToPoint(0));
+		addSequential(new DriveToInch(AutoConstants.RIGHT_FORWARD, DriveToType.LONG));
+		addSequential(new TurnToDegree(AutoConstants.RIGHT_TURN, AutoConstants.RIGHT_TURN_TIMEOUT));
+		addSequential(new Center());
 	}
 }

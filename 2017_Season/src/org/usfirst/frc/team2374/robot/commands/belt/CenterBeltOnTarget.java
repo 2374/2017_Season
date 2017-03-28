@@ -12,7 +12,8 @@ public class CenterBeltOnTarget extends Command {
 
 	private double initialPos;
 
-	private static final double OFFSET = 30;
+	//TODO: Is this a valid declaration with the preferences in Belt? 
+	private static final double THRESHOLD = Belt.BELT_CNTR_TAR_THRESH;
 
 	public CenterBeltOnTarget() {
 		requires(Robot.belt);
@@ -40,7 +41,7 @@ public class CenterBeltOnTarget extends Command {
 		} else if (initialPos < 0 && Robot.belt.isAtRightLimit()) {
 			DriverStation.reportWarning("At right limit", true);
 			exit();
-		} else if (initialPos > 0 && Robot.belt.getPosition() < Belt.LEFT_LIMIT - Belt.LEFT_OFFSET) {
+		} else if (initialPos > 0 && Robot.belt.getPosition() < Belt.BELT_LEFT_LIMIT - Belt.BELT_LEFT_OFFSET) {
 			DriverStation.reportWarning("Not enough room on left to eject gear", true);
 			exit();
 		}
@@ -48,12 +49,12 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Robot.camera.pixelsToCenter() - 0) <= OFFSET;
+		return Math.abs(Robot.camera.pixelsToCenter() - 0) <= THRESHOLD;
 	}
 
 	@Override
 	protected void end() {
-		DriverStation.reportWarning("CenterBelt end; at " + Double.toString(Robot.camera.pixelsToCenter()), true);
+		DriverStation.reportWarning("CenterBelt ended at " + Double.toString(Robot.camera.pixelsToCenter()) + "pixels to center.", true);
 		Robot.belt.setBelt(0);
 		Scheduler.getInstance().add(new TimedRumble(0.1));
 	}

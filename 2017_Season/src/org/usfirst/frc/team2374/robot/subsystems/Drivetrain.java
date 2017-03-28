@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
+import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
 import org.usfirst.frc.team2374.util.TwoEncoderPIDSource;
@@ -32,29 +33,29 @@ public class Drivetrain extends Subsystem {
 
 	private PIDController gyroPID;
 
-	private static final double GYRO_PS = 0.07;
-	private static final double GYRO_IS = 0.0002;
-	private static final double GYRO_DS = 0.001;
+	private static double GYRO_PS = Robot.prefs.getDouble("GYRO_PS", 0.07);
+	private static double GYRO_IS = Robot.prefs.getDouble("GYRO_IS", 0.0002);
+	private static double GYRO_DS = Robot.prefs.getDouble("GYRO_DS", 0.001);
 
-	private static final double GYRO_PL = 0.07;
-	private static final double GYRO_IL = 0.001;
-	private static final double GYRO_DL = 0.001;
+	private static double GYRO_PL = Robot.prefs.getDouble("GYRO_PL", 0.07);
+	private static double GYRO_IL = Robot.prefs.getDouble("GYRO_IL", 0.001);
+	private static double GYRO_DL = Robot.prefs.getDouble("GYRO_DL", 0.001);
 
-	private static final double GYRO_PT = 0.008;
-	private static final double GYRO_IT = 0.00045;
-	private static final double GYRO_DT = 0;
+	private static double GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
+	private static double GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
+	private static double GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
 
-	private static final double DRIVE_PS = 0.07;
-	private static final double DRIVE_IS = 0.0001;
-	private static final double DRIVE_DS = 0;
+	private static double DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.07);
+	private static double DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 0.0001);
+	private static double DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
 
-	private static final double DRIVE_PL = 0.003;
-	private static final double DRIVE_IL = 0.001;
-	private static final double DRIVE_DL = 0;
+	private static double DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.003);
+	private static double DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.001);
+	private static double DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
 
-	private static final double DRIVE_PV = 1.0;
-	private static final double DRIVE_IV = 0;
-	private static final double DRIVE_DV = 0;
+	private static double DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
+	private static double DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
+	private static double DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
 
 	private static final double WHEEL_DIAMETER = 6; // inches
 	private static final double EC_PER_REV_LEFT = 359.08;
@@ -209,7 +210,6 @@ public class Drivetrain extends Subsystem {
 				break;
 			}
 		}
-
 	}
 
 	public double getAngle() {
@@ -244,6 +244,46 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
 		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("drivePID_out", drivePID.get());
+	}
+	
+	public void updatePreferences() {
+		GYRO_PS = Robot.prefs.getDouble("GYRO_PS", 0.07);
+		GYRO_IS = Robot.prefs.getDouble("GYRO_IS", 0.0002);
+		GYRO_DS = Robot.prefs.getDouble("GYRO_DS", 0.001);
+		GYRO_PL = Robot.prefs.getDouble("GYRO_PL", 0.07);
+		GYRO_IL = Robot.prefs.getDouble("GYRO_IL", 0.001);
+		GYRO_DL = Robot.prefs.getDouble("GYRO_DL", 0.001);
+		GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
+		GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
+		GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
+		DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.07);
+		DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 0.0001);
+		DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
+		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.003);
+		DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.001);
+		DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
+		DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
+		DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
+		DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
+		
+		Robot.prefs.putDouble("GYRO_PS", GYRO_PS);
+		Robot.prefs.putDouble("GYRO_IS", GYRO_IS);
+		Robot.prefs.putDouble("GYRO_DS", GYRO_DS);
+		Robot.prefs.putDouble("GYRO_PL", GYRO_PL);
+		Robot.prefs.putDouble("GYRO_IL", GYRO_IL);
+		Robot.prefs.putDouble("GYRO_DL", GYRO_DL);
+		Robot.prefs.putDouble("GYRO_PT", GYRO_PT);
+		Robot.prefs.putDouble("GYRO_IT", GYRO_IT);
+		Robot.prefs.putDouble("GYRO_DT", GYRO_DT);
+		Robot.prefs.putDouble("DRIVE_PS", DRIVE_PS);
+		Robot.prefs.putDouble("DRIVE_IS", DRIVE_IS);
+		Robot.prefs.putDouble("DRIVE_DS", DRIVE_DS);
+		Robot.prefs.putDouble("DRIVE_PL", DRIVE_PL);
+		Robot.prefs.putDouble("DRIVE_IL", DRIVE_IL);
+		Robot.prefs.putDouble("DRIVE_DL", DRIVE_DL);
+		Robot.prefs.putDouble("DRIVE_PV", DRIVE_PV);
+		Robot.prefs.putDouble("DRIVE_IV", DRIVE_IV);
+		Robot.prefs.putDouble("DRIVE_DV", DRIVE_DV);
 	}
 
 }

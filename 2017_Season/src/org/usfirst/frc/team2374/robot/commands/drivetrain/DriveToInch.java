@@ -17,7 +17,7 @@ public class DriveToInch extends Command {
 	protected double wantedDistance;
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
-	private static final double OFFSET = 1.0;
+	private static final double THRESHOLD = 1.0;
 
 	public DriveToInch(double inches, DriveToType type, double timeout) {
 		requires(DRIVE);
@@ -46,7 +46,6 @@ public class DriveToInch extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		DriverStation.reportWarning("DriveToInch initialized", true);
 		DRIVE.resetAllSenors(true);
 		if (type.equals(DriveToType.SHORT))
 			DRIVE.setShortPID();
@@ -58,8 +57,7 @@ public class DriveToInch extends Command {
 		DRIVE.setGyroPIDSetPoint(0);
 		DRIVE.enableDrivePID(true);
 		DRIVE.enableGyroPID(true);
-		SmartDashboard.putNumber("Drive_wantedDist", wantedDistance);
-		DriverStation.reportWarning("DriveToInch initialized end", true);
+		SmartDashboard.putNumber("DTI_wantedDist", wantedDistance);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -71,7 +69,7 @@ public class DriveToInch extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs((DRIVE.getLeftDistanceInches() + DRIVE.getRightDistanceInches()) / 2 - wantedDistance) <= OFFSET
+		return Math.abs((DRIVE.getLeftDistanceInches() + DRIVE.getRightDistanceInches()) / 2 - wantedDistance) <= THRESHOLD
 				|| isTimedOut();
 	}
 
@@ -81,6 +79,8 @@ public class DriveToInch extends Command {
 		DRIVE.enableDrivePID(false);
 		DRIVE.enableGyroPID(false);
 		DRIVE.arcadeDrive(0, 0);
+		if (isTimedOut())
+			DriverStation.reportWarning("DriveToInch timed out.", true);
 	}
 
 	// Called when another command which requires one or more of the same

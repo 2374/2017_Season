@@ -3,6 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.grabber;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class OpenGrabber extends Command {
@@ -38,6 +39,8 @@ public class OpenGrabber extends Command {
 	@Override
 	protected void end() {
 		GRABBER.stop();
+		if (isTimedOut())
+			DriverStation.reportWarning("OpenGrabber timed out.", true);
 	}
 
 	// Called when another command which requires one or more of the same

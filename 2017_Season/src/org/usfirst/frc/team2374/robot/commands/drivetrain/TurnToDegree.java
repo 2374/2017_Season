@@ -3,12 +3,13 @@ package org.usfirst.frc.team2374.robot.commands.drivetrain;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnToDegree extends Command {
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
-	private static final double OFFSET = 1.0;
+	private static final double THRESHOLD = 1.0;
 
 	private double wantedAngle;
 
@@ -41,7 +42,7 @@ public class TurnToDegree extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(DRIVE.getAngle() - wantedAngle) <= OFFSET || isTimedOut();
+		return Math.abs(DRIVE.getAngle() - wantedAngle) <= THRESHOLD || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
@@ -49,6 +50,8 @@ public class TurnToDegree extends Command {
 	protected void end() {
 		DRIVE.enableGyroPID(false);
 		DRIVE.arcadeDrive(0, 0);
+		if (isTimedOut())
+			DriverStation.reportWarning("TurnToDegree timed out.", true);
 	}
 
 	// Called when another command which requires one or more of the same

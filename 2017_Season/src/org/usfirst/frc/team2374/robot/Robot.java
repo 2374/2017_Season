@@ -2,9 +2,9 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.auto.Center;
-import org.usfirst.frc.team2374.robot.commands.auto.LoadGear;
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
-import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToOffset;
+import org.usfirst.frc.team2374.robot.commands.auto.Left;
+import org.usfirst.frc.team2374.robot.commands.auto.Right;
+import org.usfirst.frc.team2374.robot.commands.auto.Tester;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
@@ -54,11 +54,11 @@ public class Robot extends IterativeRobot {
 		oi = new OI(); // needs to be initialize last
 		chooser.addDefault("Center", new Center());
 		// This must be named "Default Auto"
-		chooser.addObject("DriveToInch90", new DriveToInch(90, DriveToType.LONG));
-		chooser.addObject("TurnToDegree60", new TurnToDegree(60));
-		chooser.addObject("LoadGear", new LoadGear());
-		chooser.addObject("CenterBelt", new CenterBeltOnTarget());
-		chooser.addObject("MoveBeltToOffset", new MoveBeltToOffset());
+		chooser.addObject("Left", new Left());
+		chooser.addObject("Right", new Right());
+		chooser.addObject("Base Line", new DriveToInch(90, DriveToType.LONG));
+		chooser.addObject("Tester", new Tester());
+		chooser.addObject("turn", new TurnToDegree(60, 2.0));
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData(Scheduler.getInstance());
 	}

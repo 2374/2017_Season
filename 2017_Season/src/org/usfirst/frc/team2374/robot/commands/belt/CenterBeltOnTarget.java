@@ -53,7 +53,7 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected void end() {
-		DriverStation.reportWarning("CenterBelt end", true);
+		DriverStation.reportWarning("CenterBelt end; at " + Double.toString(Robot.camera.pixelsToCenter()), true);
 		Robot.belt.setBelt(0);
 		Scheduler.getInstance().add(new TimedRumble(0.1));
 	}

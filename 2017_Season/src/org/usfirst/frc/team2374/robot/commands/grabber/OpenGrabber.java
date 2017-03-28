@@ -13,6 +13,10 @@ public class OpenGrabber extends Command {
 		requires(GRABBER);
 	}
 
+	public OpenGrabber(double timeout) {
+		setTimeout(timeout);
+	}
+
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
@@ -27,7 +31,7 @@ public class OpenGrabber extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return GRABBER.isOpened();
+		return GRABBER.isOpened() || isTimedOut();
 	}
 
 	// Called once after isFinished returns true

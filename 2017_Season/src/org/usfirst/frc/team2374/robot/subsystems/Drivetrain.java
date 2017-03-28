@@ -40,16 +40,16 @@ public class Drivetrain extends Subsystem {
 	private static final double GYRO_IL = 0.001;
 	private static final double GYRO_DL = 0.001;
 
-	private static final double GYRO_PT = 0.007;
+	private static final double GYRO_PT = 0.008;
 	private static final double GYRO_IT = 0.00045;
-	private static final double GYRO_DT = 0.003;
+	private static final double GYRO_DT = 0;
 
 	private static final double DRIVE_PS = 0.07;
 	private static final double DRIVE_IS = 0.0001;
 	private static final double DRIVE_DS = 0;
 
-	private static final double DRIVE_PL = 0.017;
-	private static final double DRIVE_IL = 0.0005;
+	private static final double DRIVE_PL = 0.003;
+	private static final double DRIVE_IL = 0.001;
 	private static final double DRIVE_DL = 0;
 
 	private static final double DRIVE_PV = 1.0;

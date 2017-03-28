@@ -13,7 +13,7 @@ public class Vision extends Subsystem {
 	private List<Rectangle> contours;
 
 	private static final int RESOLUTION_X = 640;
-	private static final double OFFSET_TO_GEAR = 6.21;
+	private static final double OFFSET_TO_GEAR = 7.16;
 	// inches between camera and center of gear
 	private static final double WIDTH_OF_TARGET = 10.25; // inches
 	private static final double OFFSET_TO_FRONT = 4.0;
@@ -86,7 +86,8 @@ public class Vision extends Subsystem {
 		int center = contours.get(0).getCenter(contours.get(1));
 		int pixToCenter = center - RESOLUTION_X / 2;
 		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET; // pixels/inches
-		// DriverStation.reportWarning("pixPerInch " + pixelsPerInch, true);
+		// for calibration: DriverStation.reportWarning("pixPerInch " +
+		// pixelsPerInch, true);
 		return (-pixToCenter) + OFFSET_TO_GEAR * pixelsPerInch;
 	}
 

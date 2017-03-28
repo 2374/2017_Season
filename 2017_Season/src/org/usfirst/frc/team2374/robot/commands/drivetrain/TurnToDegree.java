@@ -17,6 +17,12 @@ public class TurnToDegree extends Command {
 		wantedAngle = angle;
 	}
 
+	public TurnToDegree(double angle, double timeout) {
+		requires(DRIVE);
+		wantedAngle = angle;
+		setTimeout(timeout);
+	}
+
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
@@ -35,7 +41,7 @@ public class TurnToDegree extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(DRIVE.getAngle() - wantedAngle) <= OFFSET;
+		return Math.abs(DRIVE.getAngle() - wantedAngle) <= OFFSET || isTimedOut();
 	}
 
 	// Called once after isFinished returns true

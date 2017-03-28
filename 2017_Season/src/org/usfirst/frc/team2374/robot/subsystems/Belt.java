@@ -23,11 +23,11 @@ public class Belt extends Subsystem {
 	private static final double BELT_I = 0.0001;
 	private static final double BELT_D = 0;
 
-	public static final double LEFT_LIMIT = -294.50;
-	public static final double RIGHT_LIMIT = 153.75;
+	public static final double LEFT_LIMIT = -413.25;
+	public static final double RIGHT_LIMIT = 254.5;
 
 	public static final double MAX_BELT_SPEED = 0.5;
-	public static final double LEFT_OFFSET = -200.0;
+	public static final double LEFT_OFFSET = -235.0;
 
 	public Belt() {
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);

@@ -21,6 +21,8 @@ public class ClimberWithJoystick extends Command {
 	protected void execute() {
 		if (Robot.oi.getButtonR3())
 			CLIMBER.start();
+		else if (Robot.oi.getPOV() == 90)
+			CLIMBER.slow();
 		else
 			CLIMBER.stop();
 	}

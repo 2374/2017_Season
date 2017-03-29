@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2374.robot.commands.OI;
+package org.usfirst.frc.team2374.robot.commands.oi;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;

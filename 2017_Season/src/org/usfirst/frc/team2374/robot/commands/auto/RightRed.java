@@ -11,24 +11,22 @@ import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
-public class Left extends CommandGroup {
+public class RightRed extends CommandGroup {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private Belt belt = Robot.belt;
 	private Vision camera = Robot.camera;
 	private Grabber grabber = Robot.grabber;
 
-	public Left() {
+	public RightRed() {
+
 		requires(drive);
 		requires(belt);
 		requires(camera);
 		requires(grabber);
 
-		addSequential(new DriveToInch(AutoConstants.LEFT_FORWARD, DriveToType.LONG));
-		addSequential(new TurnToDegree(AutoConstants.LEFT_TURN, AutoConstants.LEFT_TURN_TIMEOUT));
+		addSequential(new DriveToInch(AutoConstants.RIGHT_FORWARD_RED, DriveToType.LONG));
+		addSequential(new TurnToDegree(AutoConstants.RIGHT_TURN, AutoConstants.RIGHT_TURN_TIMEOUT));
 		addSequential(new Center());
 	}
 }

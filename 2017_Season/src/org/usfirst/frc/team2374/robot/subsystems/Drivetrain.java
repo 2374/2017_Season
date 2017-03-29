@@ -33,31 +33,31 @@ public class Drivetrain extends Subsystem {
 
 	private PIDController gyroPID;
 
-	private static double GYRO_PS = Robot.prefs.getDouble("GYRO_PS", 0.07);
-	private static double GYRO_IS = Robot.prefs.getDouble("GYRO_IS", 0.0002);
-	private static double GYRO_DS = Robot.prefs.getDouble("GYRO_DS", 0.001);
+	private static double GYRO_PS;
+	private static double GYRO_IS;
+	private static double GYRO_DS;
 
-	private static double GYRO_PL = Robot.prefs.getDouble("GYRO_PL", 0.07);
-	private static double GYRO_IL = Robot.prefs.getDouble("GYRO_IL", 0.001);
-	private static double GYRO_DL = Robot.prefs.getDouble("GYRO_DL", 0.001);
+	private static double GYRO_PL;
+	private static double GYRO_IL;
+	private static double GYRO_DL;
 
-	private static double GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
-	private static double GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
-	private static double GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
+	private static double GYRO_PT;
+	private static double GYRO_IT;
+	private static double GYRO_DT;
+	
+	private static double DRIVE_PS;
+	private static double DRIVE_IS;
+	private static double DRIVE_DS;
 
-	private static double DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.07);
-	private static double DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 0.0001);
-	private static double DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
+	private static double DRIVE_PL;
+	private static double DRIVE_IL;
+	private static double DRIVE_DL;
 
-	private static double DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.003);
-	private static double DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.001);
-	private static double DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
+	private static double DRIVE_PV;
+	private static double DRIVE_IV;
+	private static double DRIVE_DV;
 
-	private static double DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
-	private static double DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
-	private static double DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
-
-	private static final double WHEEL_DIAMETER = 6; // inches
+	private static final double WHEEL_DIAMETER_INCH = 6;
 	private static final double EC_PER_REV_LEFT = 359.08;
 	private static final double EC_PER_REV_RIGHT = 358.98;
 
@@ -225,11 +225,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public static double encoderCntsToInches(double counts, double countsPerRev) {
-		return (counts / countsPerRev) * (WHEEL_DIAMETER * Math.PI);
+		return (counts / countsPerRev) * (WHEEL_DIAMETER_INCH * Math.PI);
 	}
 
 	public static double inchesToEncoderCnts(double inches, double countsPerRev) {
-		return inches * countsPerRev / (WHEEL_DIAMETER * Math.PI);
+		return inches * countsPerRev / (WHEEL_DIAMETER_INCH * Math.PI);
 	}
 
 	public void toSmartDashboard() {

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2374.robot.commands.OI;
+package org.usfirst.frc.team2374.robot.commands.oi;
 
 import org.usfirst.frc.team2374.robot.Robot;
 

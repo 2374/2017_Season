@@ -26,10 +26,10 @@ public class Belt extends Subsystem {
 
 	public static final double MAX_BELT_SPEED = 0.5;
 	
-	public static double BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -235.0);
-	public static double BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -413.25);
-	public static double BELT_RIGHT_LIMIT = Robot.prefs.getDouble("BELT_RIGHT_LIMIT", 254.5);
-	public static double BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 30);
+	public static double BELT_LEFT_OFFSET;
+	public static double BELT_LEFT_LIMIT;
+	public static double BELT_RIGHT_LIMIT;
+	public static double BELT_CNTR_TAR_THRESH;
 
 	public Belt() {
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);

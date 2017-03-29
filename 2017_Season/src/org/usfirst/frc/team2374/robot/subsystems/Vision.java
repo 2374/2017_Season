@@ -15,14 +15,13 @@ public class Vision extends Subsystem {
 	private List<Rectangle> contours;
 
 	private static final int RESOLUTION_X = 640;
-	// inches between camera and center of gear
-	private static final double WIDTH_OF_TARGET = 10.25; // inches
-	private static final double OFFSET_TO_FRONT = 4.0;
+	private static final double WIDTH_OF_TARGET_INCH = 10.25;
+	private static final double OFFSET_TO_FRONT_BUMPER = 4.0;
 	
-	private static double VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 7.16);
-	private static double VIS_CALIB_DIST_INCHES = Robot.prefs.getDouble("VIS_CALIB_DIST_INCHES", 60);
-	private static double VIS_CALIB_WIDTH_INCHES = Robot.prefs.getDouble("VIS_CALIB_WIDTH_INCHES", 10.25);
-	private static double VIS_CALIB_WIDTH_PIXELS = Robot.prefs.getDouble("VIS_CALIB_WIDTH_PIXELS", 122);
+	private static double VIS_OFFSET_TO_GEAR;
+	private static double VIS_CALIB_DIST_INCHES;
+	private static double VIS_CALIB_WIDTH_INCHES;
+	private static double VIS_CALIB_WIDTH_PIXELS;
 
 	public Vision() {
 		tableIn = NetworkTable.getTable("vision");
@@ -85,7 +84,7 @@ public class Vision extends Subsystem {
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
 		int pixToCenter = center - RESOLUTION_X / 2;
-		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET; // pixels/inches
+		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET_INCH; // pixels/inches
 		SmartDashboard.putNumber("pixelsPerInch", pixelsPerInch);
 		SmartDashboard.putNumber("pixelsToCenter_raw", -pixToCenter);
 		return (-pixToCenter) + VIS_OFFSET_TO_GEAR * pixelsPerInch;
@@ -100,7 +99,7 @@ public class Vision extends Subsystem {
 
 	public double distanceToTargetInches() {
 		return VIS_CALIB_WIDTH_INCHES * (VIS_CALIB_WIDTH_PIXELS * VIS_CALIB_DIST_INCHES
-				/ VIS_CALIB_WIDTH_INCHES) / getTargetWidth() - OFFSET_TO_FRONT;
+				/ VIS_CALIB_WIDTH_INCHES) / getTargetWidth() - OFFSET_TO_FRONT_BUMPER;
 	}
 
 	// will return a positive or negative if valid, but will return the maximum

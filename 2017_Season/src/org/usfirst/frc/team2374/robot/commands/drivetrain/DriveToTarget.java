@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2374.robot.commands.drivetrain;
 
 import org.usfirst.frc.team2374.robot.Robot;
-import org.usfirst.frc.team2374.robot.commands.OI.TimedRumble;
+import org.usfirst.frc.team2374.robot.commands.oi.TimedRumble;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.DriverStation;

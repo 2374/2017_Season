@@ -3,8 +3,10 @@ package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.auto.AutoConstants;
 import org.usfirst.frc.team2374.robot.commands.auto.Center;
-import org.usfirst.frc.team2374.robot.commands.auto.Left;
-import org.usfirst.frc.team2374.robot.commands.auto.Right;
+import org.usfirst.frc.team2374.robot.commands.auto.LeftBlue;
+import org.usfirst.frc.team2374.robot.commands.auto.LeftRed;
+import org.usfirst.frc.team2374.robot.commands.auto.RightBlue;
+import org.usfirst.frc.team2374.robot.commands.auto.RightRed;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
@@ -65,9 +67,10 @@ public class Robot extends IterativeRobot {
 		timer = Timer.getFPGATimestamp();
 		
 		chooser.addDefault("Center", new Center());
-		// This must be named "Default Auto"
-		chooser.addObject("Left", new Left());
-		chooser.addObject("Right", new Right());
+		chooser.addObject("Left Red", new LeftRed());
+		chooser.addObject("Right Red", new RightRed());
+		chooser.addObject("Left Blue", new LeftBlue());
+		chooser.addObject("Right Blue", new RightBlue());
 		chooser.addObject("Base Line", new DriveToInch(90, DriveToType.LONG));
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData(Scheduler.getInstance());

@@ -33,7 +33,7 @@ public class RobotMap {
 	public static final int SPEED_CONTROLLER_BELT = 4;
 	public static final int SPEED_CONTROLLER_GRABBER = 2;
 	public static final int SPEED_CONTROLLER_CLIMBER_LEFT = 5;
-	public static final int SPEED_CONTROLLER_CLIMBER_RIGHT = 6;
+	public static final int SPEED_CONTROLLER_CLIMBER_RIGHT = 3;
 
 	// DIO
 	public static final int ENCODER_BELT_A = 4;

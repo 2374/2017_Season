@@ -18,10 +18,10 @@ public class Vision extends Subsystem {
 	private static final double WIDTH_OF_TARGET_INCH = 10.25;
 	private static final double OFFSET_TO_FRONT_BUMPER = 4.0;
 	
-	private static double VIS_OFFSET_TO_GEAR;
-	private static double VIS_CALIB_DIST_INCHES;
-	private static double VIS_CALIB_WIDTH_INCHES;
-	private static double VIS_CALIB_WIDTH_PIXELS;
+	private double VIS_OFFSET_TO_GEAR;
+	private double VIS_CALIB_DIST_INCHES;
+	private double VIS_CALIB_WIDTH_INCHES;
+	private double VIS_CALIB_WIDTH_PIXELS;
 
 	public Vision() {
 		tableIn = NetworkTable.getTable("vision");

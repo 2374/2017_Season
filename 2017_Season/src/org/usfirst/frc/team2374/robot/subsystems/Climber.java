@@ -13,7 +13,7 @@ public class Climber extends Subsystem {
 	private SpeedController climberControllerLeft, climberControllerRight;
 
 	private static final double CLIMBER_SPEED = 1.0;
-	private static double CLIMBER_SPEED_SLOW;
+	private double CLIMBER_SPEED_SLOW;
 
 	public Climber() {
 		climberControllerLeft = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_LEFT);

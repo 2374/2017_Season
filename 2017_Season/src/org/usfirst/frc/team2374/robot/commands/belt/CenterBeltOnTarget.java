@@ -12,7 +12,7 @@ public class CenterBeltOnTarget extends Command {
 
 	private double initialPos;
 
-	private static double THRESHOLD = Belt.BELT_CNTR_TAR_THRESH;
+	private double THRESHOLD = Belt.BELT_CNTR_TAR_THRESH;
 
 	public CenterBeltOnTarget() {
 		requires(Robot.belt);

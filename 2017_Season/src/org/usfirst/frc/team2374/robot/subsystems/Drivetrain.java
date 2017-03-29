@@ -33,29 +33,29 @@ public class Drivetrain extends Subsystem {
 
 	private PIDController gyroPID;
 
-	private static double GYRO_PS;
-	private static double GYRO_IS;
-	private static double GYRO_DS;
+	private double GYRO_PS;
+	private double GYRO_IS;
+	private double GYRO_DS;
 
-	private static double GYRO_PL;
-	private static double GYRO_IL;
-	private static double GYRO_DL;
+	private double GYRO_PL;
+	private double GYRO_IL;
+	private double GYRO_DL;
 
-	private static double GYRO_PT;
-	private static double GYRO_IT;
-	private static double GYRO_DT;
+	private double GYRO_PT;
+	private double GYRO_IT;
+	private double GYRO_DT;
 	
-	private static double DRIVE_PS;
-	private static double DRIVE_IS;
-	private static double DRIVE_DS;
+	private double DRIVE_PS;
+	private double DRIVE_IS;
+	private double DRIVE_DS;
 
-	private static double DRIVE_PL;
-	private static double DRIVE_IL;
-	private static double DRIVE_DL;
+	private double DRIVE_PL;
+	private double DRIVE_IL;
+	private double DRIVE_DL;
 
-	private static double DRIVE_PV;
-	private static double DRIVE_IV;
-	private static double DRIVE_DV;
+	private double DRIVE_PV;
+	private double DRIVE_IV;
+	private double DRIVE_DV;
 
 	private static final double WHEEL_DIAMETER_INCHES = 6;
 	private static final double EC_PER_REV_LEFT = 359.08;

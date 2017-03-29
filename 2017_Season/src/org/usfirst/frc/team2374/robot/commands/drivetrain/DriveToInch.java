@@ -17,7 +17,8 @@ public class DriveToInch extends Command {
 	protected double wantedDistance;
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
-	private static final double THRESHOLD = 1.0;
+	
+	private double THRESHOLD = Drivetrain.DRIVE_TO_INCH_THRESH;
 
 	public DriveToInch(double inches, DriveToType type, double timeout) {
 		requires(DRIVE);

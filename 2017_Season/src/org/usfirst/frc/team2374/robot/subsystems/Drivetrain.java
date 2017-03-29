@@ -56,6 +56,8 @@ public class Drivetrain extends Subsystem {
 	private double DRIVE_PV;
 	private double DRIVE_IV;
 	private double DRIVE_DV;
+	
+	public static double DRIVE_TO_INCH_THRESH;
 
 	private static final double WHEEL_DIAMETER_INCHES = 6;
 	private static final double EC_PER_REV_LEFT = 359.08;
@@ -273,6 +275,7 @@ public class Drivetrain extends Subsystem {
 		DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
 		DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
 		DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
+		DRIVE_TO_INCH_THRESH = Robot.prefs.getDouble("DRIVE_TO_INCH_THRESH", 1.0);
 		
 		Robot.prefs.putDouble("GYRO_PS", GYRO_PS);
 		Robot.prefs.putDouble("GYRO_IS", GYRO_IS);
@@ -292,6 +295,7 @@ public class Drivetrain extends Subsystem {
 		Robot.prefs.putDouble("DRIVE_PV", DRIVE_PV);
 		Robot.prefs.putDouble("DRIVE_IV", DRIVE_IV);
 		Robot.prefs.putDouble("DRIVE_DV", DRIVE_DV);
+		Robot.prefs.putDouble("DRIVE_TO_INCH_THRESH", DRIVE_TO_INCH_THRESH);
 	}
 
 }

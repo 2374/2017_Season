@@ -189,7 +189,7 @@ public class Drivetrain extends Subsystem {
 		while (waitToReset
 				&& (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500)) {
 			if (Timer.getFPGATimestamp() - startTime > 0.250) {
-				DriverStation.reportWarning("Encoder didn't reset", true);
+				DriverStation.reportWarning("Encoder didn't reset.", true);
 				break;
 			}
 		}
@@ -200,7 +200,7 @@ public class Drivetrain extends Subsystem {
 		double startTime = Timer.getFPGATimestamp();
 		while (waitToReset && Math.abs(navX.getYaw()) > 5) {
 			if (Timer.getFPGATimestamp() - startTime > 0.250) {
-				DriverStation.reportWarning("Gyro didn't reset", true);
+				DriverStation.reportWarning("Gyro didn't reset.", true);
 				break;
 			}
 		}
@@ -214,7 +214,7 @@ public class Drivetrain extends Subsystem {
 		while (waitToReset && (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500
 				|| Math.abs(navX.getYaw()) > 5)) {
 			if (Timer.getFPGATimestamp() - startTime > 0.250) {
-				DriverStation.reportWarning("A senors didn't reset", true);
+				DriverStation.reportWarning("A sensor didn't reset.", true);
 				break;
 			}
 		}

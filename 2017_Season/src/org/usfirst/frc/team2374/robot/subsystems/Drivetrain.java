@@ -57,7 +57,7 @@ public class Drivetrain extends Subsystem {
 	private static double DRIVE_IV;
 	private static double DRIVE_DV;
 
-	private static final double WHEEL_DIAMETER_INCH = 6;
+	private static final double WHEEL_DIAMETER_INCHES = 6;
 	private static final double EC_PER_REV_LEFT = 359.08;
 	private static final double EC_PER_REV_RIGHT = 358.98;
 
@@ -155,9 +155,17 @@ public class Drivetrain extends Subsystem {
 	public double getDrivePIDOutput() {
 		return drivePID.get();
 	}
+	
+	public double getDrivePIDError() {
+		return drivePID.getError();
+	}
 
 	public double getGyroPIDOutput() {
 		return gyroPID.get();
+	}
+	
+	public double getGyroPIDError() {
+		return gyroPID.getError();
 	}
 
 	public void enableDrivePID(boolean enable) {
@@ -225,11 +233,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public static double encoderCntsToInches(double counts, double countsPerRev) {
-		return (counts / countsPerRev) * (WHEEL_DIAMETER_INCH * Math.PI);
+		return (counts / countsPerRev) * (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 	public static double inchesToEncoderCnts(double inches, double countsPerRev) {
-		return inches * countsPerRev / (WHEEL_DIAMETER_INCH * Math.PI);
+		return inches * countsPerRev / (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 	public void toSmartDashboard() {

@@ -12,8 +12,7 @@ public class CenterBeltOnTarget extends Command {
 
 	private double initialPos;
 
-	//TODO: Is this a valid declaration with the preferences in Belt? 
-	private static final double THRESHOLD = Belt.BELT_CNTR_TAR_THRESH;
+	private static double THRESHOLD = Belt.BELT_CNTR_TAR_THRESH;
 
 	public CenterBeltOnTarget() {
 		requires(Robot.belt);
@@ -21,10 +20,10 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected void initialize() {
-		DriverStation.reportWarning("CenterBelt initialized", true);
+		DriverStation.reportWarning("CenterBelt initialized.", true);
 		initialPos = Robot.camera.pixelsToCenter();
 		if (Math.abs(initialPos - Integer.MAX_VALUE) <= 10) {
-			DriverStation.reportWarning("Not a valid target", true);
+			DriverStation.reportWarning("Not a valid target.", true);
 			exit();
 		} else if (initialPos > 0)
 			Robot.belt.setBelt(-Belt.MAX_BELT_SPEED);
@@ -32,17 +31,16 @@ public class CenterBeltOnTarget extends Command {
 			Robot.belt.setBelt(Belt.MAX_BELT_SPEED);
 	}
 
-	// intentionally left blank
 	@Override
 	protected void execute() {
 		if (initialPos > 0 && Robot.belt.isAtLeftLimit()) {
-			DriverStation.reportWarning("At left limit", true);
+			DriverStation.reportWarning("At left limit.", true);
 			exit();
 		} else if (initialPos < 0 && Robot.belt.isAtRightLimit()) {
-			DriverStation.reportWarning("At right limit", true);
+			DriverStation.reportWarning("At right limit.", true);
 			exit();
 		} else if (initialPos > 0 && Robot.belt.getPosition() < Belt.BELT_LEFT_LIMIT - Belt.BELT_LEFT_OFFSET) {
-			DriverStation.reportWarning("Not enough room on left to eject gear", true);
+			DriverStation.reportWarning("Not enough room on left to eject gear.", true);
 			exit();
 		}
 	}
@@ -54,7 +52,7 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected void end() {
-		DriverStation.reportWarning("CenterBelt ended at " + Double.toString(Robot.camera.pixelsToCenter()) + "pixels to center.", true);
+		DriverStation.reportWarning("CenterBelt ended at " + Double.toString(Robot.camera.pixelsToCenter()) + " pixels to center.", true);
 		Robot.belt.setBelt(0);
 		Scheduler.getInstance().add(new TimedRumble(0.1));
 	}

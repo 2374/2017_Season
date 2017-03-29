@@ -27,6 +27,7 @@ public class TurnToDegree extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		DriverStation.reportWarning("TurnToDegree initialized.", true);
 		DRIVE.resetGyro(true);
 		DRIVE.setTurnPID();
 		DRIVE.setGyroPIDSetPoint(wantedAngle);
@@ -42,7 +43,7 @@ public class TurnToDegree extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(DRIVE.getAngle() - wantedAngle) <= THRESHOLD || isTimedOut();
+		return Math.abs(DRIVE.getGyroPIDError()) <= THRESHOLD || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
@@ -52,6 +53,8 @@ public class TurnToDegree extends Command {
 		DRIVE.arcadeDrive(0, 0);
 		if (isTimedOut())
 			DriverStation.reportWarning("TurnToDegree timed out.", true);
+		else
+			DriverStation.reportWarning("TurnToDegree ended with " + Double.toString(DRIVE.getGyroPIDError()) + " error.", true);
 	}
 
 	// Called when another command which requires one or more of the same

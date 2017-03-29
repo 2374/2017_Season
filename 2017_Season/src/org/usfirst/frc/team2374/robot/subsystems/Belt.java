@@ -80,6 +80,10 @@ public class Belt extends Subsystem {
 	public double getPIDOutput() {
 		return beltPID.get();
 	}
+	
+	public double getPIDError() {
+		return beltPID.getError();
+	}
 
 	public void enablePID(boolean enable) {
 		if (enable)

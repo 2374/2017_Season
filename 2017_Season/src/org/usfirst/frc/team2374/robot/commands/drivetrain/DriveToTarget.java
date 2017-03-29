@@ -36,6 +36,7 @@ public class DriveToTarget extends DriveToInch {
 
 	@Override
 	protected void initialize() {
+		DriverStation.reportWarning("DriveToTarget initialized.", true);
 		super.type = type;
 		double disToTar = CAMERA.distanceToTargetInches();
 		if (disToTar <= 0) {

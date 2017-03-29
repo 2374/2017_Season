@@ -21,6 +21,7 @@ public class OpenGrabber extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		DriverStation.reportWarning("OpenGrabber initialized.", true);
 		GRABBER.open();
 	}
 
@@ -41,6 +42,8 @@ public class OpenGrabber extends Command {
 		GRABBER.stop();
 		if (isTimedOut())
 			DriverStation.reportWarning("OpenGrabber timed out.", true);
+		else
+			DriverStation.reportWarning("OpenGrabber ended.", true);
 	}
 
 	// Called when another command which requires one or more of the same

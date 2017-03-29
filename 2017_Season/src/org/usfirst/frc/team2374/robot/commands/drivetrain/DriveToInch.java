@@ -46,6 +46,7 @@ public class DriveToInch extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		DriverStation.reportWarning("DriveToInch initialized.", true);
 		DRIVE.resetAllSenors(true);
 		if (type.equals(DriveToType.SHORT))
 			DRIVE.setShortPID();
@@ -69,8 +70,7 @@ public class DriveToInch extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs((DRIVE.getLeftDistanceInches() + DRIVE.getRightDistanceInches()) / 2 - wantedDistance) <= THRESHOLD
-				|| isTimedOut();
+		return Math.abs(DRIVE.getDrivePIDError()) <= THRESHOLD || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
@@ -81,6 +81,8 @@ public class DriveToInch extends Command {
 		DRIVE.arcadeDrive(0, 0);
 		if (isTimedOut())
 			DriverStation.reportWarning("DriveToInch timed out.", true);
+		else
+			DriverStation.reportWarning("DriveToInch ended with " + Double.toString(DRIVE.getDrivePIDError()) + " error.", true);
 	}
 
 	// Called when another command which requires one or more of the same

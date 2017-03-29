@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
 		drivetrain.updatePreferences();
 		belt.updatePreferences();
 		camera.updatePreferences();
+		climber.updatePreferences();
 		AutoConstants.updatePreferences();
 		timer = Timer.getFPGATimestamp();
 		
@@ -93,6 +94,7 @@ public class Robot extends IterativeRobot {
 			drivetrain.updatePreferences();
 			belt.updatePreferences();
 			camera.updatePreferences();
+			climber.updatePreferences();
 			AutoConstants.updatePreferences();
 			timer = Timer.getFPGATimestamp();
 		}

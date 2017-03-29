@@ -18,6 +18,7 @@ public class CloseGrabber extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		DriverStation.reportWarning("CloseGrabber initialized.", true);
 		GRABBER.close();
 	}
 
@@ -38,6 +39,8 @@ public class CloseGrabber extends Command {
 		GRABBER.stop();
 		if (isTimedOut())
 			DriverStation.reportWarning("CloseGrabber timed out.", true);
+		else
+			DriverStation.reportWarning("CloseGrabber ended.", true);
 	}
 
 	// Called when another command which requires one or more of the same

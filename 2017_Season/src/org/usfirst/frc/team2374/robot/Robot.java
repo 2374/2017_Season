@@ -60,10 +60,6 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		oi = new OI(); // needs to be initialize last
 		
-		drivetrain.updatePreferences();
-		belt.updatePreferences();
-		camera.updatePreferences();
-		climber.updatePreferences();
 		AutoConstants.updatePreferences();
 		timer = Timer.getFPGATimestamp();
 		

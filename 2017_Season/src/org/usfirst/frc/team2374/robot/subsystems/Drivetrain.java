@@ -66,6 +66,7 @@ public class Drivetrain extends Subsystem {
 	private static final double MAX_AUTO_SPEED = 0.75;
 
 	public Drivetrain() {
+		updatePreferences();
 
 		masterLeft = new CANTalon(RobotMap.TALON_DRIVE_MASTER_LEFT);
 		masterRight = new CANTalon(RobotMap.TALON_DRIVE_MASTER_RIGHT);

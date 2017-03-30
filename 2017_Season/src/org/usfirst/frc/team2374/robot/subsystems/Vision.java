@@ -34,6 +34,8 @@ public class Vision extends Subsystem {
 	}
 
 	public void updateContours() {
+		updatePreferences();
+		
 		double[] x = tableIn.getNumberArray("x", new double[0]);
 		double[] y = tableIn.getNumberArray("y", new double[0]);
 		double[] w = tableIn.getNumberArray("w", new double[0]);

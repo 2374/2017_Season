@@ -16,6 +16,8 @@ public class Climber extends Subsystem {
 	private double CLIMBER_SPEED_SLOW;
 
 	public Climber() {
+		updatePreferences();
+		
 		climberControllerLeft = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_LEFT);
 		climberControllerRight = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_RIGHT);
 		climberControllerRight.setInverted(true);

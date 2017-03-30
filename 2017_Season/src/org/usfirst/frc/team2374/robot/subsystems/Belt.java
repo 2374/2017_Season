@@ -32,6 +32,8 @@ public class Belt extends Subsystem {
 	public static double BELT_CNTR_TAR_THRESH;
 
 	public Belt() {
+		updatePreferences();
+		
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);
 		beltController.setInverted(true);
 		beltEncoder = new Encoder(RobotMap.ENCODER_BELT_A, RobotMap.ENCODER_BELT_B);

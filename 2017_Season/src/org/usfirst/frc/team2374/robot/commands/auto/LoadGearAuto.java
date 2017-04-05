@@ -19,26 +19,26 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class LoadGear extends CommandGroup {
+public class LoadGearAuto extends CommandGroup {
 
 	private Drivetrain drive = Robot.drivetrain;
 	private Belt belt = Robot.belt;
 	private Vision camera = Robot.camera;
 	private Grabber grabber = Robot.grabber;
 
-	public LoadGear() {
+	public LoadGearAuto() {
 		requires(drive);
 		requires(belt);
 		requires(grabber);
 		requires(camera);
 
-		addSequential(new DriveToTarget(30, DriveToType.VIOLENT, 2.0));
+		addSequential(new DriveToTarget(AutoConstants.AUTO_DRIVE_TO_TAR));
 		addSequential(new CenterBeltOnTarget());
-		addSequential(new DriveToInch(21.5, DriveToType.SHORT, 2.0));
-		addParallel(new OpenGrabber());
+		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_FOWRD, DriveToType.SHORT));
+		addSequential(new OpenGrabber(AutoConstants.AUTO_GRABBER_TIMEOUT));
 		addSequential(new MoveBeltToOffset());
-		addSequential(new DriveToInch(6, DriveToType.VIOLENT, 2.0));
-		addSequential(new DriveToInch(-22, DriveToType.SHORT, 2.0));
+		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_GEAR, DriveToType.VIOLENT));
+		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_BACK, DriveToType.SHORT));
 		addParallel(new CloseGrabber());
 		addSequential(new MoveBeltToPoint(0));
 	}

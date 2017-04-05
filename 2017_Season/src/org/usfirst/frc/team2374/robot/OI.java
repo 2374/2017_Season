@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.auto.LoadGear;
+import org.usfirst.frc.team2374.robot.commands.auto.LoadGearTeleop;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.belt.ResetBelt;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
@@ -47,7 +47,7 @@ public class OI {
 		buttonA.whenPressed(new CloseGrabber());
 		buttonB.whenPressed(new OpenGrabber());
 		buttonX.whenPressed(new MoveBeltToPoint(0));
-		buttonY.whenPressed(new LoadGear());
+		buttonY.whenPressed(new LoadGearTeleop());
 		buttonL3.whenPressed(new ClearScheduler());
 
 		SmartDashboard.putData("ResetBelt", new ResetBelt());

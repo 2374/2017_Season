@@ -5,7 +5,6 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveToInch extends Command {
 
@@ -17,7 +16,7 @@ public class DriveToInch extends Command {
 	protected double wantedDistance;
 
 	private static final Drivetrain DRIVE = Robot.drivetrain;
-	
+
 	private double THRESHOLD = Drivetrain.DRIVE_TO_INCH_THRESH;
 
 	public DriveToInch(double inches, DriveToType type, double timeout) {
@@ -47,7 +46,8 @@ public class DriveToInch extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		DriverStation.reportWarning("DriveToInch initialized.", true);
+		DriverStation.reportWarning(
+				"DriveToInch initialized. Driving to " + Double.toString(wantedDistance) + " inches.", true);
 		DRIVE.resetAllSenors(true);
 		if (type.equals(DriveToType.SHORT))
 			DRIVE.setShortPID();
@@ -59,7 +59,6 @@ public class DriveToInch extends Command {
 		DRIVE.setGyroPIDSetPoint(0);
 		DRIVE.enableDrivePID(true);
 		DRIVE.enableGyroPID(true);
-		SmartDashboard.putNumber("DTI_wantedDist", wantedDistance);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -83,7 +82,8 @@ public class DriveToInch extends Command {
 		if (isTimedOut())
 			DriverStation.reportWarning("DriveToInch timed out.", true);
 		else
-			DriverStation.reportWarning("DriveToInch ended with " + Double.toString(DRIVE.getDrivePIDError()) + " error.", true);
+			DriverStation.reportWarning(
+					"DriveToInch ended with " + Double.toString(DRIVE.getDrivePIDError()) + " error.", true);
 	}
 
 	// Called when another command which requires one or more of the same

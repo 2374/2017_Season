@@ -16,8 +16,8 @@ public class Vision extends Subsystem {
 
 	private static final int RESOLUTION_X = 640;
 	private static final double WIDTH_OF_TARGET_INCH = 10.25;
-	private static final double OFFSET_TO_FRONT_BUMPER = 4.0;
-	
+	private static final double OFFSET_TO_FRONT_BUMPER = 8.0; // usually 4
+
 	private double VIS_OFFSET_TO_GEAR;
 	private double VIS_CALIB_DIST_INCHES;
 	private double VIS_CALIB_WIDTH_INCHES;
@@ -35,7 +35,7 @@ public class Vision extends Subsystem {
 
 	public void updateContours() {
 		updatePreferences();
-		
+
 		double[] x = tableIn.getNumberArray("x", new double[0]);
 		double[] y = tableIn.getNumberArray("y", new double[0]);
 		double[] w = tableIn.getNumberArray("w", new double[0]);
@@ -100,8 +100,8 @@ public class Vision extends Subsystem {
 	}
 
 	public double distanceToTargetInches() {
-		return VIS_CALIB_WIDTH_INCHES * (VIS_CALIB_WIDTH_PIXELS * VIS_CALIB_DIST_INCHES
-				/ VIS_CALIB_WIDTH_INCHES) / getTargetWidth() - OFFSET_TO_FRONT_BUMPER;
+		return VIS_CALIB_WIDTH_INCHES * (VIS_CALIB_WIDTH_PIXELS * VIS_CALIB_DIST_INCHES / VIS_CALIB_WIDTH_INCHES)
+				/ getTargetWidth() - OFFSET_TO_FRONT_BUMPER;
 	}
 
 	// will return a positive or negative if valid, but will return the maximum
@@ -133,9 +133,9 @@ public class Vision extends Subsystem {
 		tableOut.putNumberArray("width", width);
 		tableOut.putNumberArray("height", height);
 	}
-	
+
 	public void updatePreferences() {
-		VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 7.16);
+		VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 5.90);
 		VIS_CALIB_DIST_INCHES = Robot.prefs.getDouble("VIS_CALIB_DIST_INCHES", 60);
 		VIS_CALIB_WIDTH_INCHES = Robot.prefs.getDouble("VIS_CALIB_WIDTH_INCHES", 10.25);
 		VIS_CALIB_WIDTH_PIXELS = Robot.prefs.getDouble("VIS_CALIB_WIDTH_PIXELS", 122);

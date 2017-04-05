@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem {
 	private double GYRO_PT;
 	private double GYRO_IT;
 	private double GYRO_DT;
-	
+
 	private double DRIVE_PS;
 	private double DRIVE_IS;
 	private double DRIVE_DS;
@@ -56,7 +56,7 @@ public class Drivetrain extends Subsystem {
 	private double DRIVE_PV;
 	private double DRIVE_IV;
 	private double DRIVE_DV;
-	
+
 	public static double DRIVE_TO_INCH_THRESH;
 
 	private static final double WHEEL_DIAMETER_INCHES = 6;
@@ -79,6 +79,7 @@ public class Drivetrain extends Subsystem {
 		rightEncoder = new Encoder(RobotMap.ENCODER_DRIVE_RA, RobotMap.ENCODER_DRIVE_RB);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		rightEncoder.setReverseDirection(true);
 
 		fLeft.changeControlMode(TalonControlMode.Follower);
 		fRight.changeControlMode(TalonControlMode.Follower);
@@ -158,7 +159,7 @@ public class Drivetrain extends Subsystem {
 	public double getDrivePIDOutput() {
 		return drivePID.get();
 	}
-	
+
 	public double getDrivePIDError() {
 		return drivePID.getError();
 	}
@@ -166,7 +167,7 @@ public class Drivetrain extends Subsystem {
 	public double getGyroPIDOutput() {
 		return gyroPID.get();
 	}
-	
+
 	public double getGyroPIDError() {
 		return gyroPID.getError();
 	}
@@ -256,7 +257,7 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("drivePID_out", drivePID.get());
 	}
-	
+
 	public void updatePreferences() {
 		GYRO_PS = Robot.prefs.getDouble("GYRO_PS", 0.07);
 		GYRO_IS = Robot.prefs.getDouble("GYRO_IS", 0.0002);
@@ -267,17 +268,17 @@ public class Drivetrain extends Subsystem {
 		GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
 		GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
 		GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
-		DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.07);
-		DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 0.0001);
+		DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.035);
+		DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 1.5E-4);
 		DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
-		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.003);
-		DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.001);
+		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.03);
+		DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.000);
 		DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
 		DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
 		DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
 		DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
 		DRIVE_TO_INCH_THRESH = Robot.prefs.getDouble("DRIVE_TO_INCH_THRESH", 1.0);
-		
+
 		Robot.prefs.putDouble("GYRO_PS", GYRO_PS);
 		Robot.prefs.putDouble("GYRO_IS", GYRO_IS);
 		Robot.prefs.putDouble("GYRO_DS", GYRO_DS);

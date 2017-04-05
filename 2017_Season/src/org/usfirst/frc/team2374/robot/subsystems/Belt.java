@@ -25,7 +25,7 @@ public class Belt extends Subsystem {
 	private static final double BELT_D = 0;
 
 	public static final double MAX_BELT_SPEED = 0.5;
-	
+
 	public static double BELT_LEFT_OFFSET;
 	public static double BELT_LEFT_LIMIT;
 	public static double BELT_RIGHT_LIMIT;
@@ -33,12 +33,13 @@ public class Belt extends Subsystem {
 
 	public Belt() {
 		updatePreferences();
-		
+
 		beltController = new Spark(RobotMap.SPEED_CONTROLLER_BELT);
 		beltController.setInverted(true);
 		beltEncoder = new Encoder(RobotMap.ENCODER_BELT_A, RobotMap.ENCODER_BELT_B);
 
 		beltEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		beltEncoder.setReverseDirection(true);
 		beltPID = new PIDController(BELT_P, BELT_I, BELT_D, beltEncoder, new PIDOutput() {
 			@Override
 			public void pidWrite(double arg0) {
@@ -82,7 +83,7 @@ public class Belt extends Subsystem {
 	public double getPIDOutput() {
 		return beltPID.get();
 	}
-	
+
 	public double getPIDError() {
 		return beltPID.getError();
 	}
@@ -104,12 +105,12 @@ public class Belt extends Subsystem {
 		SmartDashboard.putNumber("beltPID_out", beltPID.get());
 		SmartDashboard.putNumber("beltPID_error", beltPID.getError());
 	}
-	
+
 	public void updatePreferences() {
-		BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -235.0);
-		BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -413.25);
+		BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -335.0);
+		BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -513.25);
 		BELT_RIGHT_LIMIT = Robot.prefs.getDouble("BELT_RIGHT_LIMIT", 254.5);
-		BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 30);
+		BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 20);
 		Robot.prefs.putDouble("BELT_LEFT_OFFSET", BELT_LEFT_OFFSET);
 		Robot.prefs.putDouble("BELT_LEFT_LIMIT", BELT_LEFT_LIMIT);
 		Robot.prefs.putDouble("BELT_RIGHT_LIMIT", BELT_RIGHT_LIMIT);

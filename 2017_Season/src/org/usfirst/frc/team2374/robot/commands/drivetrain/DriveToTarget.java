@@ -49,7 +49,7 @@ public class DriveToTarget extends DriveToInch {
 		super.initialize();
 	}
 
-	private void exit() {
+	protected void exit() {
 		Scheduler.getInstance().removeAll();
 		Scheduler.getInstance().add(new TimedRumble(0.5));
 	}

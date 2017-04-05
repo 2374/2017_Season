@@ -42,8 +42,6 @@ public class RobotMap {
 	public static final int ENCODER_DRIVE_LB = 1;
 	public static final int ENCODER_DRIVE_RA = 2;
 	public static final int ENCODER_DRIVE_RB = 3;
-	public static final int LIMIT_SWITCH_BELT_LEFT = 9;
-	public static final int LIMIT_SWITCH_BELT_RIGHT = 9;
 	public static final int LIMIT_SWITCH_GRABBER_OPEN = 7;
 	public static final int LIMIT_SWITCH_GRABBER_CLOSE = 6;
 

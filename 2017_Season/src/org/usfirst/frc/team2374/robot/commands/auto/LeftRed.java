@@ -29,6 +29,6 @@ public class LeftRed extends CommandGroup {
 
 		addSequential(new DriveToInch(AutoConstants.LEFT_FORWARD_RED, DriveToType.LONG));
 		addSequential(new TurnToDegree(AutoConstants.LEFT_TURN, AutoConstants.LEFT_TURN_TIMEOUT));
-		addSequential(new Center());
+		addSequential(new LoadGearAuto());
 	}
 }

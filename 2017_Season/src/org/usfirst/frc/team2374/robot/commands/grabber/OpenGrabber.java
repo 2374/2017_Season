@@ -12,9 +12,11 @@ public class OpenGrabber extends Command {
 
 	public OpenGrabber() {
 		requires(GRABBER);
+		setTimeout(5);
 	}
 
 	public OpenGrabber(double timeout) {
+		requires(GRABBER);
 		setTimeout(timeout);
 	}
 

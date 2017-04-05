@@ -34,10 +34,12 @@ public class CenterBeltOnTarget extends Command {
 	@Override
 	protected void execute() {
 		if (initialPos > 0 && Robot.belt.isAtLeftLimit()) {
-			DriverStation.reportWarning("At left limit.", true);
+			DriverStation.reportWarning(
+					"At left limit. " + Double.toString(Robot.camera.pixelsToCenter()) + " pixels to center.", true);
 			exit();
 		} else if (initialPos < 0 && Robot.belt.isAtRightLimit()) {
-			DriverStation.reportWarning("At right limit.", true);
+			DriverStation.reportWarning(
+					"At right limit. " + Double.toString(Robot.camera.pixelsToCenter()) + " pixels to center.", true);
 			exit();
 		} else if (initialPos > 0 && Robot.belt.getPosition() < Belt.BELT_LEFT_LIMIT - Belt.BELT_LEFT_OFFSET) {
 			DriverStation.reportWarning("Not enough room on left to eject gear.", true);
@@ -52,7 +54,8 @@ public class CenterBeltOnTarget extends Command {
 
 	@Override
 	protected void end() {
-		DriverStation.reportWarning("CenterBelt ended at " + Double.toString(Robot.camera.pixelsToCenter()) + " pixels to center.", true);
+		DriverStation.reportWarning(
+				"CenterBelt ended at " + Double.toString(Robot.camera.pixelsToCenter()) + " pixels to center.", true);
 		Robot.belt.setBelt(0);
 		Scheduler.getInstance().add(new TimedRumble(0.1));
 	}

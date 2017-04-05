@@ -27,6 +27,6 @@ public class RightBlue extends CommandGroup {
 
 		addSequential(new DriveToInch(AutoConstants.RIGHT_FORWARD_BLUE, DriveToType.LONG));
 		addSequential(new TurnToDegree(AutoConstants.RIGHT_TURN, AutoConstants.RIGHT_TURN_TIMEOUT));
-		addSequential(new Center());
+		addSequential(new LoadGearAuto());
 	}
 }

@@ -9,6 +9,8 @@ import org.usfirst.frc.team2374.robot.commands.auto.RightBlue;
 import org.usfirst.frc.team2374.robot.commands.auto.RightRed;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Climber;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -40,7 +42,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static Vision camera;
 	public static Climber climber;
-	
+
 	private double timer;
 
 	Command autonomousCommand;
@@ -59,16 +61,20 @@ public class Robot extends IterativeRobot {
 		camera = new Vision();
 		climber = new Climber();
 		oi = new OI(); // needs to be initialize last
-		
+
 		AutoConstants.updatePreferences();
 		timer = Timer.getFPGATimestamp();
-		
+
 		chooser.addDefault("Center", new Center());
 		chooser.addObject("Left Red", new LeftRed());
 		chooser.addObject("Right Red", new RightRed());
 		chooser.addObject("Left Blue", new LeftBlue());
 		chooser.addObject("Right Blue", new RightBlue());
 		chooser.addObject("Base Line", new DriveToInch(90, DriveToType.LONG));
+		chooser.addObject("DriveToTar", new DriveToTarget(30));
+		chooser.addObject("DriveToInch65L", new DriveToInch(65, DriveToType.LONG));
+		chooser.addObject("DriveToInch21S", new DriveToInch(21, DriveToType.SHORT));
+		chooser.addObject("TurnToDegree", new TurnToDegree(60, 2));
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData(Scheduler.getInstance());
 	}

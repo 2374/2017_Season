@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
-
 public class TwoEncoderPIDSource implements PIDSource {
 
 	private Encoder leftEncoder, rightEncoder;
-	private static final double EC_PER_REV_LEFT = 352.25;
+	private static final double EC_PER_REV_LEFT = 359.08;
 	private static final double EC_PER_REV_RIGHT = 358.98;
-	private static final double WHEEL_DIAMETER = 6.0; // inches
+	private static final double WHEEL_DIAMETER_INCHES = 6.0;
 
 	public TwoEncoderPIDSource(Encoder left, Encoder right) {
 		leftEncoder = left;
@@ -26,7 +25,7 @@ public class TwoEncoderPIDSource implements PIDSource {
 	public double pidGet() {
 		double leftInches = getLeftDistanceInches();
 		double rightInches = getRightDistanceInches();
-		return (leftInches + rightInches) / 2.0;
+		return (leftInches + rightInches) / 2;
 	}
 
 	@Override
@@ -42,11 +41,11 @@ public class TwoEncoderPIDSource implements PIDSource {
 	}
 
 	public static double encoderCntsToInches(double counts, double countsPerRev) {
-		return (counts / countsPerRev) * (WHEEL_DIAMETER * Math.PI);
+		return (counts / countsPerRev) * (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 	public static double inchesToEncoderCnts(double inches, double countsPerRev) {
-		return inches * countsPerRev / (WHEEL_DIAMETER * Math.PI);
+		return inches * countsPerRev / (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 }

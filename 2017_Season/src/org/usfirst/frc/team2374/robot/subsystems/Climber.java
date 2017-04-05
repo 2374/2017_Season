@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
+import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.climber.ClimberWithJoystick;
 
@@ -7,16 +8,19 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-
 public class Climber extends Subsystem {
 
-	private SpeedController climberController;
+	private SpeedController climberControllerLeft, climberControllerRight;
 
 	private static final double CLIMBER_SPEED = 1.0;
+	private double CLIMBER_SPEED_SLOW;
 
 	public Climber() {
-		climberController = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER);
-		climberController.setInverted(true);
+		updatePreferences();
+
+		climberControllerLeft = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_LEFT);
+		climberControllerRight = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_RIGHT);
+		climberControllerRight.setInverted(true);
 	}
 
 	@Override
@@ -25,10 +29,22 @@ public class Climber extends Subsystem {
 	}
 
 	public void start() {
-		climberController.set(CLIMBER_SPEED);
+		climberControllerLeft.set(CLIMBER_SPEED);
+		climberControllerRight.set(CLIMBER_SPEED);
+	}
+
+	public void slow() {
+		climberControllerLeft.set(CLIMBER_SPEED_SLOW);
+		climberControllerRight.set(CLIMBER_SPEED_SLOW);
 	}
 
 	public void stop() {
-		climberController.set(0);
+		climberControllerLeft.set(0);
+		climberControllerRight.set(0);
+	}
+
+	public void updatePreferences() {
+		CLIMBER_SPEED_SLOW = Robot.prefs.getDouble("CLIMBER_SPEED_SLOW", 0.7);
+		Robot.prefs.putDouble("CLIMBER_SPEED_SLOW", CLIMBER_SPEED_SLOW);
 	}
 }

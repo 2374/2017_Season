@@ -1,7 +1,12 @@
 
 package org.usfirst.frc.team2374.robot;
 
-import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
+import org.usfirst.frc.team2374.robot.commands.auto.AutoConstants;
+import org.usfirst.frc.team2374.robot.commands.auto.Center;
+import org.usfirst.frc.team2374.robot.commands.auto.LeftBlue;
+import org.usfirst.frc.team2374.robot.commands.auto.LeftRed;
+import org.usfirst.frc.team2374.robot.commands.auto.RightBlue;
+import org.usfirst.frc.team2374.robot.commands.auto.RightRed;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
@@ -13,6 +18,8 @@ import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -28,12 +35,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	public static Preferences prefs;
 	public static Drivetrain drivetrain;
 	public static Belt belt;
 	public static Grabber grabber;
 	public static OI oi;
 	public static Vision camera;
 	public static Climber climber;
+
+	private double timer;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -44,19 +54,29 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		prefs = Preferences.getInstance();
 		drivetrain = new Drivetrain();
 		belt = new Belt();
 		grabber = new Grabber();
-		oi = new OI();
 		camera = new Vision();
 		climber = new Climber();
-		chooser.addDefault("Default Auto", new CenterBeltOnTarget());
-		//This must be named "Default Auto"
-		chooser.addObject("TurnToAngle-60", new TurnToDegree(-60));
-		chooser.addObject("DriveToTarget", new DriveToTarget(30));
-		chooser.addObject("DriveToInch20", new DriveToInch(20, DriveToType.SHORT));
-		chooser.addObject("DriveToInch77", new DriveToInch(77, DriveToType.LONG));
+		oi = new OI(); // needs to be initialize last
+
+		AutoConstants.updatePreferences();
+		timer = Timer.getFPGATimestamp();
+
+		chooser.addDefault("Center", new Center());
+		chooser.addObject("Left Red", new LeftRed());
+		chooser.addObject("Right Red", new RightRed());
+		chooser.addObject("Left Blue", new LeftBlue());
+		chooser.addObject("Right Blue", new RightBlue());
+		chooser.addObject("Base Line", new DriveToInch(90, DriveToType.LONG));
+		chooser.addObject("DriveToTar", new DriveToTarget(30));
+		chooser.addObject("DriveToInch65L", new DriveToInch(65, DriveToType.LONG));
+		chooser.addObject("DriveToInch21S", new DriveToInch(21, DriveToType.SHORT));
+		chooser.addObject("TurnToDegree", new TurnToDegree(60, 2));
 		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData(Scheduler.getInstance());
 	}
 
 	/**
@@ -72,6 +92,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		if (Timer.getFPGATimestamp() - timer >= 1.0) {
+			drivetrain.updatePreferences();
+			belt.updatePreferences();
+			camera.updatePreferences();
+			climber.updatePreferences();
+			AutoConstants.updatePreferences();
+			timer = Timer.getFPGATimestamp();
+		}
 	}
 
 	/**

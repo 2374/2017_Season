@@ -3,6 +3,8 @@ package org.usfirst.frc.team2374.robot.subsystems;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.usfirst.frc.team2374.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,14 +15,13 @@ public class Vision extends Subsystem {
 	private List<Rectangle> contours;
 
 	private static final int RESOLUTION_X = 640;
-	private static final double OFFSET = 4.96; 
-	// inches between camera and center of gear
-	private static final double WIDTH_OF_TARGET = 10.25; // inches
+	private static final double WIDTH_OF_TARGET_INCH = 10.25;
+	private static final double OFFSET_TO_FRONT_BUMPER = 8.0; // usually 4
 
-	private static final double CALIBRATION_DIST_INCHES = 60;
-	private static final double CALIBRATION_WIDTH_INCHES = 10.25; 
-	private static final double CALIBRATION_WIDTH_PIXELS = 122;
-	private static final double FOCAL_LENGTH = CALIBRATION_WIDTH_PIXELS * CALIBRATION_DIST_INCHES / CALIBRATION_WIDTH_INCHES;
+	private double VIS_OFFSET_TO_GEAR;
+	private double VIS_CALIB_DIST_INCHES;
+	private double VIS_CALIB_WIDTH_INCHES;
+	private double VIS_CALIB_WIDTH_PIXELS;
 
 	public Vision() {
 		tableIn = NetworkTable.getTable("vision");
@@ -33,6 +34,8 @@ public class Vision extends Subsystem {
 	}
 
 	public void updateContours() {
+		updatePreferences();
+
 		double[] x = tableIn.getNumberArray("x", new double[0]);
 		double[] y = tableIn.getNumberArray("y", new double[0]);
 		double[] w = tableIn.getNumberArray("w", new double[0]);
@@ -83,9 +86,10 @@ public class Vision extends Subsystem {
 			return Integer.MAX_VALUE;
 		int center = contours.get(0).getCenter(contours.get(1));
 		int pixToCenter = center - RESOLUTION_X / 2;
-		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET; // pixels/inches
-		// DriverStation.reportWarning("pixPerInch " + pixelsPerInch, true);
-		return (-pixToCenter) + OFFSET * pixelsPerInch;
+		double pixelsPerInch = getTargetWidth() / WIDTH_OF_TARGET_INCH; // pixels/inches
+		SmartDashboard.putNumber("pixelsPerInch", pixelsPerInch);
+		SmartDashboard.putNumber("pixelsToCenter_raw", -pixToCenter);
+		return (-pixToCenter) + VIS_OFFSET_TO_GEAR * pixelsPerInch;
 	}
 
 	// will always be positive if its valid
@@ -96,7 +100,8 @@ public class Vision extends Subsystem {
 	}
 
 	public double distanceToTargetInches() {
-		return CALIBRATION_WIDTH_INCHES * FOCAL_LENGTH / getTargetWidth();
+		return VIS_CALIB_WIDTH_INCHES * (VIS_CALIB_WIDTH_PIXELS * VIS_CALIB_DIST_INCHES / VIS_CALIB_WIDTH_INCHES)
+				/ getTargetWidth() - OFFSET_TO_FRONT_BUMPER;
 	}
 
 	// will return a positive or negative if valid, but will return the maximum
@@ -109,7 +114,7 @@ public class Vision extends Subsystem {
 
 	public void toSmartDashboard() {
 		updateContours();
-		SmartDashboard.putNumber("distanceToCenter", pixelsToCenter());
+		SmartDashboard.putNumber("pixelsToCenter", pixelsToCenter());
 		SmartDashboard.putNumber("distanceToTarget", distanceToTargetInches());
 		SmartDashboard.putNumber("areaDifference", compareAreas());
 		SmartDashboard.putNumber("targetWidth", getTargetWidth());
@@ -127,6 +132,17 @@ public class Vision extends Subsystem {
 		tableOut.putNumberArray("y", y);
 		tableOut.putNumberArray("width", width);
 		tableOut.putNumberArray("height", height);
+	}
+
+	public void updatePreferences() {
+		VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 5.90);
+		VIS_CALIB_DIST_INCHES = Robot.prefs.getDouble("VIS_CALIB_DIST_INCHES", 60);
+		VIS_CALIB_WIDTH_INCHES = Robot.prefs.getDouble("VIS_CALIB_WIDTH_INCHES", 10.25);
+		VIS_CALIB_WIDTH_PIXELS = Robot.prefs.getDouble("VIS_CALIB_WIDTH_PIXELS", 122);
+		Robot.prefs.putDouble("VIS_OFFSET_TO_GEAR", VIS_OFFSET_TO_GEAR);
+		Robot.prefs.putDouble("VIS_CALIB_DIST_INCHES", VIS_CALIB_DIST_INCHES);
+		Robot.prefs.putDouble("VIS_CALIB_WIDTH_INCHES", VIS_CALIB_WIDTH_INCHES);
+		Robot.prefs.putDouble("VIS_CALIB_WIDTH_PIXELS", VIS_CALIB_WIDTH_PIXELS);
 	}
 
 	private class Rectangle {

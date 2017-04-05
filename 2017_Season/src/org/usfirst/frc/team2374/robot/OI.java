@@ -1,11 +1,16 @@
 package org.usfirst.frc.team2374.robot;
 
+import org.usfirst.frc.team2374.robot.commands.auto.LoadGearTeleop;
+import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
+import org.usfirst.frc.team2374.robot.commands.belt.ResetBelt;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
+import org.usfirst.frc.team2374.robot.commands.oi.ClearScheduler;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -23,6 +28,8 @@ public class OI {
 	private JoystickButton buttonB;
 	private JoystickButton buttonBack;
 	private JoystickButton buttonStart;
+	private JoystickButton buttonL3;
+	private JoystickButton buttonR3;
 
 	public OI() {
 		driver = new Joystick(RobotMap.DRIVER_JOY);
@@ -34,9 +41,16 @@ public class OI {
 		buttonB = new JoystickButton(driver, RobotMap.RS_BUTTON_B);
 		buttonBack = new JoystickButton(driver, RobotMap.RS_BUTTON_BACK);
 		buttonStart = new JoystickButton(driver, RobotMap.RS_BUTTON_START);
+		buttonL3 = new JoystickButton(driver, RobotMap.RS_L3);
+		buttonR3 = new JoystickButton(driver, RobotMap.RS_R3);
 
-		buttonB.whenPressed(new CloseGrabber());
-		buttonA.whenPressed(new OpenGrabber());
+		buttonA.whenPressed(new CloseGrabber());
+		buttonB.whenPressed(new OpenGrabber());
+		buttonX.whenPressed(new MoveBeltToPoint(0));
+		buttonY.whenPressed(new LoadGearTeleop());
+		buttonL3.whenPressed(new ClearScheduler());
+
+		SmartDashboard.putData("ResetBelt", new ResetBelt());
 	}
 
 	public double getDriverLeftY() {
@@ -75,6 +89,10 @@ public class OI {
 		return buttonStart.get();
 	}
 
+	public boolean getButtonR3() {
+		return buttonR3.get();
+	}
+
 	public int getPOV() {
 		return driver.getPOV(0);
 	}
@@ -95,10 +113,9 @@ public class OI {
 			driver.setRumble(RumbleType.kLeftRumble, 0);
 			driver.setRumble(RumbleType.kRightRumble, 0);
 		}
-
 	}
 
-	public double deadZone(double axisValue, double deadValue) {
+	public static double deadZone(double axisValue, double deadValue) {
 		if (Math.abs(axisValue) < deadValue)
 			return 0;
 		else

@@ -9,8 +9,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class GrabberWithJoystick extends Command {
 
+	private boolean rumbling;
+
 	public GrabberWithJoystick() {
 		requires(Robot.grabber);
+		rumbling = false;
 	}
 
 	// Called just before this Command runs the first time
@@ -21,12 +24,12 @@ public class GrabberWithJoystick extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Robot.grabber.isClosed() && Robot.oi.getButtonBack()
-				|| Robot.grabber.isOpened() && Robot.oi.getButtonStart()) {
+		if ((Robot.grabber.isClosed() && Robot.oi.getButtonBack())
+				|| (Robot.grabber.isOpened() && Robot.oi.getButtonStart())) {
 			Robot.grabber.stop();
-			Robot.oi.setRumble(true);
+			setRumble(true);
 		} else {
-			Robot.oi.setRumble(false);
+			setRumble(false);
 			if (!Robot.grabber.isClosed() && Robot.oi.getButtonBack() && !Robot.oi.getButtonStart())
 				Robot.grabber.close();
 			else if (!Robot.grabber.isOpened() && Robot.oi.getButtonStart() && !Robot.oi.getButtonBack())
@@ -53,5 +56,15 @@ public class GrabberWithJoystick extends Command {
 	@Override
 	protected void interrupted() {
 		end();
+	}
+
+	private void setRumble(boolean enable) {
+		if (enable) {
+			Robot.oi.setRumble(true);
+			rumbling = true;
+		} else if (!enable && rumbling) {
+			Robot.oi.setRumble(false);
+			rumbling = false;
+		}
 	}
 }

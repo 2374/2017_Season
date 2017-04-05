@@ -18,6 +18,8 @@ public class RobotMap {
 	public static final int RS_BUTTON_B = 2;
 	public static final int RS_BUTTON_BACK = 7;
 	public static final int RS_BUTTON_START = 8;
+	public static final int RS_L3 = 9;
+	public static final int RS_R3 = 10;
 
 	// CAN
 	public static final int TALON_DRIVE_MASTER_LEFT = 1;
@@ -30,7 +32,8 @@ public class RobotMap {
 	// PWM
 	public static final int SPEED_CONTROLLER_BELT = 4;
 	public static final int SPEED_CONTROLLER_GRABBER = 2;
-	public static final int SPEED_CONTROLLER_CLIMBER = 5;
+	public static final int SPEED_CONTROLLER_CLIMBER_LEFT = 5;
+	public static final int SPEED_CONTROLLER_CLIMBER_RIGHT = 3;
 
 	// DIO
 	public static final int ENCODER_BELT_A = 4;
@@ -39,8 +42,6 @@ public class RobotMap {
 	public static final int ENCODER_DRIVE_LB = 1;
 	public static final int ENCODER_DRIVE_RA = 2;
 	public static final int ENCODER_DRIVE_RB = 3;
-	public static final int LIMIT_SWITCH_BELT_LEFT = 9;
-	public static final int LIMIT_SWITCH_BELT_RIGHT = 9;
 	public static final int LIMIT_SWITCH_GRABBER_OPEN = 7;
 	public static final int LIMIT_SWITCH_GRABBER_CLOSE = 6;
 

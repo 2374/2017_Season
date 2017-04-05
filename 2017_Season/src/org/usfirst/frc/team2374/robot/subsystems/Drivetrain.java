@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2374.robot.subsystems;
 
+import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.RobotMap;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveWithJoystick;
 import org.usfirst.frc.team2374.util.TwoEncoderPIDSource;
@@ -8,15 +9,16 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 public class Drivetrain extends Subsystem {
 
@@ -28,36 +30,43 @@ public class Drivetrain extends Subsystem {
 
 	private TwoEncoderPIDSource driveIn;
 	private PIDController drivePID;
-	
+
 	private PIDController gyroPID;
-	
-	private static final double GYRO_PS = 0.07;
-	private static final double GYRO_IS = 0.0002;
-	private static final double GYRO_DS = 0.001;
 
-	private static final double GYRO_PL = 0.07;
-	private static final double GYRO_IL = 0.001;
-	private static final double GYRO_DL = 0.001;
+	private double GYRO_PS;
+	private double GYRO_IS;
+	private double GYRO_DS;
 
-	private static final double GYRO_PT = 0.007;
-	private static final double GYRO_IT = 0.00045;
-	private static final double GYRO_DT = 0.003;
+	private double GYRO_PL;
+	private double GYRO_IL;
+	private double GYRO_DL;
 
-	private static final double DRIVE_PS = 0.1;
-	private static final double DRIVE_IS = 0.0001;
-	private static final double DRIVE_DS = 0;
+	private double GYRO_PT;
+	private double GYRO_IT;
+	private double GYRO_DT;
 
-	private static final double DRIVE_PL = 0.017;
-	private static final double DRIVE_IL = 0.0005;
-	private static final double DRIVE_DL = 0;
+	private double DRIVE_PS;
+	private double DRIVE_IS;
+	private double DRIVE_DS;
 
-	private static final double WHEEL_DIAMETER = 6; // inches
-	private static final double EC_PER_REV_LEFT = 352.25;
+	private double DRIVE_PL;
+	private double DRIVE_IL;
+	private double DRIVE_DL;
+
+	private double DRIVE_PV;
+	private double DRIVE_IV;
+	private double DRIVE_DV;
+
+	public static double DRIVE_TO_INCH_THRESH;
+
+	private static final double WHEEL_DIAMETER_INCHES = 6;
+	private static final double EC_PER_REV_LEFT = 359.08;
 	private static final double EC_PER_REV_RIGHT = 358.98;
-	
+
 	private static final double MAX_AUTO_SPEED = 0.75;
 
 	public Drivetrain() {
+		updatePreferences();
 
 		masterLeft = new CANTalon(RobotMap.TALON_DRIVE_MASTER_LEFT);
 		masterRight = new CANTalon(RobotMap.TALON_DRIVE_MASTER_RIGHT);
@@ -70,6 +79,7 @@ public class Drivetrain extends Subsystem {
 		rightEncoder = new Encoder(RobotMap.ENCODER_DRIVE_RA, RobotMap.ENCODER_DRIVE_RB);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		rightEncoder.setReverseDirection(true);
 
 		fLeft.changeControlMode(TalonControlMode.Follower);
 		fRight.changeControlMode(TalonControlMode.Follower);
@@ -126,6 +136,10 @@ public class Drivetrain extends Subsystem {
 		gyroPID.setPID(GYRO_PT, GYRO_IT, GYRO_DT);
 	}
 
+	public void setViolentPID() {
+		drivePID.setPID(DRIVE_PV, DRIVE_IV, DRIVE_DV);
+	}
+
 	public void tankDrive(double left, double right) {
 		robotDrive.tankDrive(left, right);
 	}
@@ -146,8 +160,16 @@ public class Drivetrain extends Subsystem {
 		return drivePID.get();
 	}
 
+	public double getDrivePIDError() {
+		return drivePID.getError();
+	}
+
 	public double getGyroPIDOutput() {
 		return gyroPID.get();
+	}
+
+	public double getGyroPIDError() {
+		return gyroPID.getError();
 	}
 
 	public void enableDrivePID(boolean enable) {
@@ -167,15 +189,38 @@ public class Drivetrain extends Subsystem {
 	public void resetEncoders(boolean waitToReset) {
 		leftEncoder.reset();
 		rightEncoder.reset();
-		while (waitToReset && leftEncoder.getDistance() > 100 || rightEncoder.getDistance() > 100) {
-			// waits for the delay until the encoders are truly reset
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset
+				&& (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500)) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("Encoder didn't reset.", true);
+				break;
+			}
 		}
 	}
 
 	public void resetGyro(boolean waitToReset) {
 		navX.reset();
-		while (waitToReset && Math.abs(navX.getYaw()) > 2) {
-			// waits for the delay until the gyro is truly reset
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset && Math.abs(navX.getYaw()) > 5) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("Gyro didn't reset.", true);
+				break;
+			}
+		}
+	}
+
+	public void resetAllSenors(boolean waitToReset) {
+		leftEncoder.reset();
+		rightEncoder.reset();
+		navX.reset();
+		double startTime = Timer.getFPGATimestamp();
+		while (waitToReset && (Math.abs(leftEncoder.getDistance()) > 500 || Math.abs(rightEncoder.getDistance()) > 500
+				|| Math.abs(navX.getYaw()) > 5)) {
+			if (Timer.getFPGATimestamp() - startTime > 0.250) {
+				DriverStation.reportWarning("A sensor didn't reset.", true);
+				break;
+			}
 		}
 	}
 
@@ -192,11 +237,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public static double encoderCntsToInches(double counts, double countsPerRev) {
-		return (counts / countsPerRev) * (WHEEL_DIAMETER * Math.PI);
+		return (counts / countsPerRev) * (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 	public static double inchesToEncoderCnts(double inches, double countsPerRev) {
-		return inches * countsPerRev / (WHEEL_DIAMETER * Math.PI);
+		return inches * countsPerRev / (WHEEL_DIAMETER_INCHES * Math.PI);
 	}
 
 	public void toSmartDashboard() {
@@ -211,6 +256,48 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putBoolean("drivePID_enable", drivePID.isEnabled());
 		SmartDashboard.putNumber("drive_error", drivePID.getError());
 		SmartDashboard.putNumber("drivePID_out", drivePID.get());
+	}
+
+	public void updatePreferences() {
+		GYRO_PS = Robot.prefs.getDouble("GYRO_PS", 0.07);
+		GYRO_IS = Robot.prefs.getDouble("GYRO_IS", 0.0002);
+		GYRO_DS = Robot.prefs.getDouble("GYRO_DS", 0.001);
+		GYRO_PL = Robot.prefs.getDouble("GYRO_PL", 0.07);
+		GYRO_IL = Robot.prefs.getDouble("GYRO_IL", 0.001);
+		GYRO_DL = Robot.prefs.getDouble("GYRO_DL", 0.001);
+		GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
+		GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
+		GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
+		DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.035);
+		DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 1.5E-4);
+		DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
+		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.03);
+		DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.000);
+		DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
+		DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
+		DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
+		DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
+		DRIVE_TO_INCH_THRESH = Robot.prefs.getDouble("DRIVE_TO_INCH_THRESH", 1.0);
+
+		Robot.prefs.putDouble("GYRO_PS", GYRO_PS);
+		Robot.prefs.putDouble("GYRO_IS", GYRO_IS);
+		Robot.prefs.putDouble("GYRO_DS", GYRO_DS);
+		Robot.prefs.putDouble("GYRO_PL", GYRO_PL);
+		Robot.prefs.putDouble("GYRO_IL", GYRO_IL);
+		Robot.prefs.putDouble("GYRO_DL", GYRO_DL);
+		Robot.prefs.putDouble("GYRO_PT", GYRO_PT);
+		Robot.prefs.putDouble("GYRO_IT", GYRO_IT);
+		Robot.prefs.putDouble("GYRO_DT", GYRO_DT);
+		Robot.prefs.putDouble("DRIVE_PS", DRIVE_PS);
+		Robot.prefs.putDouble("DRIVE_IS", DRIVE_IS);
+		Robot.prefs.putDouble("DRIVE_DS", DRIVE_DS);
+		Robot.prefs.putDouble("DRIVE_PL", DRIVE_PL);
+		Robot.prefs.putDouble("DRIVE_IL", DRIVE_IL);
+		Robot.prefs.putDouble("DRIVE_DL", DRIVE_DL);
+		Robot.prefs.putDouble("DRIVE_PV", DRIVE_PV);
+		Robot.prefs.putDouble("DRIVE_IV", DRIVE_IV);
+		Robot.prefs.putDouble("DRIVE_DV", DRIVE_DV);
+		Robot.prefs.putDouble("DRIVE_TO_INCH_THRESH", DRIVE_TO_INCH_THRESH);
 	}
 
 }

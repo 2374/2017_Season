@@ -40,12 +40,12 @@ public class DriveToTarget extends DriveToInch {
 		super.type = type;
 		double disToTar = CAMERA.distanceToTargetInches();
 		if (disToTar <= 0) {
-			DriverStation.reportWarning("Not a valid target", true);
+			DriverStation.reportWarning("Not a valid target.", true);
 			exit();
 		}
 		wantedDistance = disToTar - target;
-		if (wantedDistance < 0)
-			wantedDistance = -3.5;
+		if (wantedDistance <= 0)
+			end();
 		super.initialize();
 	}
 

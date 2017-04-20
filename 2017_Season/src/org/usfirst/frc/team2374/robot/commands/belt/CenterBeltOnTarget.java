@@ -65,7 +65,7 @@ public class CenterBeltOnTarget extends Command {
 		Robot.belt.setBelt(0);
 	}
 
-	private void exit() {
+	protected void exit() {
 		Scheduler.getInstance().removeAll();
 		Scheduler.getInstance().add(new TimedRumble(0.5));
 	}

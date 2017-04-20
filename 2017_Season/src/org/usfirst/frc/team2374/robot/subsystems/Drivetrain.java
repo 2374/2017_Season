@@ -45,6 +45,10 @@ public class Drivetrain extends Subsystem {
 	private double GYRO_IT;
 	private double GYRO_DT;
 
+	private double GYRO_P_NOV;
+	private double GYRO_I_NOV;
+	private double GYRO_D_NOV;
+
 	private double DRIVE_PS;
 	private double DRIVE_IS;
 	private double DRIVE_DS;
@@ -56,6 +60,10 @@ public class Drivetrain extends Subsystem {
 	private double DRIVE_PV;
 	private double DRIVE_IV;
 	private double DRIVE_DV;
+
+	private double DRIVE_P_NOV;
+	private double DRIVE_I_NOV;
+	private double DRIVE_D_NOV;
 
 	public static double DRIVE_TO_INCH_THRESH;
 
@@ -138,6 +146,11 @@ public class Drivetrain extends Subsystem {
 
 	public void setViolentPID() {
 		drivePID.setPID(DRIVE_PV, DRIVE_IV, DRIVE_DV);
+	}
+
+	public void setNoVisionPID() {
+		drivePID.setPID(DRIVE_P_NOV, DRIVE_I_NOV, DRIVE_D_NOV);
+		gyroPID.setPID(GYRO_P_NOV, GYRO_I_NOV, GYRO_D_NOV);
 	}
 
 	public void tankDrive(double left, double right) {
@@ -265,19 +278,27 @@ public class Drivetrain extends Subsystem {
 		GYRO_PL = Robot.prefs.getDouble("GYRO_PL", 0.07);
 		GYRO_IL = Robot.prefs.getDouble("GYRO_IL", 0.001);
 		GYRO_DL = Robot.prefs.getDouble("GYRO_DL", 0.001);
-		GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.008);
+		GYRO_PT = Robot.prefs.getDouble("GYRO_PT", 0.01);
 		GYRO_IT = Robot.prefs.getDouble("GYRO_IT", 0.00045);
 		GYRO_DT = Robot.prefs.getDouble("GYRO_DT", 0);
 		DRIVE_PS = Robot.prefs.getDouble("DRIVE_PS", 0.035);
 		DRIVE_IS = Robot.prefs.getDouble("DRIVE_IS", 1.5E-4);
 		DRIVE_DS = Robot.prefs.getDouble("DRIVE_DS", 0);
-		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.03);
+		DRIVE_PL = Robot.prefs.getDouble("DRIVE_PL", 0.0215);
 		DRIVE_IL = Robot.prefs.getDouble("DRIVE_IL", 0.000);
 		DRIVE_DL = Robot.prefs.getDouble("DRIVE_DL", 0);
 		DRIVE_PV = Robot.prefs.getDouble("DRIVE_PV", 1.0);
 		DRIVE_IV = Robot.prefs.getDouble("DRIVE_IV", 0);
 		DRIVE_DV = Robot.prefs.getDouble("DRIVE_DV", 0);
 		DRIVE_TO_INCH_THRESH = Robot.prefs.getDouble("DRIVE_TO_INCH_THRESH", 1.0);
+
+		DRIVE_P_NOV = Robot.prefs.getDouble("DRIVE_P_NOV", 0.008);
+		DRIVE_I_NOV = Robot.prefs.getDouble("DRIVE_I_NOV", 1.75E-4);
+		DRIVE_D_NOV = Robot.prefs.getDouble("DRIVE_D_NOV", 0);
+
+		GYRO_P_NOV = Robot.prefs.getDouble("GYRO_P_NOV", 0.4);
+		GYRO_I_NOV = Robot.prefs.getDouble("GYRO_I_NOV", 0.001);
+		GYRO_D_NOV = Robot.prefs.getDouble("GYRO_D_NOV", 0);
 
 		Robot.prefs.putDouble("GYRO_PS", GYRO_PS);
 		Robot.prefs.putDouble("GYRO_IS", GYRO_IS);
@@ -298,6 +319,14 @@ public class Drivetrain extends Subsystem {
 		Robot.prefs.putDouble("DRIVE_IV", DRIVE_IV);
 		Robot.prefs.putDouble("DRIVE_DV", DRIVE_DV);
 		Robot.prefs.putDouble("DRIVE_TO_INCH_THRESH", DRIVE_TO_INCH_THRESH);
+
+		Robot.prefs.putDouble("DRIVE_P_NOV", DRIVE_P_NOV);
+		Robot.prefs.putDouble("DRIVE_I_NOV", DRIVE_I_NOV);
+		Robot.prefs.putDouble("DRIVE_D_NOV", DRIVE_D_NOV);
+
+		Robot.prefs.putDouble("GYRO_P_NOV", GYRO_P_NOV);
+		Robot.prefs.putDouble("GYRO_I_NOV", GYRO_I_NOV);
+		Robot.prefs.putDouble("GYRO_D_NOV", GYRO_D_NOV);
 	}
 
 }

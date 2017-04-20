@@ -6,7 +6,6 @@ import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToOffset;
 import org.usfirst.frc.team2374.robot.commands.belt.MoveBeltToPoint;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
-import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
 import org.usfirst.frc.team2374.robot.commands.grabber.CloseGrabber;
 import org.usfirst.frc.team2374.robot.commands.grabber.OpenGrabber;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
@@ -32,14 +31,16 @@ public class LoadGearAuto extends CommandGroup {
 		requires(grabber);
 		requires(camera);
 
-		addSequential(new DriveToTarget(AutoConstants.AUTO_DRIVE_TO_TAR));
 		addSequential(new CenterBeltOnTarget());
-		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_FOWRD, DriveToType.SHORT));
+		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_FOWRD, DriveToType.SHORT,
+				AutoConstants.AUTO_DRIVE_TO_INCH_FOWRD_TIMEOUT));
 		addSequential(new OpenGrabber(AutoConstants.AUTO_GRABBER_TIMEOUT));
 		addSequential(new MoveBeltToOffset());
-		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_GEAR, DriveToType.VIOLENT));
+		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_GEAR, DriveToType.VIOLENT,
+				AutoConstants.AUTO_DRIVE_TO_INCH_GEAR_TIMEOUT));
 		addSequential(new DriveToInch(AutoConstants.AUTO_DRIVE_TO_INCH_BACK, DriveToType.SHORT));
 		addParallel(new CloseGrabber());
 		addSequential(new MoveBeltToPoint(0));
 	}
+
 }

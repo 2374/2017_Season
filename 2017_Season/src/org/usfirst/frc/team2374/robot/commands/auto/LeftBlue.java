@@ -3,6 +3,7 @@ package org.usfirst.frc.team2374.robot.commands.auto;
 import org.usfirst.frc.team2374.robot.Robot;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
+import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTargetSide;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.TurnToDegree;
 import org.usfirst.frc.team2374.robot.subsystems.Belt;
 import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
@@ -29,6 +30,7 @@ public class LeftBlue extends CommandGroup {
 
 		addSequential(new DriveToInch(AutoConstants.LEFT_FORWARD_BLUE, DriveToType.LONG));
 		addSequential(new TurnToDegree(AutoConstants.LEFT_TURN, AutoConstants.LEFT_TURN_TIMEOUT));
+		addSequential(new DriveToTargetSide(AutoConstants.AUTO_DRIVE_TO_TAR));
 		addSequential(new LoadGearAuto());
 	}
 }

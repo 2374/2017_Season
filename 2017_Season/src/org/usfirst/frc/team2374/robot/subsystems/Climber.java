@@ -20,7 +20,6 @@ public class Climber extends Subsystem {
 
 		climberControllerLeft = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_LEFT);
 		climberControllerRight = new Talon(RobotMap.SPEED_CONTROLLER_CLIMBER_RIGHT);
-		climberControllerRight.setInverted(true);
 	}
 
 	@Override
@@ -44,7 +43,7 @@ public class Climber extends Subsystem {
 	}
 
 	public void updatePreferences() {
-		CLIMBER_SPEED_SLOW = Robot.prefs.getDouble("CLIMBER_SPEED_SLOW", 0.7);
+		CLIMBER_SPEED_SLOW = Robot.prefs.getDouble("CLIMBER_SPEED_SLOW", 0.5);
 		Robot.prefs.putDouble("CLIMBER_SPEED_SLOW", CLIMBER_SPEED_SLOW);
 	}
 }

@@ -107,10 +107,10 @@ public class Belt extends Subsystem {
 	}
 
 	public void updatePreferences() {
-		BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -335.0);
+		BELT_LEFT_OFFSET = Robot.prefs.getDouble("BELT_LEFT_OFFSET", -145.0);
 		BELT_LEFT_LIMIT = Robot.prefs.getDouble("BELT_LEFT_LIMIT", -513.25);
 		BELT_RIGHT_LIMIT = Robot.prefs.getDouble("BELT_RIGHT_LIMIT", 254.5);
-		BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 20);
+		BELT_CNTR_TAR_THRESH = Robot.prefs.getDouble("BELT_CNTR_TAR_THRESH", 25);
 		Robot.prefs.putDouble("BELT_LEFT_OFFSET", BELT_LEFT_OFFSET);
 		Robot.prefs.putDouble("BELT_LEFT_LIMIT", BELT_LEFT_LIMIT);
 		Robot.prefs.putDouble("BELT_RIGHT_LIMIT", BELT_RIGHT_LIMIT);

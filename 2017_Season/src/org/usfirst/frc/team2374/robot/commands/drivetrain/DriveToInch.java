@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveToInch extends Command {
 
 	public enum DriveToType {
-		SHORT, LONG, VIOLENT
+		SHORT, LONG, VIOLENT, NOVISION
 	}
 
 	protected DriveToType type;
@@ -53,8 +53,10 @@ public class DriveToInch extends Command {
 			DRIVE.setShortPID();
 		else if (type.equals(DriveToType.LONG))
 			DRIVE.setLongPID();
-		else
+		else if (type.equals(DriveToType.VIOLENT))
 			DRIVE.setViolentPID();
+		else
+			DRIVE.setNoVisionPID();
 		DRIVE.setDrivePIDSetPoint(wantedDistance);
 		DRIVE.setGyroPIDSetPoint(0);
 		DRIVE.enableDrivePID(true);
@@ -80,7 +82,8 @@ public class DriveToInch extends Command {
 		DRIVE.enableGyroPID(false);
 		DRIVE.arcadeDrive(0, 0);
 		if (isTimedOut())
-			DriverStation.reportWarning("DriveToInch timed out.", true);
+			DriverStation.reportWarning(
+					"DriveToInch timed out with " + Double.toString(DRIVE.getDrivePIDError()) + " error.", true);
 		else
 			DriverStation.reportWarning(
 					"DriveToInch ended with " + Double.toString(DRIVE.getDrivePIDError()) + " error.", true);

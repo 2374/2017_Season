@@ -135,7 +135,7 @@ public class Vision extends Subsystem {
 	}
 
 	public void updatePreferences() {
-		VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 5.90);
+		VIS_OFFSET_TO_GEAR = Robot.prefs.getDouble("VIS_OFFSET_TO_GEAR", 6.55);
 		VIS_CALIB_DIST_INCHES = Robot.prefs.getDouble("VIS_CALIB_DIST_INCHES", 60);
 		VIS_CALIB_WIDTH_INCHES = Robot.prefs.getDouble("VIS_CALIB_WIDTH_INCHES", 10.25);
 		VIS_CALIB_WIDTH_PIXELS = Robot.prefs.getDouble("VIS_CALIB_WIDTH_PIXELS", 122);

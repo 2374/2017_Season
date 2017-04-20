@@ -2,11 +2,15 @@
 package org.usfirst.frc.team2374.robot;
 
 import org.usfirst.frc.team2374.robot.commands.auto.AutoConstants;
+import org.usfirst.frc.team2374.robot.commands.auto.BaseLineCenter;
+import org.usfirst.frc.team2374.robot.commands.auto.BaseLineSide;
 import org.usfirst.frc.team2374.robot.commands.auto.Center;
+import org.usfirst.frc.team2374.robot.commands.auto.CenterNoVision;
 import org.usfirst.frc.team2374.robot.commands.auto.LeftBlue;
 import org.usfirst.frc.team2374.robot.commands.auto.LeftRed;
 import org.usfirst.frc.team2374.robot.commands.auto.RightBlue;
 import org.usfirst.frc.team2374.robot.commands.auto.RightRed;
+import org.usfirst.frc.team2374.robot.commands.belt.CenterBeltOnTarget;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToInch.DriveToType;
 import org.usfirst.frc.team2374.robot.commands.drivetrain.DriveToTarget;
@@ -17,10 +21,12 @@ import org.usfirst.frc.team2374.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2374.robot.subsystems.Grabber;
 import org.usfirst.frc.team2374.robot.subsystems.Vision;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -70,11 +76,14 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Red", new RightRed());
 		chooser.addObject("Left Blue", new LeftBlue());
 		chooser.addObject("Right Blue", new RightBlue());
-		chooser.addObject("Base Line", new DriveToInch(90, DriveToType.LONG));
-		chooser.addObject("DriveToTar", new DriveToTarget(30));
-		chooser.addObject("DriveToInch65L", new DriveToInch(65, DriveToType.LONG));
-		chooser.addObject("DriveToInch21S", new DriveToInch(21, DriveToType.SHORT));
+		chooser.addObject("Base Line Side", new BaseLineSide());
+		chooser.addObject("Base Line Center", new BaseLineCenter());
+		chooser.addObject("DriveToTar", new DriveToTarget(30, DriveToType.LONG));
+		chooser.addObject("DriveToInch65L", new DriveToInch(74, DriveToType.LONG));
+		chooser.addObject("CenterBeltOnTar", new CenterBeltOnTarget());
+		chooser.addObject("DriveToInch21S", new DriveToInch(24, DriveToType.SHORT));
 		chooser.addObject("TurnToDegree", new TurnToDegree(60, 2));
+		chooser.addObject("CenterNoVision", new CenterNoVision());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData(Scheduler.getInstance());
 	}
@@ -116,8 +125,15 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-		if (autonomousCommand != null)
+		if (autonomousCommand != null) {
+			if (autonomousCommand instanceof CommandGroup)
+				try {
+					autonomousCommand = autonomousCommand.getClass().newInstance();
+				} catch (InstantiationException | IllegalAccessException e) {
+					DriverStation.reportError("Failed to create new instance of a command group.", true);
+				}
 			autonomousCommand.start();
+		}
 	}
 
 	/**

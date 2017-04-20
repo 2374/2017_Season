@@ -25,7 +25,7 @@ public class TwoEncoderPIDSource implements PIDSource {
 	public double pidGet() {
 		double leftInches = getLeftDistanceInches();
 		double rightInches = getRightDistanceInches();
-		return rightInches; // (leftInches + rightInches) / 2;
+		return rightInches; // (leftInches + rightInches) / 2; commented because the left encoder is broken
 	}
 
 	@Override

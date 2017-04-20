@@ -78,12 +78,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Blue", new RightBlue());
 		chooser.addObject("Base Line Side", new BaseLineSide());
 		chooser.addObject("Base Line Center", new BaseLineCenter());
-		chooser.addObject("DriveToTar", new DriveToTarget(30, DriveToType.LONG));
-		chooser.addObject("DriveToInch65L", new DriveToInch(74, DriveToType.LONG));
-		chooser.addObject("CenterBeltOnTar", new CenterBeltOnTarget());
-		chooser.addObject("DriveToInch21S", new DriveToInch(24, DriveToType.SHORT));
-		chooser.addObject("TurnToDegree", new TurnToDegree(60, 2));
-		chooser.addObject("CenterNoVision", new CenterNoVision());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData(Scheduler.getInstance());
 	}
